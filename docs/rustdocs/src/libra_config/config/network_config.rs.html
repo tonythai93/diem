@@ -299,6 +299,10 @@
 <span id="298">298</span>
 <span id="299">299</span>
 <span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -339,7 +343,8 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_CONCURRENT_NETWORK_REQS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_CONCURRENT_NETWORK_NOTIFS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_CONNECTION_DELAY_MS</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">60_000</span>; <span class="comment">/* 1 minute */</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_FULLNODE_CONNECTIONS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_FULLNODE_OUTBOUND_CONNECTIONS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_INBOUND_CONNECTIONS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_FRAME_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">8</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>; <span class="comment">/* 8 MiB */</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CONNECTION_BACKOFF_BASE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">2</span>;
 
@@ -393,8 +398,10 @@
     <span class="kw">pub</span> <span class="ident">ping_timeout_ms</span>: <span class="ident">u64</span>,
     <span class="comment">// Number of failed healthcheck pings until a peer is marked unhealthy</span>
     <span class="kw">pub</span> <span class="ident">ping_failures_tolerated</span>: <span class="ident">u64</span>,
-    <span class="comment">// Maximum number of allows fullnode connections.  Will prevent future outbound connections</span>
-    <span class="kw">pub</span> <span class="ident">max_fullnode_connections</span>: <span class="ident">usize</span>,
+    <span class="comment">// Maximum number of outbound connections, limited by ConnectivityManager</span>
+    <span class="kw">pub</span> <span class="ident">max_outbound_connections</span>: <span class="ident">usize</span>,
+    <span class="comment">// Maximum number of outbound connections, limited by PeerManager</span>
+    <span class="kw">pub</span> <span class="ident">max_inbound_connections</span>: <span class="ident">usize</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">NetworkConfig</span> {
@@ -425,7 +432,8 @@
             <span class="ident">ping_interval_ms</span>: <span class="ident">PING_INTERVAL_MS</span>,
             <span class="ident">ping_timeout_ms</span>: <span class="ident">PING_TIMEOUT_MS</span>,
             <span class="ident">ping_failures_tolerated</span>: <span class="ident">PING_FAILURES_TOLERATED</span>,
-            <span class="ident">max_fullnode_connections</span>: <span class="ident">MAX_FULLNODE_CONNECTIONS</span>,
+            <span class="ident">max_outbound_connections</span>: <span class="ident">MAX_FULLNODE_OUTBOUND_CONNECTIONS</span>,
+            <span class="ident">max_inbound_connections</span>: <span class="ident">MAX_INBOUND_CONNECTIONS</span>,
         };
         <span class="ident">config</span>.<span class="ident">prepare_identity</span>();
         <span class="ident">config</span>
