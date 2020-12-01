@@ -438,12 +438,6 @@
 <span id="437">437</span>
 <span id="438">438</span>
 <span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -556,7 +550,6 @@
     <span class="ident">max_concurrent_network_reqs</span>: <span class="ident">usize</span>,
     <span class="ident">max_concurrent_network_notifs</span>: <span class="ident">usize</span>,
     <span class="ident">channel_size</span>: <span class="ident">usize</span>,
-    <span class="ident">inbound_connection_limit</span>: <span class="ident">usize</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PeerManagerContext</span> {
@@ -575,7 +568,6 @@
         <span class="ident">max_concurrent_network_reqs</span>: <span class="ident">usize</span>,
         <span class="ident">max_concurrent_network_notifs</span>: <span class="ident">usize</span>,
         <span class="ident">channel_size</span>: <span class="ident">usize</span>,
-        <span class="ident">inbound_connection_limit</span>: <span class="ident">usize</span>,
     ) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">pm_reqs_tx</span>,
@@ -589,7 +581,6 @@
             <span class="ident">max_concurrent_network_reqs</span>,
             <span class="ident">max_concurrent_network_notifs</span>,
             <span class="ident">channel_size</span>,
-            <span class="ident">inbound_connection_limit</span>,
         }
     }
 
@@ -650,7 +641,6 @@
         <span class="ident">max_concurrent_network_notifs</span>: <span class="ident">usize</span>,
         <span class="ident">max_frame_size</span>: <span class="ident">usize</span>,
         <span class="ident">enable_proxy_protocol</span>: <span class="ident">bool</span>,
-        <span class="ident">inbound_connection_limit</span>: <span class="ident">usize</span>,
     ) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="comment">// Setup channel to send requests to peer manager.</span>
         <span class="kw">let</span> (<span class="ident">pm_reqs_tx</span>, <span class="ident">pm_reqs_rx</span>) <span class="op">=</span> <span class="ident">libra_channel</span>::<span class="ident">new</span>(
@@ -684,7 +674,6 @@
                 <span class="ident">max_concurrent_network_reqs</span>,
                 <span class="ident">max_concurrent_network_notifs</span>,
                 <span class="ident">channel_size</span>,
-                <span class="ident">inbound_connection_limit</span>,
             )),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fuzzing&quot;</span>))]</span>
             <span class="ident">memory_peer_manager</span>: <span class="prelude-val">None</span>,
@@ -808,7 +797,6 @@
             <span class="ident">pm_context</span>.<span class="ident">max_concurrent_network_notifs</span>,
             <span class="ident">pm_context</span>.<span class="ident">channel_size</span>,
             <span class="self">self</span>.<span class="ident">max_frame_size</span>,
-            <span class="ident">pm_context</span>.<span class="ident">inbound_connection_limit</span>,
         );
 
         <span class="comment">// PeerManager constructor appends a public key to the listen_address.</span>

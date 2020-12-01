@@ -1055,7 +1055,7 @@
     <span class="doccomment">/// allows for easy debugging.</span>
     <span class="ident">event_id</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// A way to limit the number of connected peers by outgoing dials.</span>
-    <span class="ident">outbound_connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Random for shuffling which peers will be dialed</span>
     <span class="ident">rng</span>: <span class="ident">SmallRng</span>,
 }
@@ -1159,7 +1159,7 @@
         <span class="ident">requests_rx</span>: <span class="ident">channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">ConnectivityRequest</span><span class="op">&gt;</span>,
         <span class="ident">backoff_strategy</span>: <span class="ident">TBackoff</span>,
         <span class="ident">max_delay_ms</span>: <span class="ident">u64</span>,
-        <span class="ident">outbound_connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+        <span class="ident">connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     ) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="macro">assert</span><span class="macro">!</span>(
             <span class="ident">eligible</span>.<span class="ident">read</span>().<span class="ident">is_empty</span>(),
@@ -1187,7 +1187,7 @@
             <span class="ident">backoff_strategy</span>,
             <span class="ident">max_delay_ms</span>,
             <span class="ident">event_id</span>: <span class="number">0</span>,
-            <span class="ident">outbound_connection_limit</span>,
+            <span class="ident">connection_limit</span>,
             <span class="ident">rng</span>: <span class="ident">SmallRng</span>::<span class="ident">from_entropy</span>(),
         };
 
@@ -1332,7 +1332,7 @@
         <span class="comment">// This does not limit the number of incoming connections</span>
         <span class="comment">// It enforces that a full node cannot have more outgoing connections than `connection_limit`</span>
         <span class="comment">// including in flight dials.</span>
-        <span class="kw">let</span> <span class="ident">to_connect_size</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">conn_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">outbound_connection_limit</span> {
+        <span class="kw">let</span> <span class="ident">to_connect_size</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">conn_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">connection_limit</span> {
             <span class="ident">min</span>(
                 <span class="ident">conn_limit</span>.<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">connected</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="self">self</span>.<span class="ident">dial_queue</span>.<span class="ident">len</span>()),
                 <span class="ident">to_connect</span>.<span class="ident">len</span>(),

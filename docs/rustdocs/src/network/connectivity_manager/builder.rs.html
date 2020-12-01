@@ -176,7 +176,7 @@
     <span class="ident">connection_reqs_tx</span>: <span class="ident">ConnectionRequestSender</span>,
     <span class="ident">connection_notifs_rx</span>: <span class="ident">conn_notifs_channel</span>::<span class="ident">Receiver</span>,
     <span class="ident">requests_rx</span>: <span class="ident">channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">ConnectivityRequest</span><span class="op">&gt;</span>,
-    <span class="ident">outbound_connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>)]</span>
@@ -205,7 +205,7 @@
         <span class="ident">channel_size</span>: <span class="ident">usize</span>,
         <span class="ident">connection_reqs_tx</span>: <span class="ident">ConnectionRequestSender</span>,
         <span class="ident">connection_notifs_rx</span>: <span class="ident">conn_notifs_channel</span>::<span class="ident">Receiver</span>,
-        <span class="ident">outbound_connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+        <span class="ident">connection_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     ) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">conn_mgr_reqs_tx</span>, <span class="ident">conn_mgr_reqs_rx</span>) <span class="op">=</span> <span class="ident">channel</span>::<span class="ident">new</span>(
             <span class="ident">channel_size</span>,
@@ -223,7 +223,7 @@
                 <span class="ident">connection_reqs_tx</span>,
                 <span class="ident">connection_notifs_rx</span>,
                 <span class="ident">requests_rx</span>: <span class="ident">conn_mgr_reqs_rx</span>,
-                <span class="ident">outbound_connection_limit</span>,
+                <span class="ident">connection_limit</span>,
             }),
             <span class="ident">connectivity_manager</span>: <span class="prelude-val">None</span>,
             <span class="ident">conn_mgr_reqs_tx</span>,
@@ -256,7 +256,7 @@
                     <span class="ident">config</span>.<span class="ident">requests_rx</span>,
                     <span class="ident">ExponentialBackoff</span>::<span class="ident">from_millis</span>(<span class="ident">config</span>.<span class="ident">backoff_base</span>).<span class="ident">factor</span>(<span class="number">1000</span>),
                     <span class="ident">config</span>.<span class="ident">max_connection_delay_ms</span>,
-                    <span class="ident">config</span>.<span class="ident">outbound_connection_limit</span>,
+                    <span class="ident">config</span>.<span class="ident">connection_limit</span>,
                 )
             })
         });
