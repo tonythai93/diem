@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BytecodeGenerator","Generates a sequence of bytecode instructions. This generator has: - `instructions`: A list of bytecode instructions to use for generation - `rng`: A random number generator for uniform random choice of next instruction"],["FunctionGenerationContext","Context containing information about a function"]]});
+initSidebarItems({"struct":[["BytecodeGenerator","Generates a sequence of bytecode instructions. This generator has:"],["FunctionGenerationContext","Context containing information about a function"]]});

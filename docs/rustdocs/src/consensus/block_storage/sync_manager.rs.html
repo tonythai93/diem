@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `consensus/src/block_storage/sync_manager.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sync_manager.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../consensus/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `consensus/src/block_storage/sync_manager.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sync_manager.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../consensus/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -382,7 +384,7 @@
     <span class="doccomment">/// Check if we&#39;re far away from this ledger info and need to sync.</span>
     <span class="doccomment">/// Returns false if we have this block in the tree or the root&#39;s round is higher than the</span>
     <span class="doccomment">/// block.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">need_sync_for_quorum_cert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">qc</span>: <span class="kw-2">&amp;</span><span class="ident">QuorumCert</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">need_sync_for_quorum_cert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">qc</span>: <span class="kw-2">&amp;</span><span class="ident">QuorumCert</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="comment">// This precondition ensures that the check in the following lines</span>
         <span class="comment">// does not result in an addition overflow.</span>
         <span class="macro">checked_precondition</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">root</span>().<span class="ident">round</span>() <span class="op">&lt;</span> <span class="ident">std</span>::<span class="ident">u64</span>::<span class="ident">MAX</span> <span class="op">-</span> <span class="number">1</span>);
@@ -391,12 +393,12 @@
         <span class="comment">// In case root().round() is greater than that the committed</span>
         <span class="comment">// block carried by LI is older than my current commit.</span>
         <span class="op">!</span>(<span class="self">self</span>.<span class="ident">block_exists</span>(<span class="ident">qc</span>.<span class="ident">commit_info</span>().<span class="ident">id</span>())
-            <span class="op">||</span> <span class="self">self</span>.<span class="ident">root</span>().<span class="ident">round</span>() <span class="op">&gt;=</span> <span class="ident">qc</span>.<span class="ident">commit_info</span>().<span class="ident">round</span>())
+            <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">root</span>().<span class="ident">round</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">qc</span>.<span class="ident">commit_info</span>().<span class="ident">round</span>())
     }
 
     <span class="doccomment">/// Checks if quorum certificate can be inserted in block store without RPC</span>
     <span class="doccomment">/// Returns the enum to indicate the detailed status.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">need_fetch_for_quorum_cert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">qc</span>: <span class="kw-2">&amp;</span><span class="ident">QuorumCert</span>) <span class="op">-&gt;</span> <span class="ident">NeedFetchResult</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">need_fetch_for_quorum_cert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">qc</span>: <span class="kw-2">&amp;</span><span class="ident">QuorumCert</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NeedFetchResult</span> {
         <span class="kw">if</span> <span class="ident">qc</span>.<span class="ident">certified_block</span>().<span class="ident">round</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">root</span>().<span class="ident">round</span>() {
             <span class="kw">return</span> <span class="ident">NeedFetchResult</span>::<span class="ident">QCRoundBeforeRoot</span>;
         }
@@ -415,19 +417,19 @@
     <span class="doccomment">/// Fetches dependencies for given sync_info.quorum_cert</span>
     <span class="doccomment">/// If gap is large, performs state sync using process_highest_commit_cert</span>
     <span class="doccomment">/// Inserts sync_info.quorum_cert into block store as the last step</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_certs</span>(
+    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">add_certs</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">sync_info</span>: <span class="kw-2">&amp;</span><span class="ident">SyncInfo</span>,
         <span class="kw-2">mut</span> <span class="ident">retriever</span>: <span class="ident">BlockRetriever</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sync_to_highest_commit_cert</span>(<span class="ident">sync_info</span>.<span class="ident">highest_commit_cert</span>().<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">retriever</span>)
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            .<span class="ident">await</span><span class="question-mark">?</span>;
 
         <span class="self">self</span>.<span class="ident">insert_quorum_cert</span>(<span class="ident">sync_info</span>.<span class="ident">highest_commit_cert</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">retriever</span>)
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            .<span class="ident">await</span><span class="question-mark">?</span>;
 
         <span class="self">self</span>.<span class="ident">insert_quorum_cert</span>(<span class="ident">sync_info</span>.<span class="ident">highest_quorum_cert</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">retriever</span>)
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            .<span class="ident">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">tc</span>) <span class="op">=</span> <span class="ident">sync_info</span>.<span class="ident">highest_timeout_certificate</span>() {
             <span class="self">self</span>.<span class="ident">insert_timeout_certificate</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">tc</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>;
@@ -435,19 +437,19 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">insert_quorum_cert</span>(
+    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">insert_quorum_cert</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">qc</span>: <span class="kw-2">&amp;</span><span class="ident">QuorumCert</span>,
         <span class="ident">retriever</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BlockRetriever</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">need_fetch_for_quorum_cert</span>(<span class="kw-2">&amp;</span><span class="ident">qc</span>) {
-            <span class="ident">NeedFetchResult</span>::<span class="ident">NeedFetch</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">fetch_quorum_cert</span>(<span class="ident">qc</span>.<span class="ident">clone</span>(), <span class="ident">retriever</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-            <span class="ident">NeedFetchResult</span>::<span class="ident">QCBlockExist</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">insert_single_quorum_cert</span>(<span class="ident">qc</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> (),
+            <span class="ident">NeedFetchResult</span>::<span class="ident">NeedFetch</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">fetch_quorum_cert</span>(<span class="ident">qc</span>.<span class="ident">clone</span>(), <span class="ident">retriever</span>).<span class="ident">await</span><span class="question-mark">?</span>,
+            <span class="ident">NeedFetchResult</span>::<span class="ident">QCBlockExist</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">insert_single_quorum_cert</span>(<span class="ident">qc</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
         }
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">root</span>().<span class="ident">round</span>() <span class="op">&lt;</span> <span class="ident">qc</span>.<span class="ident">commit_info</span>().<span class="ident">round</span>() {
             <span class="kw">let</span> <span class="ident">finality_proof</span> <span class="op">=</span> <span class="ident">qc</span>.<span class="ident">ledger_info</span>();
-            <span class="self">self</span>.<span class="ident">commit</span>(<span class="ident">finality_proof</span>.<span class="ident">clone</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="self">self</span>.<span class="ident">commit</span>(<span class="ident">finality_proof</span>.<span class="ident">clone</span>()).<span class="ident">await</span><span class="question-mark">?</span>;
             <span class="kw">if</span> <span class="ident">qc</span>.<span class="ident">ends_epoch</span>() {
                 <span class="ident">retriever</span>
                     .<span class="ident">network</span>
@@ -457,7 +459,7 @@
                             <span class="comment">/* more = */</span> <span class="bool-val">false</span>,
                         ),
                     )))
-                    .<span class="kw">await</span>;
+                    .<span class="ident">await</span>;
             }
         }
         <span class="prelude-val">Ok</span>(())
@@ -467,18 +469,18 @@
     <span class="doccomment">/// updating the consensus state(with qc) and deciding whether to vote(with block)</span>
     <span class="doccomment">/// The missing ancestors are going to be retrieved from the given peer. If a given peer</span>
     <span class="doccomment">/// fails to provide the missing ancestors, the qc is not going to be added.</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_quorum_cert</span>(
+    <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">fetch_quorum_cert</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">qc</span>: <span class="ident">QuorumCert</span>,
         <span class="ident">retriever</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BlockRetriever</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pending</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">retrieve_qc</span> <span class="op">=</span> <span class="ident">qc</span>.<span class="ident">clone</span>();
         <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">block_exists</span>(<span class="ident">retrieve_qc</span>.<span class="ident">certified_block</span>().<span class="ident">id</span>()) {
                 <span class="kw">break</span>;
             }
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">blocks</span> <span class="op">=</span> <span class="ident">retriever</span>.<span class="ident">retrieve_block_for_qc</span>(<span class="kw-2">&amp;</span><span class="ident">retrieve_qc</span>, <span class="number">1</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">blocks</span> <span class="op">=</span> <span class="ident">retriever</span>.<span class="ident">retrieve_block_for_qc</span>(<span class="kw-2">&amp;</span><span class="ident">retrieve_qc</span>, <span class="number">1</span>).<span class="ident">await</span><span class="question-mark">?</span>;
             <span class="comment">// retrieve_block_for_qc guarantees that blocks has exactly 1 element</span>
             <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">blocks</span>.<span class="ident">remove</span>(<span class="number">0</span>);
             <span class="ident">retrieve_qc</span> <span class="op">=</span> <span class="ident">block</span>.<span class="ident">quorum_cert</span>().<span class="ident">clone</span>();
@@ -501,11 +503,11 @@
     <span class="doccomment">/// 2. We persist the 3-chain to storage before start sync to ensure we could restart if we</span>
     <span class="doccomment">/// crash in the middle of the sync.</span>
     <span class="doccomment">/// 3. We prune the old tree and replace with a new tree built with the 3-chain.</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">sync_to_highest_commit_cert</span>(
+    <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">sync_to_highest_commit_cert</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">highest_commit_cert</span>: <span class="ident">QuorumCert</span>,
         <span class="ident">retriever</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BlockRetriever</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">need_sync_for_quorum_cert</span>(<span class="kw-2">&amp;</span><span class="ident">highest_commit_cert</span>) {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
         }
@@ -515,7 +517,7 @@
             <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">clone</span>(),
             <span class="self">self</span>.<span class="ident">state_computer</span>.<span class="ident">clone</span>(),
         )
-        .<span class="kw">await</span><span class="question-mark">?</span>
+        .<span class="ident">await</span><span class="question-mark">?</span>
         .<span class="ident">take</span>();
         <span class="macro">debug</span><span class="macro">!</span>(
             <span class="ident">LogSchema</span>::<span class="ident">new</span>(<span class="ident">LogEvent</span>::<span class="ident">CommitViaSync</span>).<span class="ident">round</span>(<span class="self">self</span>.<span class="ident">root</span>().<span class="ident">round</span>()),
@@ -523,7 +525,7 @@
             <span class="ident">block_id</span> <span class="op">=</span> <span class="ident">root</span>.<span class="number">0</span>.<span class="ident">id</span>(),
         );
         <span class="self">self</span>.<span class="ident">rebuild</span>(<span class="ident">root</span>, <span class="ident">root_metadata</span>, <span class="ident">blocks</span>, <span class="ident">quorum_certs</span>)
-            .<span class="kw">await</span>;
+            .<span class="ident">await</span>;
 
         <span class="kw">if</span> <span class="ident">highest_commit_cert</span>.<span class="ident">ends_epoch</span>() {
             <span class="ident">retriever</span>
@@ -532,17 +534,17 @@
                     <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">highest_commit_cert</span>.<span class="ident">ledger_info</span>().<span class="ident">clone</span>()],
                     <span class="comment">/* more = */</span> <span class="bool-val">false</span>,
                 ))
-                .<span class="kw">await</span>;
+                .<span class="ident">await</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fast_forward_sync</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">fast_forward_sync</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">highest_commit_cert</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">QuorumCert</span>,
         <span class="ident">retriever</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">BlockRetriever</span>,
-        <span class="ident">storage</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">PersistentLivenessStorage</span><span class="op">&gt;</span>,
-        <span class="ident">state_computer</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StateComputer</span><span class="op">&gt;</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RecoveryData</span><span class="op">&gt;</span> {
+        <span class="ident">storage</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">PersistentLivenessStorage</span><span class="op">&gt;</span>,
+        <span class="ident">state_computer</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">StateComputer</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RecoveryData</span><span class="op">&gt;</span> {
         <span class="macro">debug</span><span class="macro">!</span>(
             <span class="ident">LogSchema</span>::<span class="ident">new</span>(<span class="ident">LogEvent</span>::<span class="ident">StateSync</span>).<span class="ident">remote_peer</span>(<span class="ident">retriever</span>.<span class="ident">preferred_peer</span>),
             <span class="string">&quot;Start state sync with peer to block: {}&quot;</span>,
@@ -551,7 +553,7 @@
 
         <span class="kw">let</span> <span class="ident">blocks</span> <span class="op">=</span> <span class="ident">retriever</span>
             .<span class="ident">retrieve_block_for_qc</span>(<span class="kw-2">&amp;</span><span class="ident">highest_commit_cert</span>, <span class="number">3</span>)
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            .<span class="ident">await</span><span class="question-mark">?</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(
             <span class="ident">blocks</span>.<span class="ident">last</span>().<span class="ident">expect</span>(<span class="string">&quot;should have 3-chain&quot;</span>).<span class="ident">id</span>(),
             <span class="ident">highest_commit_cert</span>.<span class="ident">commit_info</span>().<span class="ident">id</span>(),
@@ -573,7 +575,7 @@
         <span class="ident">storage</span>.<span class="ident">save_tree</span>(<span class="ident">blocks</span>.<span class="ident">clone</span>(), <span class="ident">quorum_certs</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
         <span class="ident">state_computer</span>
             .<span class="ident">sync_to</span>(<span class="ident">highest_commit_cert</span>.<span class="ident">ledger_info</span>().<span class="ident">clone</span>())
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            .<span class="ident">await</span><span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">recovery_data</span> <span class="op">=</span> <span class="ident">storage</span>
             .<span class="ident">start</span>()
             .<span class="ident">expect_recovery_data</span>(<span class="string">&quot;Failed to construct recovery data after fast forward sync&quot;</span>);
@@ -589,7 +591,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">BlockRetriever</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">network</span>: <span class="ident">NetworkSender</span>, <span class="ident">preferred_peer</span>: <span class="ident">Author</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">network</span>: <span class="ident">NetworkSender</span>, <span class="ident">preferred_peer</span>: <span class="ident">Author</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">network</span>,
             <span class="ident">preferred_peer</span>,
@@ -606,11 +608,11 @@
     <span class="doccomment">/// leader to drive quorum certificate creation The other peers from the quorum certificate</span>
     <span class="doccomment">/// will be randomly tried next.  If all members of the quorum certificate are exhausted, an</span>
     <span class="doccomment">/// error is returned</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">retrieve_block_for_qc</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">retrieve_block_for_qc</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">qc</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">QuorumCert</span>,
         <span class="ident">num_blocks</span>: <span class="ident">u64</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">block_id</span> <span class="op">=</span> <span class="ident">qc</span>.<span class="ident">certified_block</span>().<span class="ident">id</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">peers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">AccountAddress</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">qc</span>.<span class="ident">ledger_info</span>().<span class="ident">signatures</span>().<span class="ident">keys</span>().<span class="ident">collect</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">attempt</span> <span class="op">=</span> <span class="number">0_u32</span>;
@@ -623,7 +625,7 @@
                 );
             }
             <span class="kw">let</span> <span class="ident">peer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pick_peer</span>(<span class="ident">attempt</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">peers</span>);
-            <span class="ident">attempt</span> <span class="op">+=</span> <span class="number">1</span>;
+            <span class="ident">attempt</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
             <span class="macro">debug</span><span class="macro">!</span>(
                 <span class="ident">LogSchema</span>::<span class="ident">new</span>(<span class="ident">LogEvent</span>::<span class="ident">RetrieveBlock</span>).<span class="ident">remote_peer</span>(<span class="ident">peer</span>),
@@ -638,16 +640,16 @@
                     <span class="ident">peer</span>,
                     <span class="ident">retrieval_timeout</span>(<span class="ident">attempt</span>),
                 )
-                .<span class="kw">await</span>;
+                .<span class="ident">await</span>;
             <span class="kw">match</span> <span class="ident">response</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
-                <span class="kw">if</span> <span class="ident">result</span>.<span class="ident">status</span>() <span class="op">==</span> <span class="ident">BlockRetrievalStatus</span>::<span class="ident">Succeeded</span> {
+                <span class="kw">if</span> <span class="ident">result</span>.<span class="ident">status</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">BlockRetrievalStatus</span>::<span class="ident">Succeeded</span> {
                     <span class="prelude-val">Ok</span>(<span class="ident">result</span>.<span class="ident">blocks</span>().<span class="ident">clone</span>())
                 } <span class="kw">else</span> {
                     <span class="prelude-val">Err</span>(<span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">result</span>.<span class="ident">status</span>()))
                 }
             }) {
-                <span class="ident">result</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">result</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">warn</span><span class="macro">!</span>(
+                <span class="ident">result</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">result</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">warn</span><span class="macro">!</span>(
                     <span class="ident">remote_peer</span> <span class="op">=</span> <span class="ident">peer</span>,
                     <span class="ident">block_id</span> <span class="op">=</span> <span class="ident">block_id</span>,
                     <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;Failed to fetch block, trying another peer&quot;</span>,
@@ -656,14 +658,14 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">pick_peer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attempt</span>: <span class="ident">u32</span>, <span class="ident">peers</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">AccountAddress</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">AccountAddress</span> {
+    <span class="kw">fn</span> <span class="ident">pick_peer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attempt</span>: <span class="ident">u32</span>, <span class="ident">peers</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">AccountAddress</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountAddress</span> {
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">peers</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;pick_peer on empty peer list&quot;</span>);
 
-        <span class="kw">if</span> <span class="ident">attempt</span> <span class="op">==</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">attempt</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="comment">// remove preferred_peer if its in list of peers</span>
             <span class="comment">// (strictly speaking it is not required to be there)</span>
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">peers</span>.<span class="ident">len</span>() {
-                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">peers</span>[<span class="ident">i</span>] <span class="op">==</span> <span class="self">self</span>.<span class="ident">preferred_peer</span> {
+                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">peers</span>[<span class="ident">i</span>] <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">preferred_peer</span> {
                     <span class="ident">peers</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
                     <span class="kw">break</span>;
                 }
@@ -683,7 +685,7 @@
 <span class="doccomment">/// Returns exponentially increasing timeout with</span>
 <span class="doccomment">/// limit of RETRIEVAL_INITIAL_TIMEOUT*(2^RETRIEVAL_MAX_EXP)</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">trivially_copy_pass_by_ref</span>)]</span>
-<span class="kw">fn</span> <span class="ident">retrieval_timeout</span>(<span class="ident">attempt</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
+<span class="kw">fn</span> <span class="ident">retrieval_timeout</span>(<span class="ident">attempt</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
     <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">attempt</span> <span class="op">&gt;</span> <span class="number">0</span>, <span class="string">&quot;retrieval_timeout attempt can&#39;t be 0&quot;</span>);
     <span class="kw">let</span> <span class="ident">exp</span> <span class="op">=</span> <span class="ident">RETRIEVAL_MAX_EXP</span>.<span class="ident">min</span>(<span class="ident">attempt</span> <span class="op">-</span> <span class="number">1</span>); <span class="comment">// [0..RETRIEVAL_MAX_EXP]</span>
     <span class="ident">RETRIEVAL_INITIAL_TIMEOUT</span> <span class="op">*</span> <span class="number">2_u32</span>.<span class="ident">pow</span>(<span class="ident">exp</span>)

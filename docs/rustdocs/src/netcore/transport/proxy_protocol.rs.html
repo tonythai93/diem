@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `network/netcore/src/transport/proxy_protocol.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>proxy_protocol.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../netcore/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `network/netcore/src/transport/proxy_protocol.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>proxy_protocol.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../netcore/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -384,16 +386,16 @@
 <span class="kw">const</span> <span class="ident">IPV6_SIZE</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">36</span>;
 
 <span class="doccomment">/// Read a proxy protocol event and unwrap the address information associated.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">read_header</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span><span class="op">&gt;</span>(
+<span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">read_header</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span><span class="op">&gt;</span>(
     <span class="ident">original_addr</span>: <span class="kw-2">&amp;</span><span class="ident">NetworkAddress</span>,
     <span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
-) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NetworkAddress</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NetworkAddress</span><span class="op">&gt;</span> {
     <span class="comment">// This is small enough that it should not be fragmented by TCP</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">16</span>];
-    <span class="ident">stream</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">header</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="ident">stream</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">header</span>).<span class="ident">await</span><span class="question-mark">?</span>;
 
     <span class="comment">// If it&#39;s not proxy protocol, let&#39;s stop</span>
-    <span class="kw">if</span> <span class="ident">header</span>[<span class="number">0</span>..<span class="number">12</span>] <span class="op">!=</span> <span class="ident">PPV2_SIGNATURE</span> {
+    <span class="kw">if</span> <span class="ident">header</span>[<span class="number">0</span>..<span class="number">12</span>] <span class="op">!</span><span class="op">=</span> <span class="ident">PPV2_SIGNATURE</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
             <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
             <span class="string">&quot;ProxyProtocol: Invalid signature&quot;</span>,
@@ -403,8 +405,8 @@
     <span class="comment">// High 4 bits is version, low 4 bits is command</span>
     <span class="kw">let</span> <span class="ident">version_and_command</span> <span class="op">=</span> <span class="ident">header</span>[<span class="number">12</span>];
     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">version_and_command</span> {
-        <span class="ident">PPV2_LOCAL</span> <span class="op">|</span> <span class="ident">PPV2_PROXY</span> <span class="op">=&gt;</span> (),
-        <span class="kw">_</span> <span class="op">=&gt;</span> {
+        <span class="ident">PPV2_LOCAL</span> <span class="op">|</span> <span class="ident">PPV2_PROXY</span> <span class="op">=</span><span class="op">&gt;</span> (),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
                 <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
                 <span class="string">&quot;ProxyProtocol: Unsupported command or protocol version&quot;</span>,
@@ -418,16 +420,16 @@
     <span class="kw">let</span> <span class="ident">address_size</span> <span class="op">=</span> <span class="ident">u16</span>::<span class="ident">from_be_bytes</span>(<span class="ident">address_size</span>);
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_bytes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>; <span class="ident">address_size</span> <span class="kw">as</span> <span class="ident">usize</span>];
-    <span class="ident">stream</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">address_bytes</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="ident">stream</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">address_bytes</span>).<span class="ident">await</span><span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">source_address</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">family_and_protocol</span> {
         <span class="comment">// TODO: Support UDP in the future</span>
-        <span class="ident">LOCAL_PROTOCOL</span> <span class="op">|</span> <span class="ident">UDP_IPV4</span> <span class="op">|</span> <span class="ident">UDP_IPV6</span> <span class="op">|</span> <span class="ident">TCP_UNIX</span> <span class="op">|</span> <span class="ident">UDP_UNIX</span> <span class="op">=&gt;</span> {
+        <span class="ident">LOCAL_PROTOCOL</span> <span class="op">|</span> <span class="ident">UDP_IPV4</span> <span class="op">|</span> <span class="ident">UDP_IPV6</span> <span class="op">|</span> <span class="ident">TCP_UNIX</span> <span class="op">|</span> <span class="ident">UDP_UNIX</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// UNSPEC, UDP, and UNIX Steam/datagram</span>
             <span class="comment">// Accept connection but ignore address info as per spec</span>
             <span class="ident">original_addr</span>.<span class="ident">clone</span>()
         }
-        <span class="ident">TCP_IPV4</span> <span class="op">=&gt;</span> {
+        <span class="ident">TCP_IPV4</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// This is not mentioned in the spec, but if it doesn&#39;t match we might not read correctly</span>
             <span class="kw">if</span> <span class="ident">address_size</span> <span class="op">&lt;</span> <span class="ident">IPV4_SIZE</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
@@ -441,7 +443,7 @@
             <span class="kw">let</span> <span class="ident">socket_addr</span> <span class="op">=</span> <span class="ident">SocketAddr</span>::<span class="ident">new</span>(<span class="ident">IpAddr</span>::<span class="ident">V4</span>(<span class="ident">Ipv4Addr</span>::<span class="ident">from</span>(<span class="ident">src_addr</span>)), <span class="ident">src_port</span>);
             <span class="ident">NetworkAddress</span>::<span class="ident">from</span>(<span class="ident">socket_addr</span>)
         }
-        <span class="ident">TCP_IPV6</span> <span class="op">=&gt;</span> {
+        <span class="ident">TCP_IPV6</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// This is not mentioned in the spec, but if it doesn&#39;t match we might not read correctly</span>
             <span class="kw">if</span> <span class="ident">address_size</span> <span class="op">&lt;</span> <span class="ident">IPV6_SIZE</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
@@ -456,7 +458,7 @@
             <span class="kw">let</span> <span class="ident">socket_addr</span> <span class="op">=</span> <span class="ident">SocketAddr</span>::<span class="ident">new</span>(<span class="ident">IpAddr</span>::<span class="ident">V6</span>(<span class="ident">Ipv6Addr</span>::<span class="ident">from</span>(<span class="ident">src_addr</span>)), <span class="ident">src_port</span>);
             <span class="ident">NetworkAddress</span>::<span class="ident">from</span>(<span class="ident">socket_addr</span>)
         }
-        <span class="kw">_</span> <span class="op">=&gt;</span> {
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
                 <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
                 <span class="string">&quot;ProxyProtocol: Unsupported Address Family or Protocol&quot;</span>,
@@ -489,28 +491,28 @@
     <span class="kw">const</span> <span class="ident">IPV4_ADDR_SIZE</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">2</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="ident">IPV4_SIZE</span> <span class="kw">as</span> <span class="ident">u8</span>];
     <span class="kw">const</span> <span class="ident">IPV6_ADDR_SIZE</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">2</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="ident">IPV6_SIZE</span> <span class="kw">as</span> <span class="ident">u8</span>];
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_v4</span>(<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MemorySocket</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">PPV2_SIGNATURE</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// V2 signature</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">PPV2_PROXY</span>]).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Version 2, Proxy</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">TCP_IPV4</span>]).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// TCP IPv4</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_SIZE</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Size of address</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_1</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Sender address</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_2</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver address</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Sender port</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver port</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">TEST_DATA</span>).<span class="kw">await</span> <span class="comment">// Data</span>
+    <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">send_v4</span>(<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MemorySocket</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">PPV2_SIGNATURE</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// V2 signature</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">PPV2_PROXY</span>]).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Version 2, Proxy</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">TCP_IPV4</span>]).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// TCP IPv4</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_SIZE</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Size of address</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_1</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Sender address</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_2</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver address</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Sender port</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver port</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">TEST_DATA</span>).<span class="ident">await</span> <span class="comment">// Data</span>
     }
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_v6</span>(<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MemorySocket</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">PPV2_SIGNATURE</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// V2 signature</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">PPV2_PROXY</span>]).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Version 2, Proxy</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">TCP_IPV6</span>]).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// TCP IPv6</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV6_ADDR_SIZE</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Size of address</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV6_ADDR_1</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Sender address</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV6_ADDR_2</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver address</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Sender port</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver port</span>
-        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">TEST_DATA</span>).<span class="kw">await</span> <span class="comment">// Data</span>
+    <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">send_v6</span>(<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MemorySocket</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">PPV2_SIGNATURE</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// V2 signature</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">PPV2_PROXY</span>]).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Version 2, Proxy</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">TCP_IPV6</span>]).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// TCP IPv6</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV6_ADDR_SIZE</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Size of address</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV6_ADDR_1</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Sender address</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV6_ADDR_2</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver address</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Sender port</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="ident">await</span><span class="question-mark">?</span>; <span class="comment">// Receiver port</span>
+        <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">TEST_DATA</span>).<span class="ident">await</span> <span class="comment">// Data</span>
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -518,15 +520,15 @@
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">sender</span>, <span class="kw-2">mut</span> <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">MemorySocket</span>::<span class="ident">new_pair</span>();
         <span class="kw">let</span> <span class="ident">original_addr</span> <span class="op">=</span> <span class="ident">NetworkAddress</span>::<span class="ident">mock</span>();
 
-        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="ident">send_v4</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sender</span>).<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Successful send&quot;</span>);
+        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="ident">send_v4</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sender</span>).<span class="ident">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Successful send&quot;</span>);
         };
 
         <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">read_header</span>(<span class="kw-2">&amp;</span><span class="ident">original_addr</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">receiver</span>);
 
         <span class="comment">// Verify the correct address is picked up</span>
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;An address&quot;</span>);
+        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">await</span>.<span class="ident">expect</span>(<span class="string">&quot;An address&quot;</span>);
             <span class="kw">let</span> <span class="ident">addresses</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">to_socket_addrs</span>().<span class="ident">unwrap</span>().<span class="ident">collect</span>();
             <span class="kw">let</span> <span class="ident">socket_addr</span> <span class="op">=</span> <span class="ident">addresses</span>.<span class="ident">first</span>().<span class="ident">unwrap</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">IpAddr</span>::<span class="ident">V4</span>(<span class="ident">Ipv4Addr</span>::<span class="ident">from</span>(<span class="number">0x0000000001</span>)), <span class="ident">socket_addr</span>.<span class="ident">ip</span>());
@@ -536,9 +538,9 @@
         <span class="ident">block_on</span>(<span class="ident">join</span>(<span class="ident">server</span>, <span class="ident">client</span>));
 
         <span class="comment">// Check that data wrapped isn&#39;t affected</span>
-        <span class="kw">let</span> <span class="ident">check_data</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
+        <span class="kw">let</span> <span class="ident">check_data</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
             <span class="kw">let</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>];
-            <span class="ident">receiver</span>.<span class="ident">read_exact</span>(<span class="ident">data</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            <span class="ident">receiver</span>.<span class="ident">read_exact</span>(<span class="ident">data</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">TEST_DATA</span>, <span class="ident">data</span>);
         };
 
@@ -550,14 +552,14 @@
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">sender</span>, <span class="kw-2">mut</span> <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">MemorySocket</span>::<span class="ident">new_pair</span>();
         <span class="kw">let</span> <span class="ident">original_addr</span> <span class="op">=</span> <span class="ident">NetworkAddress</span>::<span class="ident">mock</span>();
 
-        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="ident">send_v6</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sender</span>).<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Successful send&quot;</span>);
+        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="ident">send_v6</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sender</span>).<span class="ident">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Successful send&quot;</span>);
         };
 
         <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">read_header</span>(<span class="kw-2">&amp;</span><span class="ident">original_addr</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">receiver</span>);
         <span class="comment">// Verify the correct address is picked up</span>
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;An address&quot;</span>);
+        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">await</span>.<span class="ident">expect</span>(<span class="string">&quot;An address&quot;</span>);
             <span class="kw">let</span> <span class="ident">addresses</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">to_socket_addrs</span>().<span class="ident">unwrap</span>().<span class="ident">collect</span>();
             <span class="kw">let</span> <span class="ident">socket_addr</span> <span class="op">=</span> <span class="ident">addresses</span>.<span class="ident">first</span>().<span class="ident">unwrap</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(
@@ -570,9 +572,9 @@
         <span class="ident">block_on</span>(<span class="ident">join</span>(<span class="ident">server</span>, <span class="ident">client</span>));
 
         <span class="comment">// Check that data wrapped isn&#39;t affected</span>
-        <span class="kw">let</span> <span class="ident">check_data</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
+        <span class="kw">let</span> <span class="ident">check_data</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
             <span class="kw">let</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>];
-            <span class="ident">receiver</span>.<span class="ident">read_exact</span>(<span class="ident">data</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            <span class="ident">receiver</span>.<span class="ident">read_exact</span>(<span class="ident">data</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">TEST_DATA</span>, <span class="ident">data</span>);
         };
 
@@ -598,32 +600,32 @@
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">sender</span>, <span class="kw-2">mut</span> <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">MemorySocket</span>::<span class="ident">new_pair</span>();
         <span class="kw">let</span> <span class="ident">original_addr</span> <span class="op">=</span> <span class="ident">NetworkAddress</span>::<span class="ident">mock</span>();
 
-        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">PPV2_SIGNATURE</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// V2 signature</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">PPV2_PROXY</span>]).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Version 2, Proxy</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">address_byte</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Local, don&#39;t use address</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_SIZE</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Size of address</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_1</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Sender address</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_2</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Receiver address</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Sender port</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Receiver port</span>
-            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">TEST_DATA</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>() <span class="comment">// Data</span>
+        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">PPV2_SIGNATURE</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// V2 signature</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="ident">PPV2_PROXY</span>]).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Version 2, Proxy</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">address_byte</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Local, don&#39;t use address</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_SIZE</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Size of address</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_1</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Sender address</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">IPV4_ADDR_2</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Receiver address</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Sender port</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">PORT_80</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>(); <span class="comment">// Receiver port</span>
+            <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">TEST_DATA</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>() <span class="comment">// Data</span>
         };
 
         <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">read_header</span>(<span class="kw-2">&amp;</span><span class="ident">original_addr</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">receiver</span>);
         <span class="kw">let</span> <span class="ident">proxy_addr</span> <span class="op">=</span> <span class="ident">original_addr</span>.<span class="ident">clone</span>();
         <span class="comment">// Verify no change in the address</span>
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;An address&quot;</span>);
+        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">await</span>.<span class="ident">expect</span>(<span class="string">&quot;An address&quot;</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">addr</span>, <span class="ident">proxy_addr</span>.<span class="ident">clone</span>());
         };
 
         <span class="ident">block_on</span>(<span class="ident">join</span>(<span class="ident">server</span>, <span class="ident">client</span>));
 
         <span class="comment">// Check that data wrapped isn&#39;t affected</span>
-        <span class="kw">let</span> <span class="ident">check_data</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
+        <span class="kw">let</span> <span class="ident">check_data</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
             <span class="kw">let</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>];
-            <span class="ident">receiver</span>.<span class="ident">read_exact</span>(<span class="ident">data</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            <span class="ident">receiver</span>.<span class="ident">read_exact</span>(<span class="ident">data</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">TEST_DATA</span>, <span class="ident">data</span>);
         };
 
@@ -653,16 +655,16 @@
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">sender</span>, <span class="kw-2">mut</span> <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">MemorySocket</span>::<span class="ident">new_pair</span>();
         <span class="kw">let</span> <span class="ident">original_addr</span> <span class="op">=</span> <span class="ident">NetworkAddress</span>::<span class="ident">mock</span>();
 
-        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
+        <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
             <span class="kw">for</span> <span class="ident">array</span> <span class="kw">in</span> <span class="ident">input</span> {
-                <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">array</span>).<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Successful send&quot;</span>);
+                <span class="ident">sender</span>.<span class="ident">write_all</span>(<span class="ident">array</span>).<span class="ident">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Successful send&quot;</span>);
             }
         };
 
         <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">read_header</span>(<span class="kw-2">&amp;</span><span class="ident">original_addr</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">receiver</span>);
         <span class="comment">// Bad header should fail</span>
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="ident">reader</span>.<span class="kw">await</span>.<span class="ident">expect_err</span>(<span class="string">&quot;Expected error&quot;</span>);
+        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">async</span> <span class="kw">move</span> {
+            <span class="ident">reader</span>.<span class="ident">await</span>.<span class="ident">expect_err</span>(<span class="string">&quot;Expected error&quot;</span>);
         };
 
         <span class="ident">block_on</span>(<span class="ident">join</span>(<span class="ident">server</span>, <span class="ident">client</span>));
