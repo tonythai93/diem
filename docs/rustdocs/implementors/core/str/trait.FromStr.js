@@ -9,6 +9,6 @@ implementors["libra_fuzzer"] = [{"text":"impl FromStr for FuzzTarget","synthetic
 implementors["libra_logger"] = [{"text":"impl FromStr for LevelFilter","synthetic":false,"types":[]},{"text":"impl FromStr for Level","synthetic":false,"types":[]}];
 implementors["libra_management"] = [{"text":"impl FromStr for SecureBackend","synthetic":false,"types":[]}];
 implementors["libra_network_address"] = [{"text":"impl FromStr for NetworkAddress","synthetic":false,"types":[]},{"text":"impl FromStr for DnsName","synthetic":false,"types":[]}];
-implementors["libra_types"] = [{"text":"impl FromStr for ChainId","synthetic":false,"types":[]},{"text":"impl FromStr for AuthenticationKey","synthetic":false,"types":[]},{"text":"impl FromStr for Waypoint","synthetic":false,"types":[]}];
+implementors["libra_types"] = [{"text":"impl FromStr for ChainId","synthetic":false,"types":[]},{"text":"impl FromStr for EventKey","synthetic":false,"types":[]},{"text":"impl FromStr for AuthenticationKey","synthetic":false,"types":[]},{"text":"impl FromStr for Waypoint","synthetic":false,"types":[]}];
 implementors["move_core_types"] = [{"text":"impl FromStr for AccountAddress","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
