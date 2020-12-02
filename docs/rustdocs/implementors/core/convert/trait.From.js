@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors["backup_cli"] = [{"text":"impl From&lt;Vec&lt;Metadata&gt;&gt; for MetadataView","synthetic":false,"types":[]}];
+implementors["backup_cli"] = [{"text":"impl From&lt;Vec&lt;Metadata&gt;&gt; for MetadataView","synthetic":false,"types":[]},{"text":"impl From&lt;RocksdbOpt&gt; for RocksdbConfig","synthetic":false,"types":[]}];
 implementors["consensus_types"] = [{"text":"impl&lt;'_&gt; From&lt;&amp;'_ Block&gt; for BlockMetadata","synthetic":false,"types":[]}];
 implementors["executor_types"] = [{"text":"impl From&lt;Error&gt; for Error","synthetic":false,"types":[]},{"text":"impl From&lt;Error&gt; for Error","synthetic":false,"types":[]},{"text":"impl From&lt;Error&gt; for Error","synthetic":false,"types":[]},{"text":"impl From&lt;TreeState&gt; for ExecutedTrees","synthetic":false,"types":[]}];
 implementors["ir_to_bytecode_syntax"] = [{"text":"impl&lt;L&gt; From&lt;Error&gt; for ParseError&lt;L, Error&gt;","synthetic":false,"types":[]}];

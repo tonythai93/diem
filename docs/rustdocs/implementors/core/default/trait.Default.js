@@ -1,5 +1,6 @@
 (function() {var implementors = {};
 implementors["abigen"] = [{"text":"impl Default for AbigenOptions","synthetic":false,"types":[]}];
+implementors["backup_cli"] = [{"text":"impl Default for RocksdbOpt","synthetic":false,"types":[]}];
 implementors["borrow_graph"] = [{"text":"impl&lt;Loc:&nbsp;Default + Copy, Lbl:&nbsp;Default + Clone + Ord&gt; Default for BorrowGraph&lt;Loc, Lbl&gt;","synthetic":false,"types":[]}];
 implementors["bytecode"] = [{"text":"impl Default for Annotations","synthetic":false,"types":[]},{"text":"impl Default for BorrowInfo","synthetic":false,"types":[]},{"text":"impl Default for FunctionTargetsHolder","synthetic":false,"types":[]},{"text":"impl Default for FunctionTargetPipeline","synthetic":false,"types":[]},{"text":"impl Default for LiveVarInfoAtCodeOffset","synthetic":false,"types":[]},{"text":"impl Default for LiveVarAnnotation","synthetic":false,"types":[]},{"text":"impl Default for ReachingDefAnnotation","synthetic":false,"types":[]}];
 implementors["bytecode_source_map"] = [{"text":"impl Default for FunctionMarking","synthetic":false,"types":[]},{"text":"impl Default for StructMarking","synthetic":false,"types":[]},{"text":"impl Default for MarkedSourceMapping","synthetic":false,"types":[]},{"text":"impl Default for OwnedLoc","synthetic":false,"types":[]}];
