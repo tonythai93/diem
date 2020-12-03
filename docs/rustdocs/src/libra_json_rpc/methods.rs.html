@@ -700,6 +700,14 @@
 <span id="697">697</span>
 <span id="698">698</span>
 <span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -723,7 +731,10 @@
 <span class="kw">use</span> <span class="ident">libra_trace</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">libra_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
-    <span class="ident">account_config</span>::{<span class="ident">from_currency_code_string</span>, <span class="ident">libra_root_address</span>, <span class="ident">AccountResource</span>},
+    <span class="ident">account_config</span>::{
+        <span class="ident">from_currency_code_string</span>, <span class="ident">libra_root_address</span>, <span class="ident">resources</span>::<span class="ident">dual_attestation</span>::<span class="ident">Limit</span>,
+        <span class="ident">AccountResource</span>,
+    },
     <span class="ident">account_state</span>::<span class="ident">AccountState</span>,
     <span class="ident">chain_id</span>::<span class="ident">ChainId</span>,
     <span class="ident">event</span>::<span class="ident">EventKey</span>,
@@ -1008,6 +1019,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">script_hash_allow_list</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BytesView</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">module_publishing_allowed</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">libra_version</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dual_attestation_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">if</span> <span class="ident">version</span> <span class="op">=</span><span class="op">=</span> <span class="ident">request</span>.<span class="ident">version</span>() {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">account</span>) <span class="op">=</span> <span class="ident">service</span>.<span class="ident">get_account_state</span>(<span class="ident">libra_root_address</span>(), <span class="ident">version</span>)<span class="question-mark">?</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">vm_publishing_option</span>) <span class="op">=</span> <span class="ident">account</span>.<span class="ident">get_vm_publishing_option</span>()<span class="question-mark">?</span> {
@@ -1024,6 +1036,9 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span> <span class="ident">account</span>.<span class="ident">get_libra_version</span>()<span class="question-mark">?</span> {
                 <span class="ident">libra_version</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>.<span class="ident">major</span>)
             }
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>) <span class="op">=</span> <span class="ident">account</span>.<span class="ident">get_resource</span>::<span class="op">&lt;</span><span class="ident">Limit</span><span class="op">&gt;</span>()<span class="question-mark">?</span> {
+                <span class="ident">dual_attestation_limit</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>.<span class="ident">micro_lbr_limit</span>)
+            }
         }
     }
     <span class="prelude-val">Ok</span>(<span class="ident">MetadataView</span> {
@@ -1034,6 +1049,7 @@
         <span class="ident">script_hash_allow_list</span>,
         <span class="ident">module_publishing_allowed</span>,
         <span class="ident">libra_version</span>,
+        <span class="ident">dual_attestation_limit</span>,
     })
 }
 
