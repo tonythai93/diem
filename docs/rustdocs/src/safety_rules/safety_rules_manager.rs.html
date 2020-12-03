@@ -139,6 +139,30 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -210,14 +234,22 @@
 
         <span class="kw">let</span> <span class="ident">storage</span> <span class="op">=</span> <span class="ident">storage</span>(<span class="ident">config</span>);
         <span class="kw">let</span> <span class="ident">verify_vote_proposal_signature</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">verify_vote_proposal_signature</span>;
+        <span class="kw">let</span> <span class="ident">export_consensus_key</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">export_consensus_key</span>;
         <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">service</span> {
-            <span class="ident">SafetyRulesService</span>::<span class="ident">Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">new_local</span>(<span class="ident">storage</span>, <span class="ident">verify_vote_proposal_signature</span>),
-            <span class="ident">SafetyRulesService</span>::<span class="ident">Serializer</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">new_serializer</span>(<span class="ident">storage</span>, <span class="ident">verify_vote_proposal_signature</span>)
-            }
+            <span class="ident">SafetyRulesService</span>::<span class="ident">Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">new_local</span>(
+                <span class="ident">storage</span>,
+                <span class="ident">verify_vote_proposal_signature</span>,
+                <span class="ident">export_consensus_key</span>,
+            ),
+            <span class="ident">SafetyRulesService</span>::<span class="ident">Serializer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">new_serializer</span>(
+                <span class="ident">storage</span>,
+                <span class="ident">verify_vote_proposal_signature</span>,
+                <span class="ident">export_consensus_key</span>,
+            ),
             <span class="ident">SafetyRulesService</span>::<span class="ident">Thread</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">new_thread</span>(
                 <span class="ident">storage</span>,
                 <span class="ident">verify_vote_proposal_signature</span>,
+                <span class="ident">export_consensus_key</span>,
                 <span class="ident">config</span>.<span class="ident">network_timeout_ms</span>,
             ),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unimplemented SafetyRulesService: {:?}&quot;</span>, <span class="ident">config</span>.<span class="ident">service</span>),
@@ -227,8 +259,13 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_local</span>(
         <span class="ident">storage</span>: <span class="ident">PersistentSafetyStorage</span>,
         <span class="ident">verify_vote_proposal_signature</span>: <span class="ident">bool</span>,
+        <span class="ident">export_consensus_key</span>: <span class="ident">bool</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">safety_rules</span> <span class="op">=</span> <span class="ident">SafetyRules</span>::<span class="ident">new</span>(<span class="ident">storage</span>, <span class="ident">verify_vote_proposal_signature</span>);
+        <span class="kw">let</span> <span class="ident">safety_rules</span> <span class="op">=</span> <span class="ident">SafetyRules</span>::<span class="ident">new</span>(
+            <span class="ident">storage</span>,
+            <span class="ident">verify_vote_proposal_signature</span>,
+            <span class="ident">export_consensus_key</span>,
+        );
         <span class="self">Self</span> {
             <span class="ident">internal_safety_rules</span>: <span class="ident">SafetyRulesWrapper</span>::<span class="ident">Local</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">RwLock</span>::<span class="ident">new</span>(<span class="ident">safety_rules</span>))),
         }
@@ -244,8 +281,13 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_serializer</span>(
         <span class="ident">storage</span>: <span class="ident">PersistentSafetyStorage</span>,
         <span class="ident">verify_vote_proposal_signature</span>: <span class="ident">bool</span>,
+        <span class="ident">export_consensus_key</span>: <span class="ident">bool</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">safety_rules</span> <span class="op">=</span> <span class="ident">SafetyRules</span>::<span class="ident">new</span>(<span class="ident">storage</span>, <span class="ident">verify_vote_proposal_signature</span>);
+        <span class="kw">let</span> <span class="ident">safety_rules</span> <span class="op">=</span> <span class="ident">SafetyRules</span>::<span class="ident">new</span>(
+            <span class="ident">storage</span>,
+            <span class="ident">verify_vote_proposal_signature</span>,
+            <span class="ident">export_consensus_key</span>,
+        );
         <span class="kw">let</span> <span class="ident">serializer_service</span> <span class="op">=</span> <span class="ident">SerializerService</span>::<span class="ident">new</span>(<span class="ident">safety_rules</span>);
         <span class="self">Self</span> {
             <span class="ident">internal_safety_rules</span>: <span class="ident">SafetyRulesWrapper</span>::<span class="ident">Serializer</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">RwLock</span>::<span class="ident">new</span>(
@@ -257,9 +299,15 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_thread</span>(
         <span class="ident">storage</span>: <span class="ident">PersistentSafetyStorage</span>,
         <span class="ident">verify_vote_proposal_signature</span>: <span class="ident">bool</span>,
+        <span class="ident">export_consensus_key</span>: <span class="ident">bool</span>,
         <span class="ident">timeout_ms</span>: <span class="ident">u64</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">thread</span> <span class="op">=</span> <span class="ident">ThreadService</span>::<span class="ident">new</span>(<span class="ident">storage</span>, <span class="ident">verify_vote_proposal_signature</span>, <span class="ident">timeout_ms</span>);
+        <span class="kw">let</span> <span class="ident">thread</span> <span class="op">=</span> <span class="ident">ThreadService</span>::<span class="ident">new</span>(
+            <span class="ident">storage</span>,
+            <span class="ident">verify_vote_proposal_signature</span>,
+            <span class="ident">export_consensus_key</span>,
+            <span class="ident">timeout_ms</span>,
+        );
         <span class="self">Self</span> {
             <span class="ident">internal_safety_rules</span>: <span class="ident">SafetyRulesWrapper</span>::<span class="ident">Thread</span>(<span class="ident">thread</span>),
         }
