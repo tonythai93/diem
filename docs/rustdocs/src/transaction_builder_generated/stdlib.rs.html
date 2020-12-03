@@ -4209,6 +4209,10 @@
 <span id="4206">4206</span>
 <span id="4207">4207</span>
 <span id="4208">4208</span>
+<span id="4209">4209</span>
+<span id="4210">4210</span>
+<span id="4211">4211</span>
+<span id="4212">4212</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -4974,6 +4978,8 @@
     <span class="doccomment">/// | `Errors::NOT_PUBLISHED`  | `LibraAccount::EPAYER_DOESNT_HOLD_CURRENCY`              | `account` doesn&#39;t hold a balance in `Token`.                                            |</span>
     <span class="doccomment">/// | `Errors::NOT_PUBLISHED`  | `Libra::EPREBURN`                                        | `account` doesn&#39;t have a `Libra::Preburn&lt;Token&gt;` resource published under it.           |</span>
     <span class="doccomment">/// | `Errors::INVALID_STATE`  | `Libra::EPREBURN_OCCUPIED`                               | The `value` field in the `Libra::Preburn&lt;Token&gt;` resource under the sender is non-zero. |</span>
+    <span class="doccomment">/// | `Errors::NOT_PUBLISHED`  | `Roles::EROLE_ID`                                        | The `account` did not have a role assigned to it.                                       |</span>
+    <span class="doccomment">/// | `Errors::REQUIRES_ROLE`  | `Roles::EDESIGNATED_DEALER`                              | The `account` did not have the role of DesignatedDealer.                                |</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Related Scripts</span>
     <span class="doccomment">/// * `Script::cancel_burn`</span>
@@ -6764,6 +6770,8 @@
 <span class="doccomment">/// | `Errors::NOT_PUBLISHED`  | `LibraAccount::EPAYER_DOESNT_HOLD_CURRENCY`              | `account` doesn&#39;t hold a balance in `Token`.                                            |</span>
 <span class="doccomment">/// | `Errors::NOT_PUBLISHED`  | `Libra::EPREBURN`                                        | `account` doesn&#39;t have a `Libra::Preburn&lt;Token&gt;` resource published under it.           |</span>
 <span class="doccomment">/// | `Errors::INVALID_STATE`  | `Libra::EPREBURN_OCCUPIED`                               | The `value` field in the `Libra::Preburn&lt;Token&gt;` resource under the sender is non-zero. |</span>
+<span class="doccomment">/// | `Errors::NOT_PUBLISHED`  | `Roles::EROLE_ID`                                        | The `account` did not have a role assigned to it.                                       |</span>
+<span class="doccomment">/// | `Errors::REQUIRES_ROLE`  | `Roles::EDESIGNATED_DEALER`                              | The `account` did not have the role of DesignatedDealer.                                |</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Related Scripts</span>
 <span class="doccomment">/// * `Script::cancel_burn`</span>
