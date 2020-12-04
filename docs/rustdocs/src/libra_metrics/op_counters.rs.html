@@ -271,7 +271,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">v</span>: <span class="ident">usize</span>) {
         <span class="comment">// The underlying method is expecting i64, but most of the types</span>
         <span class="comment">// we&#39;re going to log are `u64` or `usize`.</span>
-        <span class="self">self</span>.<span class="ident">counters</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">op</span>]).<span class="ident">inc_by</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">i64</span>);
+        <span class="self">self</span>.<span class="ident">counters</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">op</span>]).<span class="ident">inc_by</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">u64</span>);
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>

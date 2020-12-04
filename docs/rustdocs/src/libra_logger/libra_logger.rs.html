@@ -1004,7 +1004,7 @@
             );
         } <span class="kw">else</span> {
             <span class="ident">SENT_STRUCT_LOG_COUNT</span>.<span class="ident">inc</span>();
-            <span class="ident">SENT_STRUCT_LOG_BYTES</span>.<span class="ident">inc_by</span>(<span class="ident">message_length</span> <span class="kw">as</span> <span class="ident">i64</span>);
+            <span class="ident">SENT_STRUCT_LOG_BYTES</span>.<span class="ident">inc_by</span>(<span class="ident">message_length</span> <span class="kw">as</span> <span class="ident">u64</span>);
         }
     }
 }

@@ -1296,7 +1296,7 @@
 
     <span class="comment">// Collect counters for requests sent.</span>
     <span class="ident">counters</span>::<span class="ident">rpc_messages</span>(<span class="ident">network_context</span>, <span class="ident">REQUEST_LABEL</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc</span>();
-    <span class="ident">counters</span>::<span class="ident">rpc_bytes</span>(<span class="ident">network_context</span>, <span class="ident">REQUEST_LABEL</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc_by</span>(<span class="ident">req_len</span> <span class="kw">as</span> <span class="ident">i64</span>);
+    <span class="ident">counters</span>::<span class="ident">rpc_bytes</span>(<span class="ident">network_context</span>, <span class="ident">REQUEST_LABEL</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc_by</span>(<span class="ident">req_len</span> <span class="kw">as</span> <span class="ident">u64</span>);
 
     <span class="comment">// Wait for listener&#39;s response.</span>
     <span class="macro">trace</span><span class="macro">!</span>(
@@ -1327,7 +1327,7 @@
     <span class="kw">let</span> <span class="ident">res_data</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">raw_response</span>;
     <span class="ident">counters</span>::<span class="ident">rpc_messages</span>(<span class="ident">network_context</span>, <span class="ident">RESPONSE_LABEL</span>, <span class="ident">RECEIVED_LABEL</span>).<span class="ident">inc</span>();
     <span class="ident">counters</span>::<span class="ident">rpc_bytes</span>(<span class="ident">network_context</span>, <span class="ident">RESPONSE_LABEL</span>, <span class="ident">RECEIVED_LABEL</span>)
-        .<span class="ident">inc_by</span>(<span class="ident">res_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i64</span>);
+        .<span class="ident">inc_by</span>(<span class="ident">res_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
     <span class="prelude-val">Ok</span>(<span class="ident">Bytes</span>::<span class="ident">from</span>(<span class="ident">res_data</span>))
 }
 
@@ -1355,7 +1355,7 @@
     <span class="comment">// Collect counters for received request.</span>
     <span class="ident">counters</span>::<span class="ident">rpc_messages</span>(<span class="ident">network_context</span>, <span class="ident">REQUEST_LABEL</span>, <span class="ident">RECEIVED_LABEL</span>).<span class="ident">inc</span>();
     <span class="ident">counters</span>::<span class="ident">rpc_bytes</span>(<span class="ident">network_context</span>, <span class="ident">REQUEST_LABEL</span>, <span class="ident">RECEIVED_LABEL</span>)
-        .<span class="ident">inc_by</span>(<span class="ident">req_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i64</span>);
+        .<span class="ident">inc_by</span>(<span class="ident">req_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
     <span class="kw">let</span> <span class="ident">timer</span> <span class="op">=</span> <span class="ident">counters</span>::<span class="ident">inbound_rpc_handler_latency</span>(<span class="ident">network_context</span>, <span class="ident">protocol_id</span>).<span class="ident">start_timer</span>();
 
     <span class="comment">// Forward request to upper layer.</span>
@@ -1403,7 +1403,7 @@
 
     <span class="comment">// Collect counters for sent response.</span>
     <span class="ident">counters</span>::<span class="ident">rpc_messages</span>(<span class="ident">network_context</span>, <span class="ident">RESPONSE_LABEL</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc</span>();
-    <span class="ident">counters</span>::<span class="ident">rpc_bytes</span>(<span class="ident">network_context</span>, <span class="ident">RESPONSE_LABEL</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc_by</span>(<span class="ident">res_len</span> <span class="kw">as</span> <span class="ident">i64</span>);
+    <span class="ident">counters</span>::<span class="ident">rpc_bytes</span>(<span class="ident">network_context</span>, <span class="ident">RESPONSE_LABEL</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc_by</span>(<span class="ident">res_len</span> <span class="kw">as</span> <span class="ident">u64</span>);
     <span class="prelude-val">Ok</span>(())
 }
 </pre></div>

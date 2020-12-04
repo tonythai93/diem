@@ -428,7 +428,7 @@
                     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">message</span>.<span class="ident">raw_msg</span>;
                     <span class="ident">counters</span>::<span class="ident">direct_send_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">network_context</span>, <span class="ident">RECEIVED_LABEL</span>).<span class="ident">inc</span>();
                     <span class="ident">counters</span>::<span class="ident">direct_send_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">network_context</span>, <span class="ident">RECEIVED_LABEL</span>)
-                        .<span class="ident">inc_by</span>(<span class="ident">data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i64</span>);
+                        .<span class="ident">inc_by</span>(<span class="ident">data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
                     <span class="kw">let</span> <span class="ident">notif</span> <span class="op">=</span> <span class="ident">DirectSendNotification</span>::<span class="ident">RecvMessage</span>(<span class="ident">Message</span> {
                         <span class="ident">protocol_id</span>,
                         <span class="ident">mdata</span>: <span class="ident">Bytes</span>::<span class="ident">from</span>(<span class="ident">data</span>),
@@ -505,7 +505,7 @@
                     <span class="prelude-val">Ok</span>(()) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="ident">counters</span>::<span class="ident">direct_send_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">network_context</span>, <span class="ident">SENT_LABEL</span>).<span class="ident">inc</span>();
                         <span class="ident">counters</span>::<span class="ident">direct_send_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">network_context</span>, <span class="ident">SENT_LABEL</span>)
-                            .<span class="ident">inc_by</span>(<span class="ident">msg_len</span> <span class="kw">as</span> <span class="ident">i64</span>);
+                            .<span class="ident">inc_by</span>(<span class="ident">msg_len</span> <span class="kw">as</span> <span class="ident">u64</span>);
                     }
                     <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">peer_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">peer_handle</span>.<span class="ident">peer_id</span>();

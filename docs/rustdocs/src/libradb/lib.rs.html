@@ -1817,7 +1817,7 @@
             <span class="comment">// to the storage. That&#39;s also when we&#39;d inform the pruner thread to work.</span>
             <span class="kw">if</span> <span class="ident">num_txns</span> <span class="op">&gt;</span> <span class="number">0</span> {
                 <span class="kw">let</span> <span class="ident">last_version</span> <span class="op">=</span> <span class="ident">first_version</span> <span class="op">+</span> <span class="ident">num_txns</span> <span class="op">-</span> <span class="number">1</span>;
-                <span class="ident">LIBRA_STORAGE_COMMITTED_TXNS</span>.<span class="ident">inc_by</span>(<span class="ident">num_txns</span> <span class="kw">as</span> <span class="ident">i64</span>);
+                <span class="ident">LIBRA_STORAGE_COMMITTED_TXNS</span>.<span class="ident">inc_by</span>(<span class="ident">num_txns</span>);
                 <span class="ident">LIBRA_STORAGE_LATEST_TXN_VERSION</span>.<span class="ident">set</span>(<span class="ident">last_version</span> <span class="kw">as</span> <span class="ident">i64</span>);
                 <span class="ident">counters</span>
                     .<span class="ident">expect</span>(<span class="string">&quot;Counters should be bumped with transactions being saved.&quot;</span>)
