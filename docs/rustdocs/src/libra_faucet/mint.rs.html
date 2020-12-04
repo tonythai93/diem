@@ -197,6 +197,24 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -232,6 +250,7 @@
     <span class="kw">pub</span> <span class="ident">currency_code</span>: <span class="ident">move_core_types</span>::<span class="ident">identifier</span>::<span class="ident">Identifier</span>,
     <span class="kw">pub</span> <span class="ident">auth_key</span>: <span class="ident">libra_types</span>::<span class="ident">transaction</span>::<span class="ident">authenticator</span>::<span class="ident">AuthenticationKey</span>,
     <span class="kw">pub</span> <span class="ident">return_txns</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">is_designated_dealer</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">MintParams</span> {
@@ -249,7 +268,23 @@
                 <span class="number">0</span>, <span class="comment">// sliding nonce</span>
                 <span class="self">self</span>.<span class="ident">receiver</span>(),
                 <span class="self">self</span>.<span class="ident">auth_key</span>.<span class="ident">prefix</span>().<span class="ident">to_vec</span>(),
-                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;No. {}&quot;</span>, <span class="ident">seq</span>).<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>(),
+                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;No. {} VASP&quot;</span>, <span class="ident">seq</span>).<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>(),
+                <span class="bool-val">false</span>, <span class="comment">/* add all currencies */</span>
+            ),
+        )
+    }
+
+    <span class="kw">fn</span> <span class="ident">create_designated_dealer_account_script</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">seq</span>: <span class="ident">u64</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::<span class="ident">TransactionPayload</span> {
+        <span class="ident">libra_types</span>::<span class="ident">transaction</span>::<span class="ident">TransactionPayload</span>::<span class="ident">Script</span>(
+            <span class="ident">transaction_builder_generated</span>::<span class="ident">stdlib</span>::<span class="ident">encode_create_designated_dealer_script</span>(
+                <span class="self">self</span>.<span class="ident">currency_code</span>(),
+                <span class="number">0</span>, <span class="comment">// sliding nonce</span>
+                <span class="self">self</span>.<span class="ident">receiver</span>(),
+                <span class="self">self</span>.<span class="ident">auth_key</span>.<span class="ident">prefix</span>().<span class="ident">to_vec</span>(),
+                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;No. {} DD&quot;</span>, <span class="ident">seq</span>).<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>(),
                 <span class="bool-val">false</span>, <span class="comment">/* add all currencies */</span>
             ),
         )
@@ -299,11 +334,12 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">txns</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
         <span class="kw">if</span> <span class="ident">receiver_seq</span>.<span class="ident">is_none</span>() {
-            <span class="ident">txns</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">create_txn</span>(
-                <span class="ident">params</span>.<span class="ident">create_parent_vasp_account_script</span>(<span class="ident">tc_seq</span>),
-                <span class="ident">treasury_compliance_account_address</span>(),
-                <span class="ident">tc_seq</span>,
-            )<span class="question-mark">?</span>);
+            <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">params</span>.<span class="ident">is_designated_dealer</span>.<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>) {
+                <span class="ident">params</span>.<span class="ident">create_designated_dealer_account_script</span>(<span class="ident">tc_seq</span>)
+            } <span class="kw">else</span> {
+                <span class="ident">params</span>.<span class="ident">create_parent_vasp_account_script</span>(<span class="ident">tc_seq</span>)
+            };
+            <span class="ident">txns</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">create_txn</span>(<span class="ident">script</span>, <span class="ident">treasury_compliance_account_address</span>(), <span class="ident">tc_seq</span>)<span class="question-mark">?</span>);
         }
         <span class="ident">txns</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">create_txn</span>(<span class="ident">params</span>.<span class="ident">p2p_script</span>(), <span class="ident">testnet_dd_account_address</span>(), <span class="ident">dd_seq</span>)<span class="question-mark">?</span>);
 
