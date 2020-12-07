@@ -186,14 +186,13 @@
 <span id="183">183</span>
 <span id="184">184</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">ExecutedTrees</span>, <span class="ident">StateComputeResult</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">hash</span>::<span class="ident">EventAccumulatorHasher</span>, <span class="ident">HashValue</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">hash</span>::<span class="ident">EventAccumulatorHasher</span>, <span class="ident">HashValue</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_state_blob</span>::<span class="ident">AccountStateBlob</span>,
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>,
@@ -201,6 +200,7 @@
     <span class="ident">proof</span>::<span class="ident">accumulator</span>::<span class="ident">InMemoryAccumulator</span>,
     <span class="ident">transaction</span>::{<span class="ident">TransactionStatus</span>, <span class="ident">Version</span>},
 };
+<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">ExecutedTrees</span>, <span class="ident">StateComputeResult</span>};
 <span class="kw">use</span> <span class="ident">scratchpad</span>::<span class="ident">SparseMerkleTree</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>::<span class="ident">HashMap</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};
 

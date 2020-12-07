@@ -66,7 +66,7 @@
 <span id="63">63</span>
 <span id="64">64</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This provides a execution separation between SafetyRules and Consensus without requiring the</span>
@@ -79,7 +79,7 @@
     <span class="ident">persistent_safety_storage</span>::<span class="ident">PersistentSafetyStorage</span>,
     <span class="ident">remote_service</span>::{<span class="self">self</span>, <span class="ident">RemoteService</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">utils</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">utils</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">net</span>::{<span class="ident">IpAddr</span>, <span class="ident">Ipv4Addr</span>, <span class="ident">SocketAddr</span>},
     <span class="ident">thread</span>::{<span class="self">self</span>, <span class="ident">JoinHandle</span>},

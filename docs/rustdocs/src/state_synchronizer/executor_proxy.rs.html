@@ -280,7 +280,7 @@
 <span id="277">277</span>
 <span id="278">278</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -289,10 +289,8 @@
     <span class="ident">SynchronizerState</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">ChunkExecutor</span>, <span class="ident">ExecutedTrees</span>};
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_state</span>::<span class="ident">AccountState</span>,
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>,
     <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>,
@@ -300,6 +298,8 @@
     <span class="ident">on_chain_config</span>::{<span class="ident">config_address</span>, <span class="ident">OnChainConfigPayload</span>, <span class="ident">ON_CHAIN_CONFIG_REGISTRY</span>},
     <span class="ident">transaction</span>::<span class="ident">TransactionListWithProof</span>,
 };
+<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">ChunkExecutor</span>, <span class="ident">ExecutedTrees</span>};
+<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>::<span class="ident">HashSet</span>, <span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};
 <span class="kw">use</span> <span class="ident">storage_interface</span>::<span class="ident">DbReader</span>;
 <span class="kw">use</span> <span class="ident">subscription_service</span>::<span class="ident">ReconfigSubscription</span>;
@@ -337,7 +337,7 @@
     <span class="doccomment">/// Load all on-chain configs from storage</span>
     <span class="doccomment">/// Note: this method is being exposed as executor proxy trait temporarily because storage read is currently</span>
     <span class="doccomment">/// using the tonic storage read client, which needs the tokio runtime to block on with no runtime/async issues</span>
-    <span class="doccomment">/// Once we make storage reads sync (by replacing the storage read client with direct LibraDB),</span>
+    <span class="doccomment">/// Once we make storage reads sync (by replacing the storage read client with direct DiemDB),</span>
     <span class="doccomment">/// we can make this entirely internal to `ExecutorProxy`&#39;s initialization procedure</span>
     <span class="kw">fn</span> <span class="ident">load_on_chain_configs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 

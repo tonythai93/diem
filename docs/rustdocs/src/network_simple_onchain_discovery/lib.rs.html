@@ -215,20 +215,20 @@
 <span id="212">212</span>
 <span id="213">213</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">channel</span>::<span class="ident">libra_channel</span>::{<span class="self">self</span>, <span class="ident">Receiver</span>};
-<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">sink</span>::<span class="ident">SinkExt</span>, <span class="ident">StreamExt</span>};
-<span class="kw">use</span> <span class="ident">libra_config</span>::{<span class="ident">config</span>::<span class="ident">RoleType</span>, <span class="ident">network_id</span>::<span class="ident">NetworkContext</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">x25519</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_metrics</span>::{
+<span class="kw">use</span> <span class="ident">channel</span>::<span class="ident">diem_channel</span>::{<span class="self">self</span>, <span class="ident">Receiver</span>};
+<span class="kw">use</span> <span class="ident">diem_config</span>::{<span class="ident">config</span>::<span class="ident">RoleType</span>, <span class="ident">network_id</span>::<span class="ident">NetworkContext</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">x25519</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_metrics</span>::{
     <span class="ident">register_histogram</span>, <span class="ident">register_int_counter_vec</span>, <span class="ident">DurationHistogram</span>, <span class="ident">IntCounterVec</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address_encryption</span>::{<span class="ident">Encryptor</span>, <span class="ident">Error</span> <span class="kw">as</span> <span class="ident">EncryptorError</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">on_chain_config</span>::{<span class="ident">OnChainConfigPayload</span>, <span class="ident">ValidatorSet</span>, <span class="ident">ON_CHAIN_CONFIG_REGISTRY</span>};
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address_encryption</span>::{<span class="ident">Encryptor</span>, <span class="ident">Error</span> <span class="kw">as</span> <span class="ident">EncryptorError</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">on_chain_config</span>::{<span class="ident">OnChainConfigPayload</span>, <span class="ident">ValidatorSet</span>, <span class="ident">ON_CHAIN_CONFIG_REGISTRY</span>};
+<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">sink</span>::<span class="ident">SinkExt</span>, <span class="ident">StreamExt</span>};
 <span class="kw">use</span> <span class="ident">network</span>::{
     <span class="ident">connectivity_manager</span>::{<span class="ident">ConnectivityRequest</span>, <span class="ident">DiscoverySource</span>},
     <span class="ident">counters</span>::<span class="ident">inc_by_with_context</span>,
@@ -268,7 +268,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DISCOVERY_COUNTS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntCounterVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_counter_vec</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_simple_onchain_discovery_counts&quot;</span>,
+        <span class="string">&quot;diem_simple_onchain_discovery_counts&quot;</span>,
         <span class="string">&quot;Histogram of busy time of spent in event processing loop&quot;</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;role_type&quot;</span>, <span class="string">&quot;network_id&quot;</span>, <span class="string">&quot;peer_id&quot;</span>, <span class="string">&quot;metric&quot;</span>]
     )
@@ -281,7 +281,7 @@
     <span class="ident">network_context</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">NetworkContext</span><span class="op">&gt;</span>,
     <span class="ident">encryptor</span>: <span class="ident">Encryptor</span>,
     <span class="ident">conn_mgr_reqs_tx</span>: <span class="ident">channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">ConnectivityRequest</span><span class="op">&gt;</span>,
-    <span class="ident">reconfig_events</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(), <span class="ident">OnChainConfigPayload</span><span class="op">&gt;</span>,
+    <span class="ident">reconfig_events</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(), <span class="ident">OnChainConfigPayload</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_simple_discovery_reconfig_subscription</span>(
@@ -359,7 +359,7 @@
         <span class="ident">network_context</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">NetworkContext</span><span class="op">&gt;</span>,
         <span class="ident">encryptor</span>: <span class="ident">Encryptor</span>,
         <span class="ident">conn_mgr_reqs_tx</span>: <span class="ident">channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">ConnectivityRequest</span><span class="op">&gt;</span>,
-        <span class="ident">reconfig_events</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(), <span class="ident">OnChainConfigPayload</span><span class="op">&gt;</span>,
+        <span class="ident">reconfig_events</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(), <span class="ident">OnChainConfigPayload</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">network_context</span>,

@@ -438,7 +438,7 @@
 <span id="435">435</span>
 <span id="436">436</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -446,8 +446,8 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cluster_swarm</span>::<span class="ident">cluster_swarm_kube</span>::<span class="ident">ClusterSwarmKube</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">debug_interface</span>::<span class="ident">AsyncNodeDebugClient</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">config</span>::<span class="ident">NodeConfig</span>;
-<span class="kw">use</span> <span class="ident">libra_json_rpc_client</span>::{<span class="ident">JsonRpcAsyncClient</span>, <span class="ident">JsonRpcBatch</span>};
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">config</span>::<span class="ident">NodeConfig</span>;
+<span class="kw">use</span> <span class="ident">diem_json_rpc_client</span>::{<span class="ident">JsonRpcAsyncClient</span>, <span class="ident">JsonRpcBatch</span>};
 <span class="kw">use</span> <span class="ident">reqwest</span>::{<span class="ident">Client</span>, <span class="ident">Url</span>};
 <span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">Value</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -743,10 +743,10 @@
             .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
     }
 
-    <span class="doccomment">/// If deleting /opt/libra/data/* is required, call Instance::clean_date before calling</span>
+    <span class="doccomment">/// If deleting /opt/diem/data/* is required, call Instance::clean_date before calling</span>
     <span class="doccomment">/// Instance::start.</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">clean_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">util_cmd</span>(<span class="string">&quot;rm -rf /opt/libra/data/*; &quot;</span>, <span class="string">&quot;clean-data&quot;</span>)
+        <span class="self">self</span>.<span class="ident">util_cmd</span>(<span class="string">&quot;rm -rf /opt/diem/data/*; &quot;</span>, <span class="string">&quot;clean-data&quot;</span>)
             .<span class="ident">await</span>
     }
 

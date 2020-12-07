@@ -71,72 +71,72 @@
 <span id="68">68</span>
 <span id="69">69</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">libra_metrics</span>::{<span class="ident">register_histogram</span>, <span class="ident">register_int_counter</span>, <span class="ident">Histogram</span>, <span class="ident">IntCounter</span>};
+<span class="kw">use</span> <span class="ident">diem_metrics</span>::{<span class="ident">register_histogram</span>, <span class="ident">register_int_counter</span>, <span class="ident">Histogram</span>, <span class="ident">IntCounter</span>};
 <span class="kw">use</span> <span class="ident">once_cell</span>::<span class="ident">sync</span>::<span class="ident">Lazy</span>;
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_EXECUTE_AND_COMMIT_CHUNK_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_EXECUTE_AND_COMMIT_CHUNK_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram</span><span class="macro">!</span>(
         <span class="comment">// metric name</span>
-        <span class="string">&quot;libra_executor_execute_and_commit_chunk_seconds&quot;</span>,
+        <span class="string">&quot;diem_executor_execute_and_commit_chunk_seconds&quot;</span>,
         <span class="comment">// metric description</span>
-        <span class="string">&quot;The time spent in seconds of chunk execution and committing in Libra executor&quot;</span>
+        <span class="string">&quot;The time spent in seconds of chunk execution and committing in Diem executor&quot;</span>
     )
     .<span class="ident">unwrap</span>()
 });
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_VM_EXECUTE_BLOCK_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_VM_EXECUTE_BLOCK_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram</span><span class="macro">!</span>(
         <span class="comment">// metric name</span>
-        <span class="string">&quot;libra_executor_vm_execute_block_seconds&quot;</span>,
+        <span class="string">&quot;diem_executor_vm_execute_block_seconds&quot;</span>,
         <span class="comment">// metric description</span>
-        <span class="string">&quot;The time spent in seconds of vm block execution in Libra executor&quot;</span>
+        <span class="string">&quot;The time spent in seconds of vm block execution in Diem executor&quot;</span>
     )
     .<span class="ident">unwrap</span>()
 });
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_ERRORS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntCounter</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
-    <span class="macro">register_int_counter</span><span class="macro">!</span>(<span class="string">&quot;libra_executor_error_total&quot;</span>, <span class="string">&quot;Cumulative number of errors&quot;</span>).<span class="ident">unwrap</span>()
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_ERRORS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntCounter</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+    <span class="macro">register_int_counter</span><span class="macro">!</span>(<span class="string">&quot;diem_executor_error_total&quot;</span>, <span class="string">&quot;Cumulative number of errors&quot;</span>).<span class="ident">unwrap</span>()
 });
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_EXECUTE_BLOCK_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_EXECUTE_BLOCK_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram</span><span class="macro">!</span>(
         <span class="comment">// metric name</span>
-        <span class="string">&quot;libra_executor_execute_block_seconds&quot;</span>,
+        <span class="string">&quot;diem_executor_execute_block_seconds&quot;</span>,
         <span class="comment">// metric description</span>
-        <span class="string">&quot;The total time spent in seconds of block execution in Libra executor &quot;</span>
+        <span class="string">&quot;The total time spent in seconds of block execution in Diem executor &quot;</span>
     )
     .<span class="ident">unwrap</span>()
 });
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_COMMIT_BLOCKS_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_COMMIT_BLOCKS_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram</span><span class="macro">!</span>(
         <span class="comment">// metric name</span>
-        <span class="string">&quot;libra_executor_commit_blocks_seconds&quot;</span>,
+        <span class="string">&quot;diem_executor_commit_blocks_seconds&quot;</span>,
         <span class="comment">// metric description</span>
-        <span class="string">&quot;The total time spent in seconds of commiting blocks in Libra executor &quot;</span>
+        <span class="string">&quot;The total time spent in seconds of commiting blocks in Diem executor &quot;</span>
     )
     .<span class="ident">unwrap</span>()
 });
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_SAVE_TRANSACTIONS_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_SAVE_TRANSACTIONS_SECONDS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram</span><span class="macro">!</span>(
         <span class="comment">// metric name</span>
-        <span class="string">&quot;libra_executor_save_transactions_seconds&quot;</span>,
+        <span class="string">&quot;diem_executor_save_transactions_seconds&quot;</span>,
         <span class="comment">// metric description</span>
-        <span class="string">&quot;The time spent in seconds of calling save_transactions to storage in Libra executor&quot;</span>
+        <span class="string">&quot;The time spent in seconds of calling save_transactions to storage in Diem executor&quot;</span>
     )
     .<span class="ident">unwrap</span>()
 });
 
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LIBRA_EXECUTOR_TRANSACTIONS_SAVED</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DIEM_EXECUTOR_TRANSACTIONS_SAVED</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Histogram</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram</span><span class="macro">!</span>(
         <span class="comment">// metric name</span>
-        <span class="string">&quot;libra_executor_transactions_saved&quot;</span>,
+        <span class="string">&quot;diem_executor_transactions_saved&quot;</span>,
         <span class="comment">// metric description</span>
-        <span class="string">&quot;The number of transactions saved to storage in Libra executor&quot;</span>
+        <span class="string">&quot;The number of transactions saved to storage in Diem executor&quot;</span>
     )
     .<span class="ident">unwrap</span>()
 });

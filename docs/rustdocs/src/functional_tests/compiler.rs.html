@@ -25,11 +25,11 @@
 <span id="22">22</span>
 <span id="23">23</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">vm</span>::<span class="ident">file_format</span>::{<span class="ident">CompiledModule</span>, <span class="ident">CompiledScript</span>};
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Compiler</span> {

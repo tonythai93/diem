@@ -82,14 +82,14 @@
 <span id="79">79</span>
 <span id="80">80</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">health</span>::<span class="ident">ValidatorEvent</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::{<span class="ident">duration_since_epoch</span>, <span class="ident">Mutex</span>};
-<span class="kw">use</span> <span class="ident">libra_logger</span>::{<span class="ident">json_log</span>::<span class="ident">JsonLogEntry</span> <span class="kw">as</span> <span class="ident">DebugInterfaceEvent</span>, <span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::{<span class="ident">duration_since_epoch</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::{<span class="ident">json_log</span>::<span class="ident">JsonLogEntry</span> <span class="kw">as</span> <span class="ident">DebugInterfaceEvent</span>, <span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">sync</span>::{
         <span class="ident">atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">AtomicI64</span>, <span class="ident">Ordering</span>},

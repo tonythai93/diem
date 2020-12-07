@@ -291,19 +291,19 @@
 <span id="288">288</span>
 <span id="289">289</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="doccomment">//! Rust representation of a Move transaction script that can be executed on the Libra blockchain.</span>
-<span class="doccomment">//! Libra does not allow arbitrary transaction scripts; only scripts whose hashes are present in</span>
+<span class="doccomment">//! Rust representation of a Move transaction script that can be executed on the Diem blockchain.</span>
+<span class="doccomment">//! Diem does not allow arbitrary transaction scripts; only scripts whose hashes are present in</span>
 <span class="doccomment">//! the on-chain script allowlist. The genesis allowlist is derived from this file, and the</span>
 <span class="doccomment">//! `Stdlib` script enum will be modified to reflect changes in the on-chain allowlist as time goes</span>
 <span class="doccomment">//! on.</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::{<span class="ident">ScriptABI</span>, <span class="ident">SCRIPT_HASH_LENGTH</span>};
 <span class="kw">use</span> <span class="ident">include_dir</span>::{<span class="ident">include_dir</span>, <span class="ident">Dir</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::{<span class="ident">ScriptABI</span>, <span class="ident">SCRIPT_HASH_LENGTH</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">fmt</span>, <span class="ident">path</span>::<span class="ident">PathBuf</span>};
 
 <span class="comment">// This includes the script ABIs as binaries. We must use this hack to work around</span>
@@ -311,7 +311,7 @@
 <span class="comment">// produce these binaries at runtime.</span>
 <span class="kw">const</span> <span class="ident">TXN_SCRIPTS_ABI_DIR</span>: <span class="ident">Dir</span> <span class="op">=</span> <span class="macro">include_dir</span><span class="macro">!</span>(<span class="string">&quot;transaction_scripts/abi&quot;</span>);
 
-<span class="doccomment">/// All of the Move transaction scripts that can be executed on the Libra blockchain</span>
+<span class="doccomment">/// All of the Move transaction scripts that can be executed on the Diem blockchain</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">StdlibScript</span> {
     <span class="ident">AddCurrencyToAccount</span>,
@@ -345,7 +345,7 @@
     <span class="ident">TieredMint</span>,
     <span class="ident">UnfreezeAccount</span>,
     <span class="ident">UpdateExchangeRate</span>,
-    <span class="ident">UpdateLibraVersion</span>,
+    <span class="ident">UpdateDiemVersion</span>,
     <span class="ident">UpdateMintingAbility</span>,
     <span class="ident">UpdateDualAttestationLimit</span>,
     <span class="comment">// ...add new scripts here</span>
@@ -388,7 +388,7 @@
             <span class="ident">TieredMint</span>,
             <span class="ident">UnfreezeAccount</span>,
             <span class="ident">UpdateExchangeRate</span>,
-            <span class="ident">UpdateLibraVersion</span>,
+            <span class="ident">UpdateDiemVersion</span>,
             <span class="ident">UpdateMintingAbility</span>,
             <span class="ident">UpdateDualAttestationLimit</span>,
             <span class="comment">// ...add new scripts here</span>
@@ -396,7 +396,7 @@
     }
 
     <span class="doccomment">/// Construct the allowlist of script hashes used to determine whether a transaction script can</span>
-    <span class="doccomment">/// be executed on the Libra blockchain</span>
+    <span class="doccomment">/// be executed on the Diem blockchain</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowlist</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">SCRIPT_HASH_LENGTH</span>]<span class="op">&gt;</span> {
         <span class="ident">StdlibScript</span>::<span class="ident">all</span>()
             .<span class="ident">iter</span>()
@@ -513,7 +513,7 @@
                 <span class="ident">TieredMint</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;tiered_mint&quot;</span>,
                 <span class="ident">UpdateDualAttestationLimit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;update_dual_attestation_limit&quot;</span>,
                 <span class="ident">UnfreezeAccount</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;unfreeze_account&quot;</span>,
-                <span class="ident">UpdateLibraVersion</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;update_libra_version&quot;</span>,
+                <span class="ident">UpdateDiemVersion</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;update_diem_version&quot;</span>,
                 <span class="ident">UpdateExchangeRate</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;update_exchange_rate&quot;</span>,
                 <span class="ident">UpdateMintingAbility</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;update_minting_ability&quot;</span>,
             }

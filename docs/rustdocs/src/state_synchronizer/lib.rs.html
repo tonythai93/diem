@@ -73,7 +73,7 @@
 <span id="70">70</span>
 <span id="71">71</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -82,8 +82,8 @@
 <span class="doccomment">//! Used for node restarts, network partitions, full node syncs</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;1024&quot;</span>]</span>
 
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">epoch_state</span>::<span class="ident">EpochState</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>};
 <span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">ExecutedTrees</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">epoch_state</span>::<span class="ident">EpochState</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">synchronizer</span>::{<span class="ident">StateSyncClient</span>, <span class="ident">StateSynchronizer</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">chunk_request</span>;

@@ -216,7 +216,7 @@
 <span id="213">213</span>
 <span id="214">214</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="prelude-ty">Result</span>};
@@ -229,8 +229,8 @@
         <span class="ident">Config</span>,
     },
 };
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">ir_to_bytecode_syntax</span>::<span class="ident">syntax</span>::{<span class="self">self</span>, <span class="ident">ParseError</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">move_ir_types</span>::{<span class="ident">ast</span>, <span class="ident">location</span>::<span class="kw-2">*</span>};
 
 <span class="doccomment">/// Determine if a character is an allowed eye-visible (printable) character.</span>

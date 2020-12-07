@@ -83,10 +83,10 @@
 <span id="80">80</span>
 <span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::<span class="ident">ScriptABI</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::<span class="ident">ScriptABI</span>;
 <span class="kw">use</span> <span class="ident">serde_generate</span>::<span class="ident">CustomCode</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span>;
 
@@ -136,7 +136,7 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>;
 }
 
-<span class="doccomment">/// How to read custom code to inject in Libra containers.</span>
+<span class="doccomment">/// How to read custom code to inject in Diem containers.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_custom_code_from_paths</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">package</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>], <span class="ident">paths</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CustomCode</span>
 <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span><span class="op">&gt;</span>,

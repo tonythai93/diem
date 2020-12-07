@@ -177,15 +177,15 @@
 <span id="174">174</span>
 <span id="175">175</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">metadata</span>::{
     <span class="ident">EpochEndingBackupMeta</span>, <span class="ident">Metadata</span>, <span class="ident">StateSnapshotBackupMeta</span>, <span class="ident">TransactionBackupMeta</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">ensure</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::<span class="ident">Version</span>;
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::<span class="ident">Version</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">export</span>::<span class="ident">Formatter</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>::<span class="ident">Display</span>, <span class="ident">str</span>::<span class="ident">FromStr</span>};
 

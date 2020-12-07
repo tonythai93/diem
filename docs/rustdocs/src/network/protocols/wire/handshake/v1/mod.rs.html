@@ -250,7 +250,7 @@
 <span id="247">247</span>
 <span id="248">248</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module defines the structs transported during the network handshake protocol v1.</span>
@@ -262,8 +262,8 @@
 <span class="doccomment">//! supported over that messaging protocol. On receipt, both ends will determine the highest</span>
 <span class="doccomment">//! intersecting messaging protocol version and use that for the remainder of the session.</span>
 
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkId</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">chain_id</span>::<span class="ident">ChainId</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkId</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">chain_id</span>::<span class="ident">ChainId</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">export</span>::<span class="ident">Formatter</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>::<span class="ident">BTreeMap</span>, <span class="ident">convert</span>::<span class="ident">TryInto</span>, <span class="ident">fmt</span>, <span class="ident">iter</span>::<span class="ident">Iterator</span>};
 <span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
@@ -361,7 +361,7 @@
 <span class="comment">// MessageProtocolVersion</span>
 <span class="comment">//</span>
 
-<span class="doccomment">/// Enum representing different versions of the Libra network protocol. These should be listed from</span>
+<span class="doccomment">/// Enum representing different versions of the Diem network protocol. These should be listed from</span>
 <span class="doccomment">/// old to new, old having the smallest value.</span>
 <span class="doccomment">/// We derive `PartialOrd` since nodes need to find highest intersecting protocol version.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Ord</span>, <span class="ident">PartialOrd</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Hash</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
@@ -392,16 +392,16 @@
 <span class="comment">// HandshakeMsg</span>
 <span class="comment">//</span>
 
-<span class="doccomment">/// An enum to list the possible errors during the libra handshake negotiation</span>
+<span class="doccomment">/// An enum to list the possible errors during the diem handshake negotiation</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HandshakeError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;libra-handshake: the received message has a different chain id: {0}, expected: {1}&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;diem-handshake: the received message has a different chain id: {0}, expected: {1}&quot;</span>)]</span>
     <span class="ident">InvalidChainId</span>(<span class="ident">ChainId</span>, <span class="ident">ChainId</span>),
     <span class="attribute">#[<span class="ident">error</span>(
-        <span class="string">&quot;libra-handshake: the received message has an different network id: {0}, expected: {1}&quot;</span>
+        <span class="string">&quot;diem-handshake: the received message has an different network id: {0}, expected: {1}&quot;</span>
     )]</span>
     <span class="ident">InvalidNetworkId</span>(<span class="ident">NetworkId</span>, <span class="ident">NetworkId</span>),
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;libra-handshake: could not find an intersection of supported protocol with the peer&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;diem-handshake: could not find an intersection of supported protocol with the peer&quot;</span>)]</span>
     <span class="ident">NoCommonProtocols</span>,
 }
 

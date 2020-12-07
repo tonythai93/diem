@@ -416,29 +416,24 @@
 <span id="413">413</span>
 <span id="414">414</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">executor</span>::{
-    <span class="ident">db_bootstrapper</span>::{<span class="ident">generate_waypoint</span>, <span class="ident">maybe_bootstrap</span>},
-    <span class="ident">Executor</span>,
-};
-<span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">BlockExecutor</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::{
+<span class="kw">use</span> <span class="ident">diem_config</span>::{
     <span class="ident">config</span>::{<span class="ident">NodeConfig</span>, <span class="ident">RocksdbConfig</span>},
     <span class="ident">utils</span>::<span class="ident">get_genesis_txn</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>},
     <span class="ident">hash</span>::<span class="ident">HashValue</span>,
     <span class="ident">PrivateKey</span>, <span class="ident">SigningKey</span>, <span class="ident">Uniform</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_config</span>::{
-        <span class="ident">coin1_tmp_tag</span>, <span class="ident">testnet_dd_account_address</span>, <span class="ident">treasury_compliance_account_address</span>,
-        <span class="ident">AccountResource</span>, <span class="ident">COIN1_NAME</span>,
+        <span class="ident">testnet_dd_account_address</span>, <span class="ident">treasury_compliance_account_address</span>, <span class="ident">xus_tag</span>, <span class="ident">AccountResource</span>,
+        <span class="ident">XUS_NAME</span>,
     },
     <span class="ident">block_info</span>::<span class="ident">BlockInfo</span>,
     <span class="ident">chain_id</span>::<span class="ident">ChainId</span>,
@@ -447,8 +442,13 @@
         <span class="ident">authenticator</span>::<span class="ident">AuthenticationKey</span>, <span class="ident">RawTransaction</span>, <span class="ident">Script</span>, <span class="ident">SignedTransaction</span>, <span class="ident">Transaction</span>,
     },
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::<span class="ident">LibraVM</span>;
-<span class="kw">use</span> <span class="ident">libradb</span>::<span class="ident">LibraDB</span>;
+<span class="kw">use</span> <span class="ident">diem_vm</span>::<span class="ident">DiemVM</span>;
+<span class="kw">use</span> <span class="ident">diemdb</span>::<span class="ident">DiemDB</span>;
+<span class="kw">use</span> <span class="ident">executor</span>::{
+    <span class="ident">db_bootstrapper</span>::{<span class="ident">generate_waypoint</span>, <span class="ident">maybe_bootstrap</span>},
+    <span class="ident">Executor</span>,
+};
+<span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">BlockExecutor</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">rngs</span>::<span class="ident">StdRng</span>, <span class="ident">SeedableRng</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::<span class="ident">BTreeMap</span>,
@@ -507,7 +507,7 @@
         <span class="kw">for</span> <span class="ident">_i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">num_accounts</span> {
             <span class="kw">let</span> <span class="ident">private_key</span> <span class="op">=</span> <span class="ident">Ed25519PrivateKey</span>::<span class="ident">generate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rng</span>);
             <span class="kw">let</span> <span class="ident">public_key</span> <span class="op">=</span> <span class="ident">private_key</span>.<span class="ident">public_key</span>();
-            <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">from_public_key</span>(<span class="kw-2">&amp;</span><span class="ident">public_key</span>);
+            <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">from_public_key</span>(<span class="kw-2">&amp;</span><span class="ident">public_key</span>);
             <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">AccountData</span> {
                 <span class="ident">private_key</span>,
                 <span class="ident">public_key</span>,
@@ -543,7 +543,7 @@
                     <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">genesis_key</span>,
                     <span class="self">self</span>.<span class="ident">genesis_key</span>.<span class="ident">public_key</span>(),
                     <span class="ident">encode_create_parent_vasp_account_script</span>(
-                        <span class="ident">coin1_tmp_tag</span>(),
+                        <span class="ident">xus_tag</span>(),
                         <span class="number">0</span>,
                         <span class="ident">account</span>.<span class="ident">address</span>,
                         <span class="ident">account</span>.<span class="ident">auth_key_prefix</span>(),
@@ -575,7 +575,7 @@
                     <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">genesis_key</span>,
                     <span class="self">self</span>.<span class="ident">genesis_key</span>.<span class="ident">public_key</span>(),
                     <span class="ident">encode_peer_to_peer_with_metadata_script</span>(
-                        <span class="ident">coin1_tmp_tag</span>(),
+                        <span class="ident">xus_tag</span>(),
                         <span class="ident">account</span>.<span class="ident">address</span>,
                         <span class="ident">init_account_balance</span>,
                         <span class="macro">vec</span><span class="macro">!</span>[],
@@ -610,7 +610,7 @@
                     <span class="kw-2">&amp;</span><span class="ident">sender</span>.<span class="ident">private_key</span>,
                     <span class="ident">sender</span>.<span class="ident">public_key</span>.<span class="ident">clone</span>(),
                     <span class="ident">encode_peer_to_peer_with_metadata_script</span>(
-                        <span class="ident">coin1_tmp_tag</span>(),
+                        <span class="ident">xus_tag</span>(),
                         <span class="ident">receiver</span>.<span class="ident">address</span>,
                         <span class="number">1</span>, <span class="comment">/* amount */</span>
                         <span class="macro">vec</span><span class="macro">!</span>[],
@@ -650,14 +650,14 @@
 }
 
 <span class="kw">struct</span> <span class="ident">TransactionExecutor</span> {
-    <span class="ident">executor</span>: <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">LibraVM</span><span class="op">&gt;</span>,
+    <span class="ident">executor</span>: <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">DiemVM</span><span class="op">&gt;</span>,
     <span class="ident">parent_block_id</span>: <span class="ident">HashValue</span>,
     <span class="ident">block_receiver</span>: <span class="ident">mpsc</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TransactionExecutor</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">executor</span>: <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">LibraVM</span><span class="op">&gt;</span>,
+        <span class="ident">executor</span>: <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">DiemVM</span><span class="op">&gt;</span>,
         <span class="ident">parent_block_id</span>: <span class="ident">HashValue</span>,
         <span class="ident">block_receiver</span>: <span class="ident">mpsc</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -724,9 +724,9 @@
 
 <span class="kw">fn</span> <span class="ident">create_storage_service_and_executor</span>(
     <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">NodeConfig</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>, <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">LibraVM</span><span class="op">&gt;</span>) {
+) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>, <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">DiemVM</span><span class="op">&gt;</span>) {
     <span class="kw">let</span> (<span class="ident">db</span>, <span class="ident">db_rw</span>) <span class="op">=</span> <span class="ident">DbReaderWriter</span>::<span class="ident">wrap</span>(
-        <span class="ident">LibraDB</span>::<span class="ident">open</span>(
+        <span class="ident">DiemDB</span>::<span class="ident">open</span>(
             <span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">storage</span>.<span class="ident">dir</span>(),
             <span class="bool-val">false</span>, <span class="comment">/* readonly */</span>
             <span class="prelude-val">None</span>,  <span class="comment">/* pruner */</span>
@@ -734,8 +734,8 @@
         )
         .<span class="ident">expect</span>(<span class="string">&quot;DB should open.&quot;</span>),
     );
-    <span class="kw">let</span> <span class="ident">waypoint</span> <span class="op">=</span> <span class="ident">generate_waypoint</span>::<span class="op">&lt;</span><span class="ident">LibraVM</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">db_rw</span>, <span class="ident">get_genesis_txn</span>(<span class="ident">config</span>).<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
-    <span class="ident">maybe_bootstrap</span>::<span class="op">&lt;</span><span class="ident">LibraVM</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">db_rw</span>, <span class="ident">get_genesis_txn</span>(<span class="ident">config</span>).<span class="ident">unwrap</span>(), <span class="ident">waypoint</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">waypoint</span> <span class="op">=</span> <span class="ident">generate_waypoint</span>::<span class="op">&lt;</span><span class="ident">DiemVM</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">db_rw</span>, <span class="ident">get_genesis_txn</span>(<span class="ident">config</span>).<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
+    <span class="ident">maybe_bootstrap</span>::<span class="op">&lt;</span><span class="ident">DiemVM</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">db_rw</span>, <span class="ident">get_genesis_txn</span>(<span class="ident">config</span>).<span class="ident">unwrap</span>(), <span class="ident">waypoint</span>).<span class="ident">unwrap</span>();
 
     <span class="kw">let</span> <span class="ident">_handle</span> <span class="op">=</span> <span class="ident">start_storage_service_with_db</span>(<span class="ident">config</span>, <span class="ident">db</span>.<span class="ident">clone</span>());
     <span class="kw">let</span> <span class="ident">executor</span> <span class="op">=</span> <span class="ident">Executor</span>::<span class="ident">new</span>(
@@ -753,7 +753,7 @@
     <span class="ident">num_transfer_blocks</span>: <span class="ident">usize</span>,
     <span class="ident">db_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 ) {
-    <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">config</span>, <span class="ident">genesis_key</span>) <span class="op">=</span> <span class="ident">libra_genesis_tool</span>::<span class="ident">test_config</span>();
+    <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">config</span>, <span class="ident">genesis_key</span>) <span class="op">=</span> <span class="ident">diem_genesis_tool</span>::<span class="ident">test_config</span>();
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">db_dir</span> {
         <span class="ident">config</span>.<span class="ident">storage</span>.<span class="ident">dir</span> <span class="op">=</span> <span class="ident">path</span>;
     }
@@ -798,16 +798,16 @@
     <span class="ident">public_key</span>: <span class="ident">Ed25519PublicKey</span>,
     <span class="ident">program</span>: <span class="ident">Script</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Transaction</span> {
-    <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">libra_infallible</span>::<span class="ident">duration_since_epoch</span>();
+    <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">diem_infallible</span>::<span class="ident">duration_since_epoch</span>();
     <span class="kw">let</span> <span class="ident">expiration_time</span> <span class="op">=</span> <span class="ident">now</span>.<span class="ident">as_secs</span>() <span class="op">+</span> <span class="number">3600</span>;
 
     <span class="kw">let</span> <span class="ident">raw_txn</span> <span class="op">=</span> <span class="ident">RawTransaction</span>::<span class="ident">new_script</span>(
         <span class="ident">sender</span>,
         <span class="ident">sequence_number</span>,
         <span class="ident">program</span>,
-        <span class="number">1_000_000</span>,             <span class="comment">/* max_gas_amount */</span>
-        <span class="number">0</span>,                     <span class="comment">/* gas_unit_price */</span>
-        <span class="ident">COIN1_NAME</span>.<span class="ident">to_owned</span>(), <span class="comment">/* gas_currency_code */</span>
+        <span class="number">1_000_000</span>,           <span class="comment">/* max_gas_amount */</span>
+        <span class="number">0</span>,                   <span class="comment">/* gas_unit_price */</span>
+        <span class="ident">XUS_NAME</span>.<span class="ident">to_owned</span>(), <span class="comment">/* gas_currency_code */</span>
         <span class="ident">expiration_time</span>,
         <span class="ident">ChainId</span>::<span class="ident">test</span>(),
     );

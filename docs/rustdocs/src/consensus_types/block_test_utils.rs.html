@@ -283,7 +283,7 @@
 <span id="280">280</span>
 <span id="281">281</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -293,11 +293,11 @@
     <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>,
     <span class="ident">vote_data</span>::<span class="ident">VoteData</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>,
     <span class="ident">hash</span>::{<span class="ident">CryptoHash</span>, <span class="ident">HashValue</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">block_info</span>::<span class="ident">BlockInfo</span>,
     <span class="ident">ledger_info</span>::{<span class="ident">LedgerInfo</span>, <span class="ident">LedgerInfoWithSignatures</span>},
@@ -327,7 +327,7 @@
         <span class="ident">Block</span>::<span class="ident">new_proposal</span>(
             <span class="macro">vec</span><span class="macro">!</span>[],
             <span class="ident">round</span>,
-            <span class="ident">libra_infallible</span>::<span class="ident">duration_since_epoch</span>().<span class="ident">as_micros</span>() <span class="kw">as</span> <span class="ident">u64</span>,
+            <span class="ident">diem_infallible</span>::<span class="ident">duration_since_epoch</span>().<span class="ident">as_micros</span>() <span class="kw">as</span> <span class="ident">u64</span>,
             <span class="ident">parent_qc</span>,
             <span class="kw-2">&amp;</span><span class="ident">signer</span>,
         )
@@ -372,7 +372,7 @@
                     <span class="ident">block</span>.<span class="ident">payload</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>(),
                     <span class="ident">block</span>.<span class="ident">author</span>().<span class="ident">unwrap</span>(),
                     <span class="ident">block</span>.<span class="ident">round</span>(),
-                    <span class="ident">libra_infallible</span>::<span class="ident">duration_since_epoch</span>().<span class="ident">as_micros</span>() <span class="kw">as</span> <span class="ident">u64</span>,
+                    <span class="ident">diem_infallible</span>::<span class="ident">duration_since_epoch</span>().<span class="ident">as_micros</span>() <span class="kw">as</span> <span class="ident">u64</span>,
                     <span class="ident">block</span>.<span class="ident">quorum_cert</span>().<span class="ident">clone</span>(),
                 ),
                 <span class="ident">signature</span>: <span class="prelude-val">Some</span>(<span class="ident">block</span>.<span class="ident">signature</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>()),

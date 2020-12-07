@@ -88,16 +88,16 @@
 <span id="85">85</span>
 <span id="86">86</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">transport</span>::<span class="ident">Transport</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">future</span>::{<span class="ident">Future</span>, <span class="ident">FutureExt</span>},
     <span class="ident">stream</span>::{<span class="ident">Stream</span>, <span class="ident">StreamExt</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Listener</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="op">=</span>

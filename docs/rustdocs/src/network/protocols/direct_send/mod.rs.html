@@ -263,10 +263,10 @@
 <span id="260">260</span>
 <span id="261">261</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="doccomment">//! Implementation of DirectSend as per Libra wire protocol v1.</span>
+<span class="doccomment">//! Implementation of DirectSend as per Diem wire protocol v1.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Design:</span>
 <span class="doccomment">//! -------</span>
@@ -292,9 +292,9 @@
     <span class="ident">ProtocolId</span>,
 };
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">sink</span>::<span class="ident">SinkExt</span>, <span class="ident">stream</span>::<span class="ident">StreamExt</span>};
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>::<span class="ident">Debug</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};
 

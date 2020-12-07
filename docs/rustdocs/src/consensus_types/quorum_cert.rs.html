@@ -128,13 +128,13 @@
 <span id="125">125</span>
 <span id="126">126</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">vote_data</span>::<span class="ident">VoteData</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">ensure</span>, <span class="ident">Context</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">hash</span>::<span class="ident">CryptoHash</span>, <span class="ident">HashValue</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">hash</span>::<span class="ident">CryptoHash</span>, <span class="ident">HashValue</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">block_info</span>::<span class="ident">BlockInfo</span>,
     <span class="ident">ledger_info</span>::{<span class="ident">LedgerInfo</span>, <span class="ident">LedgerInfoWithSignatures</span>},
     <span class="ident">validator_verifier</span>::<span class="ident">ValidatorVerifier</span>,

@@ -135,36 +135,36 @@
 <span id="132">132</span>
 <span id="133">133</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
 <span class="doccomment">//! Provides an mpsc (multi-producer single-consumer) channel wrapped in an</span>
-<span class="doccomment">//! [`IntGauge`](libra_metrics::IntGauge) that counts the number of currently</span>
+<span class="doccomment">//! [`IntGauge`](diem_metrics::IntGauge) that counts the number of currently</span>
 <span class="doccomment">//! queued items. While there is only one [`channel::Receiver`], there can be</span>
 <span class="doccomment">//! many [`channel::Sender`]s, which are also cheap to clone.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This channel differs from our other channel implementation, [`channel::libra_channel`],</span>
+<span class="doccomment">//! This channel differs from our other channel implementation, [`channel::diem_channel`],</span>
 <span class="doccomment">//! in that it is just a single queue (vs. different queues for different keys)</span>
 <span class="doccomment">//! with backpressure (senders will block if the queue is full instead of evicting</span>
 <span class="doccomment">//! another item in the queue) that only implements FIFO (vs. LIFO or KLAST).</span>
 
+<span class="kw">use</span> <span class="ident">diem_metrics</span>::<span class="ident">IntGauge</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">channel</span>::<span class="ident">mpsc</span>,
     <span class="ident">sink</span>::<span class="ident">Sink</span>,
     <span class="ident">stream</span>::{<span class="ident">FusedStream</span>, <span class="ident">Stream</span>},
     <span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_metrics</span>::<span class="ident">IntGauge</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span>;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">libra_channel</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">diem_channel</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">libra_channel_test</span>;
+<span class="kw">mod</span> <span class="ident">diem_channel_test</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">message_queues</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

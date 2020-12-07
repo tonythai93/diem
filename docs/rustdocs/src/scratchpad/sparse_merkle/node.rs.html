@@ -258,7 +258,7 @@
 <span id="255">255</span>
 <span id="256">256</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module defines all kinds of nodes in the Sparse Merkle Tree maintained in scratch pad.</span>
@@ -277,12 +277,12 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! - An `EmptyNode` represents an empty subtree with zero leaf.</span>
 
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">hash</span>::{<span class="ident">CryptoHash</span>, <span class="ident">SPARSE_MERKLE_PLACEHOLDER_HASH</span>},
     <span class="ident">HashValue</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">RwLock</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">RwLock</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_state_blob</span>::<span class="ident">AccountStateBlob</span>,
     <span class="ident">proof</span>::{<span class="ident">SparseMerkleInternalNode</span>, <span class="ident">SparseMerkleLeafNode</span>},
 };

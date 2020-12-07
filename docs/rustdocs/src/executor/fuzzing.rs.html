@@ -204,15 +204,14 @@
 <span id="201">201</span>
 <span id="202">202</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Executor</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
-<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">BlockExecutor</span>, <span class="ident">ChunkExecutor</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">hash</span>::<span class="ident">SPARSE_MERKLE_PLACEHOLDER_HASH</span>, <span class="ident">HashValue</span>};
-<span class="kw">use</span> <span class="ident">libra_state_view</span>::<span class="ident">StateView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">hash</span>::<span class="ident">SPARSE_MERKLE_PLACEHOLDER_HASH</span>, <span class="ident">HashValue</span>};
+<span class="kw">use</span> <span class="ident">diem_state_view</span>::<span class="ident">StateView</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_state_blob</span>::{<span class="ident">AccountStateBlob</span>, <span class="ident">AccountStateWithProof</span>},
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>,
@@ -226,7 +225,8 @@
     },
     <span class="ident">vm_status</span>::<span class="ident">VMStatus</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::<span class="ident">VMExecutor</span>;
+<span class="kw">use</span> <span class="ident">diem_vm</span>::<span class="ident">VMExecutor</span>;
+<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">BlockExecutor</span>, <span class="ident">ChunkExecutor</span>};
 <span class="kw">use</span> <span class="ident">storage_interface</span>::{<span class="ident">DbReader</span>, <span class="ident">DbReaderWriter</span>, <span class="ident">DbWriter</span>, <span class="ident">Order</span>, <span class="ident">StartupInfo</span>, <span class="ident">TreeState</span>};
 
 <span class="kw">fn</span> <span class="ident">create_test_executor</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Executor</span><span class="op">&lt;</span><span class="ident">FakeVM</span><span class="op">&gt;</span> {

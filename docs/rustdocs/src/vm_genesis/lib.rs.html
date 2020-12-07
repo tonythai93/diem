@@ -645,7 +645,7 @@
 <span id="642">642</span>
 <span id="643">643</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -655,11 +655,11 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">genesis_context</span>::<span class="ident">GenesisStateView</span>, <span class="ident">genesis_gas_schedule</span>::<span class="ident">INITIAL_GAS_SCHEDULE</span>};
 <span class="kw">use</span> <span class="ident">compiled_stdlib</span>::{<span class="ident">stdlib_modules</span>, <span class="ident">transaction_scripts</span>::<span class="ident">StdlibScript</span>, <span class="ident">StdLibOptions</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>},
     <span class="ident">PrivateKey</span>, <span class="ident">Uniform</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>,
     <span class="ident">account_config</span>::{
         <span class="self">self</span>,
@@ -673,7 +673,7 @@
         <span class="ident">WriteSetPayload</span>,
     },
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::{<span class="ident">data_cache</span>::<span class="ident">StateViewCache</span>, <span class="ident">txn_effects_to_writeset_and_events</span>};
+<span class="kw">use</span> <span class="ident">diem_vm</span>::{<span class="ident">data_cache</span>::<span class="ident">StateViewCache</span>, <span class="ident">txn_effects_to_writeset_and_events</span>};
 <span class="kw">use</span> <span class="ident">move_core_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">gas_schedule</span>::{<span class="ident">CostTable</span>, <span class="ident">GasAlgebra</span>, <span class="ident">GasUnits</span>},
@@ -719,7 +719,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OperatorRegistration</span> <span class="op">=</span> (<span class="ident">Ed25519PublicKey</span>, <span class="ident">Name</span>, <span class="ident">Script</span>);
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_genesis_transaction</span>(
-    <span class="ident">libra_root_key</span>: <span class="ident">Ed25519PublicKey</span>,
+    <span class="ident">diem_root_key</span>: <span class="ident">Ed25519PublicKey</span>,
     <span class="ident">treasury_compliance_key</span>: <span class="ident">Ed25519PublicKey</span>,
     <span class="ident">operator_assignments</span>: <span class="kw-2">&amp;</span>[<span class="ident">OperatorAssignment</span>],
     <span class="ident">operator_registrations</span>: <span class="kw-2">&amp;</span>[<span class="ident">OperatorRegistration</span>],
@@ -727,7 +727,7 @@
     <span class="ident">chain_id</span>: <span class="ident">ChainId</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Transaction</span> {
     <span class="ident">Transaction</span>::<span class="ident">GenesisTransaction</span>(<span class="ident">WriteSetPayload</span>::<span class="ident">Direct</span>(<span class="ident">encode_genesis_change_set</span>(
-        <span class="kw-2">&amp;</span><span class="ident">libra_root_key</span>,
+        <span class="kw-2">&amp;</span><span class="ident">diem_root_key</span>,
         <span class="kw-2">&amp;</span><span class="ident">treasury_compliance_key</span>,
         <span class="ident">operator_assignments</span>,
         <span class="ident">operator_registrations</span>,
@@ -749,7 +749,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_genesis_change_set</span>(
-    <span class="ident">libra_root_key</span>: <span class="kw-2">&amp;</span><span class="ident">Ed25519PublicKey</span>,
+    <span class="ident">diem_root_key</span>: <span class="kw-2">&amp;</span><span class="ident">Ed25519PublicKey</span>,
     <span class="ident">treasury_compliance_key</span>: <span class="kw-2">&amp;</span><span class="ident">Ed25519PublicKey</span>,
     <span class="ident">operator_assignments</span>: <span class="kw-2">&amp;</span>[<span class="ident">OperatorAssignment</span>],
     <span class="ident">operator_registrations</span>: <span class="kw-2">&amp;</span>[<span class="ident">OperatorRegistration</span>],
@@ -769,20 +769,20 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">session</span> <span class="op">=</span> <span class="ident">move_vm</span>.<span class="ident">new_session</span>(<span class="kw-2">&amp;</span><span class="ident">data_cache</span>);
     <span class="kw">let</span> <span class="ident">log_context</span> <span class="op">=</span> <span class="ident">NoContextLog</span>::<span class="ident">new</span>();
 
-    <span class="kw">let</span> <span class="ident">lbr_ty</span> <span class="op">=</span> <span class="ident">TypeTag</span>::<span class="ident">Struct</span>(<span class="ident">StructTag</span> {
-        <span class="ident">address</span>: <span class="kw-2">*</span><span class="ident">account_config</span>::<span class="ident">LBR_MODULE</span>.<span class="ident">address</span>(),
-        <span class="ident">module</span>: <span class="ident">account_config</span>::<span class="ident">LBR_MODULE</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>(),
-        <span class="ident">name</span>: <span class="ident">account_config</span>::<span class="ident">LBR_STRUCT_NAME</span>.<span class="ident">to_owned</span>(),
+    <span class="kw">let</span> <span class="ident">xdx_ty</span> <span class="op">=</span> <span class="ident">TypeTag</span>::<span class="ident">Struct</span>(<span class="ident">StructTag</span> {
+        <span class="ident">address</span>: <span class="kw-2">*</span><span class="ident">account_config</span>::<span class="ident">XDX_MODULE</span>.<span class="ident">address</span>(),
+        <span class="ident">module</span>: <span class="ident">account_config</span>::<span class="ident">XDX_MODULE</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>(),
+        <span class="ident">name</span>: <span class="ident">account_config</span>::<span class="ident">XDX_STRUCT_NAME</span>.<span class="ident">to_owned</span>(),
         <span class="ident">type_params</span>: <span class="macro">vec</span><span class="macro">!</span>[],
     });
 
     <span class="ident">create_and_initialize_main_accounts</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">session</span>,
         <span class="kw-2">&amp;</span><span class="ident">log_context</span>,
-        <span class="kw-2">&amp;</span><span class="ident">libra_root_key</span>,
+        <span class="kw-2">&amp;</span><span class="ident">diem_root_key</span>,
         <span class="kw-2">&amp;</span><span class="ident">treasury_compliance_key</span>,
         <span class="ident">vm_publishing_option</span>,
-        <span class="kw-2">&amp;</span><span class="ident">lbr_ty</span>,
+        <span class="kw-2">&amp;</span><span class="ident">xdx_ty</span>,
         <span class="ident">chain_id</span>,
     );
     <span class="comment">// generate the genesis WriteSet</span>
@@ -886,16 +886,16 @@
 <span class="kw">fn</span> <span class="ident">create_and_initialize_main_accounts</span>(
     <span class="ident">session</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Session</span><span class="op">&lt;</span><span class="ident">StateViewCache</span><span class="op">&gt;</span>,
     <span class="ident">log_context</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">LogContext</span>,
-    <span class="ident">libra_root_key</span>: <span class="kw-2">&amp;</span><span class="ident">Ed25519PublicKey</span>,
+    <span class="ident">diem_root_key</span>: <span class="kw-2">&amp;</span><span class="ident">Ed25519PublicKey</span>,
     <span class="ident">treasury_compliance_key</span>: <span class="kw-2">&amp;</span><span class="ident">Ed25519PublicKey</span>,
     <span class="ident">publishing_option</span>: <span class="ident">VMPublishingOption</span>,
-    <span class="ident">lbr_ty</span>: <span class="kw-2">&amp;</span><span class="ident">TypeTag</span>,
+    <span class="ident">xdx_ty</span>: <span class="kw-2">&amp;</span><span class="ident">TypeTag</span>,
     <span class="ident">chain_id</span>: <span class="ident">ChainId</span>,
 ) {
-    <span class="kw">let</span> <span class="ident">libra_root_auth_key</span> <span class="op">=</span> <span class="ident">AuthenticationKey</span>::<span class="ident">ed25519</span>(<span class="ident">libra_root_key</span>);
+    <span class="kw">let</span> <span class="ident">diem_root_auth_key</span> <span class="op">=</span> <span class="ident">AuthenticationKey</span>::<span class="ident">ed25519</span>(<span class="ident">diem_root_key</span>);
     <span class="kw">let</span> <span class="ident">treasury_compliance_auth_key</span> <span class="op">=</span> <span class="ident">AuthenticationKey</span>::<span class="ident">ed25519</span>(<span class="ident">treasury_compliance_key</span>);
 
-    <span class="kw">let</span> <span class="ident">root_libra_root_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">libra_root_address</span>();
+    <span class="kw">let</span> <span class="ident">root_diem_root_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">diem_root_address</span>();
     <span class="kw">let</span> <span class="ident">tc_account_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">treasury_compliance_account_address</span>();
 
     <span class="kw">let</span> <span class="ident">initial_allow_list</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">constant_vector_generic</span>(
@@ -916,14 +916,14 @@
     <span class="ident">exec_function</span>(
         <span class="ident">session</span>,
         <span class="ident">log_context</span>,
-        <span class="ident">root_libra_root_address</span>,
+        <span class="ident">root_diem_root_address</span>,
         <span class="ident">GENESIS_MODULE_NAME</span>,
         <span class="string">&quot;initialize&quot;</span>,
         <span class="macro">vec</span><span class="macro">!</span>[],
         <span class="macro">vec</span><span class="macro">!</span>[
-            <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">root_libra_root_address</span>),
+            <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">root_diem_root_address</span>),
             <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">tc_account_address</span>),
-            <span class="ident">Value</span>::<span class="ident">vector_u8</span>(<span class="ident">libra_root_auth_key</span>.<span class="ident">to_vec</span>()),
+            <span class="ident">Value</span>::<span class="ident">vector_u8</span>(<span class="ident">diem_root_auth_key</span>.<span class="ident">to_vec</span>()),
             <span class="ident">Value</span>::<span class="ident">vector_u8</span>(<span class="ident">treasury_compliance_auth_key</span>.<span class="ident">to_vec</span>()),
             <span class="ident">initial_allow_list</span>,
             <span class="ident">Value</span>::<span class="ident">bool</span>(<span class="ident">publishing_option</span>.<span class="ident">is_open_module</span>),
@@ -940,12 +940,12 @@
     <span class="ident">exec_function</span>(
         <span class="ident">session</span>,
         <span class="ident">log_context</span>,
-        <span class="ident">root_libra_root_address</span>,
-        <span class="string">&quot;LibraAccount&quot;</span>,
+        <span class="ident">root_diem_root_address</span>,
+        <span class="string">&quot;DiemAccount&quot;</span>,
         <span class="string">&quot;epilogue&quot;</span>,
-        <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">lbr_ty</span>.<span class="ident">clone</span>()],
+        <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">xdx_ty</span>.<span class="ident">clone</span>()],
         <span class="macro">vec</span><span class="macro">!</span>[
-            <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">root_libra_root_address</span>),
+            <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">root_diem_root_address</span>),
             <span class="ident">Value</span>::<span class="ident">u64</span>(<span class="comment">/* txn_sequence_number */</span> <span class="number">0</span>),
             <span class="ident">Value</span>::<span class="ident">u64</span>(<span class="comment">/* txn_gas_price */</span> <span class="number">0</span>),
             <span class="ident">Value</span>::<span class="ident">u64</span>(<span class="comment">/* txn_max_gas_units */</span> <span class="number">0</span>),
@@ -961,7 +961,7 @@
 ) {
     <span class="kw">let</span> <span class="ident">genesis_auth_key</span> <span class="op">=</span> <span class="ident">AuthenticationKey</span>::<span class="ident">ed25519</span>(<span class="ident">public_key</span>);
     <span class="kw">let</span> <span class="ident">create_dd_script</span> <span class="op">=</span> <span class="ident">encode_create_designated_dealer_script</span>(
-        <span class="ident">account_config</span>::<span class="ident">coin1_tmp_tag</span>(),
+        <span class="ident">account_config</span>::<span class="ident">xus_tag</span>(),
         <span class="number">0</span>,
         <span class="ident">account_config</span>::<span class="ident">testnet_dd_account_address</span>(),
         <span class="ident">genesis_auth_key</span>.<span class="ident">prefix</span>().<span class="ident">to_vec</span>(),
@@ -969,8 +969,8 @@
         <span class="bool-val">true</span>,                  <span class="comment">// add_all_currencies</span>
     );
 
-    <span class="kw">let</span> <span class="ident">mint_max_coin1_tmp</span> <span class="op">=</span> <span class="ident">transaction_builder</span>::<span class="ident">encode_tiered_mint_script</span>(
-        <span class="ident">account_config</span>::<span class="ident">coin1_tmp_tag</span>(),
+    <span class="kw">let</span> <span class="ident">mint_max_xus</span> <span class="op">=</span> <span class="ident">transaction_builder</span>::<span class="ident">encode_tiered_mint_script</span>(
+        <span class="ident">account_config</span>::<span class="ident">xus_tag</span>(),
         <span class="number">0</span>,
         <span class="ident">account_config</span>::<span class="ident">testnet_dd_account_address</span>(),
         <span class="ident">std</span>::<span class="ident">u64</span>::<span class="ident">MAX</span> <span class="op">/</span> <span class="number">2</span>,
@@ -990,7 +990,7 @@
         <span class="ident">account_config</span>::<span class="ident">treasury_compliance_account_address</span>(),
         <span class="string">&quot;DesignatedDealer&quot;</span>,
         <span class="string">&quot;update_tier&quot;</span>,
-        <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">account_config</span>::<span class="ident">coin1_tmp_tag</span>()],
+        <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">account_config</span>::<span class="ident">xus_tag</span>()],
         <span class="macro">vec</span><span class="macro">!</span>[
             <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(
                 <span class="ident">account_config</span>::<span class="ident">treasury_compliance_account_address</span>(),
@@ -1001,13 +1001,13 @@
         ],
     );
 
-    <span class="comment">// mint Coin1.</span>
+    <span class="comment">// mint XUS.</span>
     <span class="kw">let</span> <span class="ident">treasury_compliance_account_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">treasury_compliance_account_address</span>();
     <span class="ident">exec_script</span>(
         <span class="ident">session</span>,
         <span class="ident">log_context</span>,
         <span class="ident">treasury_compliance_account_address</span>,
-        <span class="kw-2">&amp;</span><span class="ident">mint_max_coin1_tmp</span>,
+        <span class="kw-2">&amp;</span><span class="ident">mint_max_xus</span>,
     );
 
     <span class="kw">let</span> <span class="ident">testnet_dd_account_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">testnet_dd_account_address</span>();
@@ -1028,7 +1028,7 @@
     <span class="ident">operator_assignments</span>: <span class="kw-2">&amp;</span>[<span class="ident">OperatorAssignment</span>],
     <span class="ident">operator_registrations</span>: <span class="kw-2">&amp;</span>[<span class="ident">OperatorRegistration</span>],
 ) {
-    <span class="kw">let</span> <span class="ident">libra_root_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">libra_root_address</span>();
+    <span class="kw">let</span> <span class="ident">diem_root_address</span> <span class="op">=</span> <span class="ident">account_config</span>::<span class="ident">diem_root_address</span>();
 
     <span class="comment">// Create accounts for each validator owner. The inputs for creating an account are the auth</span>
     <span class="comment">// key prefix and account address. Internally move then computes the auth key as auth key</span>
@@ -1036,7 +1036,7 @@
     <span class="comment">// account address from the name and not the public key.</span>
     <span class="kw">for</span> (<span class="ident">owner_key</span>, <span class="ident">owner_name</span>, <span class="ident">_op_assignment</span>) <span class="kw">in</span> <span class="ident">operator_assignments</span> {
         <span class="kw">let</span> <span class="ident">staged_owner_auth_key</span> <span class="op">=</span>
-            <span class="ident">libra_config</span>::<span class="ident">utils</span>::<span class="ident">default_validator_owner_auth_key_from_name</span>(<span class="ident">owner_name</span>);
+            <span class="ident">diem_config</span>::<span class="ident">utils</span>::<span class="ident">default_validator_owner_auth_key_from_name</span>(<span class="ident">owner_name</span>);
         <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">staged_owner_auth_key</span>.<span class="ident">derived_address</span>();
         <span class="kw">let</span> <span class="ident">create_owner_script</span> <span class="op">=</span> <span class="ident">transaction_builder</span>::<span class="ident">encode_create_validator_account_script</span>(
             <span class="number">0</span>,
@@ -1047,7 +1047,7 @@
         <span class="ident">exec_script</span>(
             <span class="ident">session</span>,
             <span class="ident">log_context</span>,
-            <span class="ident">libra_root_address</span>,
+            <span class="ident">diem_root_address</span>,
             <span class="kw-2">&amp;</span><span class="ident">create_owner_script</span>,
         );
 
@@ -1080,14 +1080,14 @@
         <span class="ident">exec_script</span>(
             <span class="ident">session</span>,
             <span class="ident">log_context</span>,
-            <span class="ident">libra_root_address</span>,
+            <span class="ident">diem_root_address</span>,
             <span class="kw-2">&amp;</span><span class="ident">create_operator_script</span>,
         );
     }
 
     <span class="comment">// Set the validator operator for each validator owner</span>
     <span class="kw">for</span> (<span class="ident">_owner_key</span>, <span class="ident">owner_name</span>, <span class="ident">op_assignment</span>) <span class="kw">in</span> <span class="ident">operator_assignments</span> {
-        <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">libra_config</span>::<span class="ident">utils</span>::<span class="ident">validator_owner_account_from_name</span>(<span class="ident">owner_name</span>);
+        <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">diem_config</span>::<span class="ident">utils</span>::<span class="ident">validator_owner_account_from_name</span>(<span class="ident">owner_name</span>);
         <span class="ident">exec_script</span>(<span class="ident">session</span>, <span class="ident">log_context</span>, <span class="ident">owner_address</span>, <span class="ident">op_assignment</span>);
     }
 
@@ -1099,16 +1099,16 @@
 
     <span class="comment">// Add each validator to the validator set</span>
     <span class="kw">for</span> (<span class="ident">_owner_key</span>, <span class="ident">owner_name</span>, <span class="ident">_op_assignment</span>) <span class="kw">in</span> <span class="ident">operator_assignments</span> {
-        <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">libra_config</span>::<span class="ident">utils</span>::<span class="ident">validator_owner_account_from_name</span>(<span class="ident">owner_name</span>);
+        <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">diem_config</span>::<span class="ident">utils</span>::<span class="ident">validator_owner_account_from_name</span>(<span class="ident">owner_name</span>);
         <span class="ident">exec_function</span>(
             <span class="ident">session</span>,
             <span class="ident">log_context</span>,
-            <span class="ident">libra_root_address</span>,
-            <span class="string">&quot;LibraSystem&quot;</span>,
+            <span class="ident">diem_root_address</span>,
+            <span class="string">&quot;DiemSystem&quot;</span>,
             <span class="string">&quot;add_validator&quot;</span>,
             <span class="macro">vec</span><span class="macro">!</span>[],
             <span class="macro">vec</span><span class="macro">!</span>[
-                <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">libra_root_address</span>),
+                <span class="ident">Value</span>::<span class="ident">transaction_argument_signer_reference</span>(<span class="ident">diem_root_address</span>),
                 <span class="ident">Value</span>::<span class="ident">address</span>(<span class="ident">owner_address</span>),
             ],
         );
@@ -1149,8 +1149,8 @@
     <span class="ident">exec_function</span>(
         <span class="ident">session</span>,
         <span class="ident">log_context</span>,
-        <span class="ident">account_config</span>::<span class="ident">libra_root_address</span>(),
-        <span class="string">&quot;LibraConfig&quot;</span>,
+        <span class="ident">account_config</span>::<span class="ident">diem_root_address</span>(),
+        <span class="string">&quot;DiemConfig&quot;</span>,
         <span class="string">&quot;emit_genesis_reconfiguration_event&quot;</span>,
         <span class="macro">vec</span><span class="macro">!</span>[],
         <span class="macro">vec</span><span class="macro">!</span>[],
@@ -1159,10 +1159,10 @@
 
 <span class="doccomment">/// Verify the consistency of the genesis `WriteSet`</span>
 <span class="kw">fn</span> <span class="ident">verify_genesis_write_set</span>(<span class="ident">events</span>: <span class="kw-2">&amp;</span>[<span class="ident">ContractEvent</span>]) {
-    <span class="comment">// (1) first event is account creation event for LibraRoot</span>
-    <span class="kw">let</span> <span class="ident">create_libra_root_event</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">events</span>[<span class="number">0</span>];
+    <span class="comment">// (1) first event is account creation event for DiemRoot</span>
+    <span class="kw">let</span> <span class="ident">create_diem_root_event</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">events</span>[<span class="number">0</span>];
     <span class="macro">assert_eq</span><span class="macro">!</span>(
-        <span class="kw-2">*</span><span class="ident">create_libra_root_event</span>.<span class="ident">key</span>(),
+        <span class="kw-2">*</span><span class="ident">create_diem_root_event</span>.<span class="ident">key</span>(),
         <span class="ident">CreateAccountEvent</span>::<span class="ident">event_key</span>(),
     );
 
@@ -1229,7 +1229,7 @@
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">index</span>.<span class="ident">to_string</span>().<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>();
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">Ed25519PrivateKey</span>::<span class="ident">generate</span>(<span class="ident">rng</span>);
         <span class="kw">let</span> <span class="ident">operator_address</span> <span class="op">=</span> <span class="ident">account_address</span>::<span class="ident">from_public_key</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">public_key</span>());
-        <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">libra_config</span>::<span class="ident">utils</span>::<span class="ident">validator_owner_account_from_name</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>);
+        <span class="kw">let</span> <span class="ident">owner_address</span> <span class="op">=</span> <span class="ident">diem_config</span>::<span class="ident">utils</span>::<span class="ident">validator_owner_account_from_name</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>);
 
         <span class="self">Self</span> {
             <span class="ident">index</span>,

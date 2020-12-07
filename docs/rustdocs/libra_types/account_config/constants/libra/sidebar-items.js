@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["LIBRA_MODULE_NAME",""]],"fn":[["from_currency_code_string",""],["type_tag_for_currency_code",""]],"static":[["COIN_MODULE",""]]});

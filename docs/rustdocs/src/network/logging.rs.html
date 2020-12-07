@@ -74,17 +74,17 @@
 <span id="71">71</span>
 <span id="72">72</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module is to contain all networking logging information.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
-<span class="doccomment">//! use libra_config::network_id::NetworkContext;</span>
-<span class="doccomment">//! use libra_logger::info;</span>
-<span class="doccomment">//! use libra_network_address::NetworkAddress;</span>
-<span class="doccomment">//! use libra_types::PeerId;</span>
+<span class="doccomment">//! use diem_config::network_id::NetworkContext;</span>
+<span class="doccomment">//! use diem_logger::info;</span>
+<span class="doccomment">//! use diem_network_address::NetworkAddress;</span>
+<span class="doccomment">//! use diem_types::PeerId;</span>
 <span class="doccomment">//! use network::logging::NetworkSchema;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! info!(</span>
@@ -101,10 +101,10 @@
     <span class="ident">connectivity_manager</span>::<span class="ident">DiscoverySource</span>,
     <span class="ident">transport</span>::{<span class="ident">ConnectionId</span>, <span class="ident">ConnectionMetadata</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">Schema</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">Schema</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::<span class="ident">ConnectionOrigin</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Schema</span>)]</span>

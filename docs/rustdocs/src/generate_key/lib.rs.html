@@ -60,12 +60,12 @@
 <span id="57">57</span>
 <span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Uniform</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Uniform</span>};
 <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">rngs</span>::<span class="ident">OsRng</span>, <span class="ident">Rng</span>, <span class="ident">SeedableRng</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fs</span>::{<span class="self">self</span>, <span class="ident">File</span>},
@@ -107,7 +107,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">libra_temppath</span>::<span class="ident">TempPath</span>;
+    <span class="kw">use</span> <span class="ident">diem_temppath</span>::<span class="ident">TempPath</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">verify_test_create_and_load_key</span>() {

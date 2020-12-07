@@ -97,17 +97,17 @@
 <span id="94">94</span>
 <span id="95">95</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">mod</span> <span class="ident">handlers</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">handlers</span>::<span class="ident">get_routes</span>;
-<span class="kw">use</span> <span class="ident">libradb</span>::<span class="ident">LibraDB</span>;
+<span class="kw">use</span> <span class="ident">diemdb</span>::<span class="ident">DiemDB</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">net</span>::<span class="ident">SocketAddr</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">runtime</span>::{<span class="ident">Builder</span>, <span class="ident">Runtime</span>};
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_backup_service</span>(<span class="ident">address</span>: <span class="ident">SocketAddr</span>, <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LibraDB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Runtime</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_backup_service</span>(<span class="ident">address</span>: <span class="ident">SocketAddr</span>, <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">DiemDB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Runtime</span> {
     <span class="kw">let</span> <span class="ident">backup_handler</span> <span class="op">=</span> <span class="ident">db</span>.<span class="ident">get_backup_handler</span>();
     <span class="kw">let</span> <span class="ident">routes</span> <span class="op">=</span> <span class="ident">get_routes</span>(<span class="ident">backup_handler</span>);
 
@@ -133,9 +133,9 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">utils</span>::<span class="ident">get_available_port</span>;
-    <span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">hash</span>::<span class="ident">HashValue</span>;
-    <span class="kw">use</span> <span class="ident">libra_temppath</span>::<span class="ident">TempPath</span>;
+    <span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">utils</span>::<span class="ident">get_available_port</span>;
+    <span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">hash</span>::<span class="ident">HashValue</span>;
+    <span class="kw">use</span> <span class="ident">diem_temppath</span>::<span class="ident">TempPath</span>;
     <span class="kw">use</span> <span class="ident">reqwest</span>::<span class="ident">blocking</span>::<span class="ident">get</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::{<span class="ident">IpAddr</span>, <span class="ident">Ipv4Addr</span>};
 
@@ -147,7 +147,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">routing_and_error_codes</span>() {
         <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">TempPath</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">LibraDB</span>::<span class="ident">new_for_test</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>));
+        <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">DiemDB</span>::<span class="ident">new_for_test</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>));
         <span class="kw">let</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">get_available_port</span>();
         <span class="kw">let</span> <span class="ident">_rt</span> <span class="op">=</span> <span class="ident">start_backup_service</span>(<span class="ident">SocketAddr</span>::<span class="ident">new</span>(<span class="ident">IpAddr</span>::<span class="ident">V4</span>(<span class="ident">Ipv4Addr</span>::<span class="ident">LOCALHOST</span>), <span class="ident">port</span>), <span class="ident">db</span>);
 

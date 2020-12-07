@@ -1971,7 +1971,7 @@
 <span id="1968">1968</span>
 <span id="1969">1969</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">logging</span>::<span class="ident">LogContext</span>, <span class="ident">native_functions</span>::<span class="ident">NativeFunction</span>};
@@ -1980,9 +1980,9 @@
     <span class="ident">CodeUnitVerifier</span>, <span class="ident">DependencyChecker</span>, <span class="ident">DuplicationChecker</span>, <span class="ident">InstructionConsistency</span>,
     <span class="ident">RecursiveStructDefChecker</span>, <span class="ident">ResourceTransitiveChecker</span>, <span class="ident">SignatureChecker</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">Mutex</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">Mutex</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">move_core_types</span>::{
     <span class="ident">identifier</span>::{<span class="ident">IdentStr</span>, <span class="ident">Identifier</span>},
     <span class="ident">language_storage</span>::{<span class="ident">ModuleId</span>, <span class="ident">StructTag</span>, <span class="ident">TypeTag</span>},

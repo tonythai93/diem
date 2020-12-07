@@ -109,7 +109,7 @@
 <span id="106">106</span>
 <span id="107">107</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -119,9 +119,9 @@
     },
     <span class="ident">testutils</span>::<span class="ident">fake_socket</span>::<span class="ident">ReadOnlyTestSocketVec</span>,
 };
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkId</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">chain_id</span>::<span class="ident">ChainId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">executor</span>::<span class="ident">block_on</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkId</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">chain_id</span>::<span class="ident">ChainId</span>;
 <span class="kw">use</span> <span class="ident">proptest</span>::{<span class="ident">collection</span>::<span class="ident">btree_map</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
 
 <span class="comment">//</span>

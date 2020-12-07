@@ -771,7 +771,7 @@
 <span id="768">768</span>
 <span id="769">769</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -781,23 +781,23 @@
 };
 <span class="kw">use</span> <span class="ident">bytecode_verifier</span>::<span class="ident">DependencyChecker</span>;
 <span class="kw">use</span> <span class="ident">compiled_stdlib</span>::{<span class="ident">stdlib_modules</span>, <span class="ident">transaction_scripts</span>::<span class="ident">StdlibScript</span>, <span class="ident">StdLibOptions</span>};
-<span class="kw">use</span> <span class="ident">language_e2e_tests</span>::<span class="ident">executor</span>::<span class="ident">FakeExecutor</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>};
-<span class="kw">use</span> <span class="ident">libra_state_view</span>::<span class="ident">StateView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>};
+<span class="kw">use</span> <span class="ident">diem_state_view</span>::<span class="ident">StateView</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">access_path</span>::<span class="ident">AccessPath</span>,
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_config</span>,
-    <span class="ident">account_config</span>::<span class="ident">COIN1_NAME</span>,
+    <span class="ident">account_config</span>::<span class="ident">XUS_NAME</span>,
     <span class="ident">block_metadata</span>::<span class="ident">BlockMetadata</span>,
     <span class="ident">chain_id</span>::<span class="ident">ChainId</span>,
     <span class="ident">on_chain_config</span>::<span class="ident">VMPublishingOption</span>,
     <span class="ident">transaction</span>::{
         <span class="ident">Module</span> <span class="kw">as</span> <span class="ident">TransactionModule</span>, <span class="ident">RawTransaction</span>, <span class="ident">Script</span> <span class="kw">as</span> <span class="ident">TransactionScript</span>,
-        <span class="ident">SignedTransaction</span>, <span class="ident">Transaction</span> <span class="kw">as</span> <span class="ident">LibraTransaction</span>, <span class="ident">TransactionOutput</span>, <span class="ident">TransactionStatus</span>,
+        <span class="ident">SignedTransaction</span>, <span class="ident">Transaction</span> <span class="kw">as</span> <span class="ident">DiemTransaction</span>, <span class="ident">TransactionOutput</span>, <span class="ident">TransactionStatus</span>,
     },
     <span class="ident">vm_status</span>::<span class="ident">KeptVMStatus</span>,
 };
+<span class="kw">use</span> <span class="ident">language_e2e_tests</span>::<span class="ident">executor</span>::<span class="ident">FakeExecutor</span>;
 <span class="kw">use</span> <span class="ident">mirai_annotations</span>::<span class="ident">checked_verify</span>;
 <span class="kw">use</span> <span class="ident">move_core_types</span>::{
     <span class="ident">gas_schedule</span>::{<span class="ident">GasAlgebra</span>, <span class="ident">GasConstants</span>},
@@ -835,13 +835,13 @@
     <span class="kw">pub</span> <span class="ident">input</span>: <span class="ident">String</span>,
 }
 
-<span class="doccomment">/// Commands that drives the operation of LibraVM. Such as:</span>
+<span class="doccomment">/// Commands that drives the operation of DiemVM. Such as:</span>
 <span class="doccomment">/// 1. Execute user transaction</span>
 <span class="doccomment">/// 2. Publish a new block metadata</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// In the future we will add more commands to mimic the full public API of LibraVM,</span>
-<span class="doccomment">/// including reloading the on-chain configuration that will affect the code path for LibraVM,</span>
-<span class="doccomment">/// cleaning the cache in the LibraVM, etc.</span>
+<span class="doccomment">/// In the future we will add more commands to mimic the full public API of DiemVM,</span>
+<span class="doccomment">/// including reloading the on-chain configuration that will affect the code path for DiemVM,</span>
+<span class="doccomment">/// cleaning the cache in the DiemVM, etc.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Command</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">Transaction</span>(<span class="ident">Transaction</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
@@ -1085,7 +1085,7 @@
     <span class="kw">let</span> <span class="ident">gas_currency_code</span> <span class="op">=</span> <span class="ident">config</span>
         .<span class="ident">gas_currency_code</span>
         .<span class="ident">clone</span>()
-        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">COIN1_NAME</span>.<span class="ident">to_owned</span>());
+        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">XUS_NAME</span>.<span class="ident">to_owned</span>());
     <span class="kw">let</span> <span class="ident">max_number_of_gas_units</span> <span class="op">=</span> <span class="ident">GasConstants</span>::<span class="ident">default</span>().<span class="ident">maximum_number_of_gas_units</span>;
     <span class="kw">let</span> <span class="ident">max_gas_amount</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">max_gas</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
         <span class="kw">if</span> <span class="ident">gas_unit_price</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
@@ -1466,7 +1466,7 @@
     <span class="ident">log</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationLog</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">outputs</span> <span class="op">=</span>
-        <span class="ident">executor</span>.<span class="ident">execute_transaction_block</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">LibraTransaction</span>::<span class="ident">BlockMetadata</span>(<span class="ident">block_metadata</span>)]);
+        <span class="ident">executor</span>.<span class="ident">execute_transaction_block</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">DiemTransaction</span>::<span class="ident">BlockMetadata</span>(<span class="ident">block_metadata</span>)]);
 
     <span class="kw">match</span> <span class="ident">outputs</span> {
         <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">outputs</span>) <span class="op">=</span><span class="op">&gt;</span> {

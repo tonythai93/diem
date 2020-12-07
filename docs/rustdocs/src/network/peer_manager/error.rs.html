@@ -65,14 +65,14 @@
 <span id="62">62</span>
 <span id="63">63</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Errors that originate from the PeerManager module</span>
 
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">channel</span>::{<span class="ident">mpsc</span>, <span class="ident">oneshot</span>};
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>

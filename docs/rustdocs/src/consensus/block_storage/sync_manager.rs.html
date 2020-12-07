@@ -346,7 +346,7 @@
 <span id="343">343</span>
 <span id="344">344</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -365,8 +365,8 @@
     <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>,
     <span class="ident">sync_info</span>::<span class="ident">SyncInfo</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">epoch_change</span>::<span class="ident">EpochChangeProof</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">epoch_change</span>::<span class="ident">EpochChangeProof</span>};
 <span class="kw">use</span> <span class="ident">mirai_annotations</span>::<span class="ident">checked_precondition</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">Rng</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">clone</span>::<span class="ident">Clone</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>, <span class="ident">time</span>::<span class="ident">Duration</span>};

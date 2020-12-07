@@ -128,12 +128,12 @@
 <span id="125">125</span>
 <span id="126">126</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">util</span>::<span class="ident">time_service</span>::{<span class="ident">ScheduledTask</span>, <span class="ident">TimeService</span>};
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">Mutex</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">Mutex</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">sync</span>::<span class="ident">Arc</span>, <span class="ident">time</span>::<span class="ident">Duration</span>};
 
 <span class="doccomment">/// SimulatedTimeService implements TimeService, however it does not depend on actual time</span>

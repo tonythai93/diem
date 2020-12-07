@@ -93,7 +93,7 @@
 <span id="90">90</span>
 <span id="91">91</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -101,8 +101,8 @@
     <span class="ident">serializer</span>::{<span class="ident">SafetyRulesInput</span>, <span class="ident">SerializerClient</span>, <span class="ident">SerializerService</span>, <span class="ident">TSerializerClient</span>},
     <span class="ident">Error</span>, <span class="ident">SafetyRules</span>, <span class="ident">TSafetyRules</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">warn</span>;
-<span class="kw">use</span> <span class="ident">libra_secure_net</span>::{<span class="ident">NetworkClient</span>, <span class="ident">NetworkServer</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">warn</span>;
+<span class="kw">use</span> <span class="ident">diem_secure_net</span>::{<span class="ident">NetworkClient</span>, <span class="ident">NetworkServer</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">SocketAddr</span>;
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RemoteService</span> {

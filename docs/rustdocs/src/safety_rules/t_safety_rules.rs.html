@@ -39,7 +39,7 @@
 <span id="36">36</span>
 <span id="37">37</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ConsensusState</span>, <span class="ident">Error</span>};
@@ -47,8 +47,8 @@
     <span class="ident">block</span>::<span class="ident">Block</span>, <span class="ident">block_data</span>::<span class="ident">BlockData</span>, <span class="ident">timeout</span>::<span class="ident">Timeout</span>, <span class="ident">vote</span>::<span class="ident">Vote</span>,
     <span class="ident">vote_proposal</span>::<span class="ident">MaybeSignedVoteProposal</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">ed25519</span>::<span class="ident">Ed25519Signature</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">epoch_change</span>::<span class="ident">EpochChangeProof</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">ed25519</span>::<span class="ident">Ed25519Signature</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">epoch_change</span>::<span class="ident">EpochChangeProof</span>;
 
 <span class="doccomment">/// Interface for SafetyRules</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TSafetyRules</span> {

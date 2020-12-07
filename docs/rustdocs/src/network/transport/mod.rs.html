@@ -623,7 +623,7 @@
 <span id="620">620</span>
 <span id="621">621</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -634,20 +634,20 @@
         <span class="ident">wire</span>::<span class="ident">handshake</span>::<span class="ident">v1</span>::{<span class="ident">HandshakeMsg</span>, <span class="ident">MessagingProtocolVersion</span>, <span class="ident">SupportedProtocols</span>},
     },
 };
+<span class="kw">use</span> <span class="ident">diem_config</span>::{
+    <span class="ident">config</span>::<span class="ident">HANDSHAKE_VERSION</span>,
+    <span class="ident">network_id</span>::{<span class="ident">NetworkContext</span>, <span class="ident">NetworkId</span>},
+};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">x25519</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">RwLock</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::{<span class="ident">parse_dns_tcp</span>, <span class="ident">parse_ip_tcp</span>, <span class="ident">parse_memory</span>, <span class="ident">NetworkAddress</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">chain_id</span>::<span class="ident">ChainId</span>, <span class="ident">PeerId</span>};
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">future</span>::{<span class="ident">Future</span>, <span class="ident">FutureExt</span>},
     <span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>},
     <span class="ident">stream</span>::{<span class="ident">Stream</span>, <span class="ident">StreamExt</span>, <span class="ident">TryStreamExt</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::{
-    <span class="ident">config</span>::<span class="ident">HANDSHAKE_VERSION</span>,
-    <span class="ident">network_id</span>::{<span class="ident">NetworkContext</span>, <span class="ident">NetworkId</span>},
-};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">x25519</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">RwLock</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::{<span class="ident">parse_dns_tcp</span>, <span class="ident">parse_ip_tcp</span>, <span class="ident">parse_memory</span>, <span class="ident">NetworkAddress</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">chain_id</span>::<span class="ident">ChainId</span>, <span class="ident">PeerId</span>};
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::{<span class="ident">proxy_protocol</span>, <span class="ident">tcp</span>, <span class="ident">ConnectionOrigin</span>, <span class="ident">Transport</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">export</span>::<span class="ident">Formatter</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -677,14 +677,14 @@
 <span class="doccomment">/// Global connection-id generator.</span>
 <span class="kw">static</span> <span class="ident">CONNECTION_ID_GENERATOR</span>: <span class="ident">ConnectionIdGenerator</span> <span class="op">=</span> <span class="ident">ConnectionIdGenerator</span>::<span class="ident">new</span>();
 
-<span class="doccomment">/// tcp::Transport with Libra-specific configuration applied.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIBRA_TCP_TRANSPORT</span>: <span class="ident">tcp</span>::<span class="ident">TcpTransport</span> <span class="op">=</span> <span class="ident">tcp</span>::<span class="ident">TcpTransport</span> {
+<span class="doccomment">/// tcp::Transport with Diem-specific configuration applied.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DIEM_TCP_TRANSPORT</span>: <span class="ident">tcp</span>::<span class="ident">TcpTransport</span> <span class="op">=</span> <span class="ident">tcp</span>::<span class="ident">TcpTransport</span> {
     <span class="comment">// Use default options.</span>
     <span class="ident">recv_buffer_size</span>: <span class="prelude-val">None</span>,
     <span class="ident">send_buffer_size</span>: <span class="prelude-val">None</span>,
     <span class="ident">ttl</span>: <span class="prelude-val">None</span>,
     <span class="ident">keepalive</span>: <span class="prelude-val">None</span>,
-    <span class="comment">// Use TCP_NODELAY for libra tcp connections.</span>
+    <span class="comment">// Use TCP_NODELAY for diem tcp connections.</span>
     <span class="ident">nodelay</span>: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
 };
 
@@ -887,7 +887,7 @@
         .<span class="ident">await</span>
         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">add_pp_addr</span>(<span class="ident">proxy_protocol_enabled</span>, <span class="ident">err</span>, <span class="kw-2">&amp;</span><span class="ident">addr</span>))<span class="question-mark">?</span>;
 
-    <span class="comment">// try to negotiate common libranet version and supported application protocols</span>
+    <span class="comment">// try to negotiate common diemnet version and supported application protocols</span>
     <span class="kw">let</span> (<span class="ident">messaging_protocol</span>, <span class="ident">application_protocols</span>) <span class="op">=</span> <span class="ident">handshake_msg</span>
         .<span class="ident">perform_handshake</span>(<span class="kw-2">&amp;</span><span class="ident">remote_handshake</span>)
         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
@@ -961,7 +961,7 @@
     };
     <span class="kw">let</span> <span class="ident">remote_handshake</span> <span class="op">=</span> <span class="ident">exchange_handshake</span>(<span class="kw-2">&amp;</span><span class="ident">handshake_msg</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">socket</span>).<span class="ident">await</span><span class="question-mark">?</span>;
 
-    <span class="comment">// try to negotiate common libranet version and supported application protocols</span>
+    <span class="comment">// try to negotiate common diemnet version and supported application protocols</span>
     <span class="kw">let</span> (<span class="ident">messaging_protocol</span>, <span class="ident">application_protocols</span>) <span class="op">=</span> <span class="ident">handshake_msg</span>
         .<span class="ident">perform_handshake</span>(<span class="kw-2">&amp;</span><span class="ident">remote_handshake</span>)
         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -986,7 +986,7 @@
     })
 }
 
-<span class="doccomment">/// The common LibraNet Transport.</span>
+<span class="doccomment">/// The common DiemNet Transport.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The base transport layer is pluggable, so long as it provides a reliable,</span>
 <span class="doccomment">/// ordered, connection-oriented, byte-stream abstraction (e.g., TCP). We currently</span>
@@ -998,14 +998,14 @@
 <span class="doccomment">/// the `Handshake` protocol.</span>
 <span class="comment">// TODO(philiphayes): rework Transport trait, possibly include Upgrade trait.</span>
 <span class="comment">// ideas in this PR thread: https://github.com/libra/libra/pull/3478#issuecomment-617385633</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LibraNetTransport</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DiemNetTransport</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span> {
     <span class="ident">base_transport</span>: <span class="ident">TTransport</span>,
     <span class="ident">ctxt</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">UpgradeContext</span><span class="op">&gt;</span>,
     <span class="ident">identity_pubkey</span>: <span class="ident">x25519</span>::<span class="ident">PublicKey</span>,
     <span class="ident">enable_proxy_protocol</span>: <span class="ident">bool</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span> <span class="ident">LibraNetTransport</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span> <span class="ident">DiemNetTransport</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">TTransport</span>: <span class="ident">Transport</span><span class="op">&lt;</span><span class="ident">Error</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>,
     <span class="ident">TTransport</span>::<span class="ident">Output</span>: <span class="ident">TSocket</span>,
@@ -1055,7 +1055,7 @@
     <span class="kw">fn</span> <span class="ident">parse_dial_addr</span>(
         <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">NetworkAddress</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NetworkAddress</span>, <span class="ident">x25519</span>::<span class="ident">PublicKey</span>, <span class="ident">u8</span>)<span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">Protocol</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">Protocol</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">protos</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">as_slice</span>();
 
@@ -1078,7 +1078,7 @@
                 )
             })<span class="question-mark">?</span>;
 
-        <span class="comment">// parse out the libranet protocols (noise ik and handshake)</span>
+        <span class="comment">// parse out the diemnet protocols (noise ik and handshake)</span>
         <span class="kw">match</span> <span class="ident">base_transport_suffix</span> {
             [<span class="ident">NoiseIK</span>(<span class="ident">pubkey</span>), <span class="ident">Handshake</span>(<span class="ident">version</span>)] <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">base_addr</span> <span class="op">=</span> <span class="ident">NetworkAddress</span>::<span class="ident">try_from</span>(<span class="ident">base_transport_protos</span>.<span class="ident">to_vec</span>())
@@ -1125,7 +1125,7 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>
         <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Connection</span><span class="op">&lt;</span><span class="ident">NoiseStream</span><span class="op">&lt;</span><span class="ident">TTransport</span>::<span class="ident">Output</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="op">&gt;</span> {
-        <span class="comment">// parse libranet protocols</span>
+        <span class="comment">// parse diemnet protocols</span>
         <span class="comment">// TODO(philiphayes): `Transport` trait should include parsing in `dial`?</span>
         <span class="kw">let</span> (<span class="ident">base_addr</span>, <span class="ident">pubkey</span>, <span class="ident">handshake_version</span>) <span class="op">=</span> <span class="self">Self</span>::<span class="ident">parse_dial_addr</span>(<span class="kw-2">&amp;</span><span class="ident">addr</span>)<span class="question-mark">?</span>;
 
@@ -1209,14 +1209,14 @@
     }
 }
 
-<span class="comment">// If using `LibraNetTransport` as a `Transport` trait, then all upgrade futures</span>
+<span class="comment">// If using `DiemNetTransport` as a `Transport` trait, then all upgrade futures</span>
 <span class="comment">// and listening streams must be boxed, since `upgrade_inbound` and `upgrade_outbound`</span>
 <span class="comment">// are async fns (and therefore unnamed types).</span>
 <span class="comment">//</span>
 <span class="comment">// TODO(philiphayes): We can change these `Pin&lt;Box&lt;dyn Future&lt;..&gt;&gt;&gt; to `impl Future&lt;..&gt;`</span>
 <span class="comment">// when/if this rust feature is stabilized: https://github.com/rust-lang/rust/issues/63063</span>
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TTransport</span>: <span class="ident">Transport</span><span class="op">&gt;</span> <span class="ident">Transport</span> <span class="kw">for</span> <span class="ident">LibraNetTransport</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TTransport</span>: <span class="ident">Transport</span><span class="op">&gt;</span> <span class="ident">Transport</span> <span class="kw">for</span> <span class="ident">DiemNetTransport</span><span class="op">&lt;</span><span class="ident">TTransport</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">TTransport</span>: <span class="ident">Transport</span><span class="op">&lt;</span><span class="ident">Error</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">TTransport</span>::<span class="ident">Output</span>: <span class="ident">TSocket</span>,

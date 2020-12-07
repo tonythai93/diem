@@ -422,7 +422,7 @@
 <span id="419">419</span>
 <span id="420">420</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">consensusdb</span>::<span class="ident">ConsensusDB</span>, <span class="ident">epoch_manager</span>::<span class="ident">LivenessStorageData</span>, <span class="ident">error</span>::<span class="ident">DbError</span>};
@@ -430,15 +430,15 @@
 <span class="kw">use</span> <span class="ident">consensus_types</span>::{
     <span class="ident">block</span>::<span class="ident">Block</span>, <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>, <span class="ident">timeout_certificate</span>::<span class="ident">TimeoutCertificate</span>, <span class="ident">vote</span>::<span class="ident">Vote</span>,
 };
-<span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">ExecutedTrees</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">config</span>::<span class="ident">NodeConfig</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_trace</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">config</span>::<span class="ident">NodeConfig</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_trace</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">block_info</span>::<span class="ident">Round</span>, <span class="ident">epoch_change</span>::<span class="ident">EpochChangeProof</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfo</span>,
     <span class="ident">transaction</span>::<span class="ident">Version</span>,
 };
+<span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">ExecutedTrees</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cmp</span>::<span class="ident">max</span>, <span class="ident">collections</span>::<span class="ident">HashSet</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};
 <span class="kw">use</span> <span class="ident">storage_interface</span>::<span class="ident">DbReader</span>;
 
@@ -471,8 +471,8 @@
     <span class="doccomment">/// ValidatorVerifier.</span>
     <span class="kw">fn</span> <span class="ident">retrieve_epoch_change_proof</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">version</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">EpochChangeProof</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Returns a handle of the libradb.</span>
-    <span class="kw">fn</span> <span class="ident">libra_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Returns a handle of the diemdb.</span>
+    <span class="kw">fn</span> <span class="ident">diem_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -569,7 +569,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fuzzing&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="kw-2">*</span><span class="ident">libra_crypto</span>::<span class="ident">hash</span>::<span class="ident">ACCUMULATOR_PLACEHOLDER_HASH</span>, <span class="macro">vec</span><span class="macro">!</span>[])
+        <span class="self">Self</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="kw-2">*</span><span class="ident">diem_crypto</span>::<span class="ident">hash</span>::<span class="ident">ACCUMULATOR_PLACEHOLDER_HASH</span>, <span class="macro">vec</span><span class="macro">!</span>[])
     }
 }
 
@@ -694,16 +694,16 @@
     }
 }
 
-<span class="doccomment">/// The proxy we use to persist data in libra db storage service via grpc.</span>
+<span class="doccomment">/// The proxy we use to persist data in diem db storage service via grpc.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StorageWriteProxy</span> {
     <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ConsensusDB</span><span class="op">&gt;</span>,
-    <span class="ident">libra_db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>,
+    <span class="ident">diem_db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">StorageWriteProxy</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">NodeConfig</span>, <span class="ident">libra_db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">NodeConfig</span>, <span class="ident">diem_db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">ConsensusDB</span>::<span class="ident">new</span>(<span class="ident">config</span>.<span class="ident">storage</span>.<span class="ident">dir</span>()));
-        <span class="ident">StorageWriteProxy</span> { <span class="ident">db</span>, <span class="ident">libra_db</span> }
+        <span class="ident">StorageWriteProxy</span> { <span class="ident">db</span>, <span class="ident">diem_db</span> }
     }
 }
 
@@ -732,7 +732,7 @@
 
     <span class="kw">fn</span> <span class="ident">recover_from_ledger</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LedgerRecoveryData</span> {
         <span class="kw">let</span> <span class="ident">startup_info</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">libra_db</span>
+            .<span class="ident">diem_db</span>
             .<span class="ident">get_startup_info</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;unable to read ledger info from storage&quot;</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;startup info is None&quot;</span>);
@@ -772,7 +772,7 @@
 
         <span class="comment">// find the block corresponding to storage latest ledger info</span>
         <span class="kw">let</span> <span class="ident">startup_info</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">libra_db</span>
+            .<span class="ident">diem_db</span>
             .<span class="ident">get_startup_info</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;unable to read ledger info from storage&quot;</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;startup info is None&quot;</span>);
@@ -832,14 +832,14 @@
 
     <span class="kw">fn</span> <span class="ident">retrieve_epoch_change_proof</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">version</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">EpochChangeProof</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">proofs</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">libra_db</span>
+            .<span class="ident">diem_db</span>
             .<span class="ident">get_state_proof</span>(<span class="ident">version</span>)
             .<span class="ident">map_err</span>(<span class="ident">DbError</span>::<span class="ident">from</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">proofs</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">libra_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">libra_db</span>.<span class="ident">clone</span>()
+    <span class="kw">fn</span> <span class="ident">diem_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">diem_db</span>.<span class="ident">clone</span>()
     }
 }
 </pre></div>

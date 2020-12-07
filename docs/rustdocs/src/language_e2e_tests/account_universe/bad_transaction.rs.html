@@ -171,7 +171,7 @@
 <span id="168">168</span>
 <span id="169">169</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -179,13 +179,13 @@
     <span class="ident">common_transactions</span>::{<span class="ident">empty_txn</span>, <span class="ident">EMPTY_SCRIPT</span>},
     <span class="ident">gas_costs</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::{<span class="self">self</span>, <span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>},
     <span class="ident">test_utils</span>::<span class="ident">KeyPair</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_proptest_helpers</span>::<span class="ident">Index</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
-    <span class="ident">account_config</span>::<span class="ident">COIN1_NAME</span>,
+<span class="kw">use</span> <span class="ident">diem_proptest_helpers</span>::<span class="ident">Index</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
+    <span class="ident">account_config</span>::<span class="ident">XUS_NAME</span>,
     <span class="ident">transaction</span>::{<span class="ident">Script</span>, <span class="ident">SignedTransaction</span>, <span class="ident">TransactionStatus</span>},
     <span class="ident">vm_status</span>::<span class="ident">StatusCode</span>,
 };
@@ -223,7 +223,7 @@
             <span class="ident">seq</span>,
             <span class="ident">gas_costs</span>::<span class="ident">TXN_RESERVED</span>,
             <span class="number">0</span>,
-            <span class="ident">COIN1_NAME</span>.<span class="ident">to_string</span>(),
+            <span class="ident">XUS_NAME</span>.<span class="ident">to_string</span>(),
         );
 
         (
@@ -264,7 +264,7 @@
             <span class="ident">sender</span>.<span class="ident">sequence_number</span>,
             <span class="ident">max_gas_unit</span>,
             <span class="self">self</span>.<span class="ident">gas_unit_price</span>,
-            <span class="ident">COIN1_NAME</span>.<span class="ident">to_string</span>(),
+            <span class="ident">XUS_NAME</span>.<span class="ident">to_string</span>(),
         );
 
         <span class="comment">// TODO: Move such config to AccountUniverse</span>

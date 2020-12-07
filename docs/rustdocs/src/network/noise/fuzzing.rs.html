@@ -201,7 +201,7 @@
 <span id="198">198</span>
 <span id="199">199</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="comment">//</span>
@@ -215,11 +215,11 @@
     <span class="ident">noise</span>::{<span class="ident">stream</span>::<span class="ident">NoiseStream</span>, <span class="ident">AntiReplayTimestamps</span>, <span class="ident">HandshakeAuthMode</span>, <span class="ident">NoiseUpgrader</span>},
     <span class="ident">testutils</span>::<span class="ident">fake_socket</span>::{<span class="ident">ReadOnlyTestSocket</span>, <span class="ident">ReadWriteTestSocket</span>},
 };
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">noise</span>::<span class="ident">NoiseSession</span>, <span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">x25519</span>, <span class="ident">Uniform</span> <span class="kw">as</span> <span class="kw">_</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor</span>::<span class="ident">block_on</span>, <span class="ident">future</span>::<span class="ident">join</span>};
 <span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">io</span>::<span class="ident">AsyncReadExt</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">noise</span>::<span class="ident">NoiseSession</span>, <span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">x25519</span>, <span class="ident">Uniform</span> <span class="kw">as</span> <span class="kw">_</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">once_cell</span>::<span class="ident">sync</span>::<span class="ident">Lazy</span>;
 <span class="kw">use</span> <span class="ident">rand_core</span>::<span class="ident">SeedableRng</span>;
 
@@ -304,7 +304,7 @@
     (<span class="ident">init_msg</span>, <span class="ident">resp_msg</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_corpus</span>(<span class="ident">gen</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">libra_proptest_helpers</span>::<span class="ident">ValueGenerator</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_corpus</span>(<span class="ident">gen</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diem_proptest_helpers</span>::<span class="ident">ValueGenerator</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">init_msg</span>, <span class="ident">resp_msg</span>) <span class="op">=</span> <span class="ident">generate_first_two_messages</span>();
     <span class="comment">// choose a random one</span>
     <span class="kw">let</span> <span class="ident">strategy</span> <span class="op">=</span> <span class="ident">proptest</span>::<span class="ident">arbitrary</span>::<span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>();

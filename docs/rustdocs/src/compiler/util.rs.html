@@ -25,13 +25,13 @@
 <span id="22">22</span>
 <span id="23">23</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="ident">Context</span>;
 <span class="kw">use</span> <span class="ident">bytecode_source_map</span>::<span class="ident">source_map</span>::<span class="ident">SourceMap</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">ir_to_bytecode</span>::{<span class="ident">compiler</span>::<span class="ident">compile_module</span>, <span class="ident">parser</span>::<span class="ident">parse_module</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">move_ir_types</span>::<span class="ident">location</span>::<span class="ident">Loc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs</span>, <span class="ident">path</span>::<span class="ident">Path</span>};
 <span class="kw">use</span> <span class="ident">vm</span>::{<span class="ident">access</span>::<span class="ident">ModuleAccess</span>, <span class="ident">file_format</span>::<span class="ident">CompiledModule</span>};

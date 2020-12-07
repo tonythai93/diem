@@ -73,15 +73,15 @@
 <span id="70">70</span>
 <span id="71">71</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Rpc protocol errors</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">peer_manager</span>::<span class="ident">PeerManagerError</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="ident">anyhow</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">channel</span>::{<span class="ident">mpsc</span>, <span class="ident">oneshot</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
 <span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
 

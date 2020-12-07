@@ -162,7 +162,7 @@
 <span id="159">159</span>
 <span id="160">160</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Low-level module for establishing connections with peers</span>
@@ -175,9 +175,9 @@
 <span class="doccomment">//! [`Transport`]: crate::transport::Transport</span>
 <span class="doccomment">//! [`TransportExt`]: crate::transport::TransportExt</span>
 
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future</span>::<span class="ident">Future</span>, <span class="ident">stream</span>::<span class="ident">Stream</span>};
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">export</span>::<span class="ident">Formatter</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 

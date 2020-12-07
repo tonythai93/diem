@@ -418,19 +418,19 @@
 <span id="415">415</span>
 <span id="416">416</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! TCP Transport</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">compat</span>::<span class="ident">IoCompat</span>, <span class="ident">transport</span>::<span class="ident">Transport</span>};
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::{<span class="ident">parse_dns_tcp</span>, <span class="ident">parse_ip_tcp</span>, <span class="ident">parse_tcp</span>, <span class="ident">IpFilter</span>, <span class="ident">NetworkAddress</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">future</span>::{<span class="self">self</span>, <span class="ident">Either</span>, <span class="ident">Future</span>},
     <span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>},
     <span class="ident">ready</span>,
     <span class="ident">stream</span>::<span class="ident">Stream</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::{<span class="ident">parse_dns_tcp</span>, <span class="ident">parse_ip_tcp</span>, <span class="ident">parse_tcp</span>, <span class="ident">IpFilter</span>, <span class="ident">NetworkAddress</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert</span>::<span class="ident">TryFrom</span>,
     <span class="ident">fmt</span>::<span class="ident">Debug</span>,
@@ -748,12 +748,12 @@
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">transport</span>::{<span class="ident">ConnectionOrigin</span>, <span class="ident">Transport</span>, <span class="ident">TransportExt</span>};
+    <span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
     <span class="kw">use</span> <span class="ident">futures</span>::{
         <span class="ident">future</span>::{<span class="ident">join</span>, <span class="ident">FutureExt</span>},
         <span class="ident">io</span>::{<span class="ident">AsyncReadExt</span>, <span class="ident">AsyncWriteExt</span>},
         <span class="ident">stream</span>::<span class="ident">StreamExt</span>,
     };
-    <span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
     <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">runtime</span>::<span class="ident">Runtime</span>;
 
     <span class="attribute">#[<span class="ident">tokio</span>::<span class="ident">test</span>]</span>

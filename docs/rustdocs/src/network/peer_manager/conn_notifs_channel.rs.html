@@ -87,7 +87,7 @@
 <span id="84">84</span>
 <span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! `conn_notifs_channel` is a channel which delivers to the receiver only the last of N</span>
@@ -98,24 +98,24 @@
 <span class="doccomment">//! and `conn_notifs_channel::Sender` which behave similarly to existing mpsc data structures.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">peer_manager</span>::<span class="ident">ConnectionNotification</span>;
-<span class="kw">use</span> <span class="ident">channel</span>::{<span class="ident">libra_channel</span>, <span class="ident">message_queues</span>::<span class="ident">QueueStyle</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
+<span class="kw">use</span> <span class="ident">channel</span>::{<span class="ident">diem_channel</span>, <span class="ident">message_queues</span>::<span class="ident">QueueStyle</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">NonZeroUsize</span>;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Sender</span> <span class="op">=</span> <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Receiver</span> <span class="op">=</span> <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Sender</span> <span class="op">=</span> <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Receiver</span> <span class="op">=</span> <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Sender</span>, <span class="ident">Receiver</span>) {
-    <span class="ident">libra_channel</span>::<span class="ident">new</span>(<span class="ident">QueueStyle</span>::<span class="ident">LIFO</span>, <span class="ident">NonZeroUsize</span>::<span class="ident">new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>(), <span class="prelude-val">None</span>)
+    <span class="ident">diem_channel</span>::<span class="ident">new</span>(<span class="ident">QueueStyle</span>::<span class="ident">LIFO</span>, <span class="ident">NonZeroUsize</span>::<span class="ident">new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>(), <span class="prelude-val">None</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">peer</span>::<span class="ident">DisconnectReason</span>;
+    <span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+    <span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
     <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor</span>::<span class="ident">block_on</span>, <span class="ident">future</span>::<span class="ident">FutureExt</span>, <span class="ident">stream</span>::<span class="ident">StreamExt</span>};
-    <span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-    <span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
     <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::<span class="ident">ConnectionOrigin</span>;
 
     <span class="kw">fn</span> <span class="ident">send_new_peer</span>(<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Sender</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) {

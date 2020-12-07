@@ -46,7 +46,7 @@
 <span id="43">43</span>
 <span id="44">44</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module defines physical storage schema for consensus quorum certificate (of a block).</span>
@@ -60,7 +60,7 @@
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">QC_CF_NAME</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">consensus_types</span>::<span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
 <span class="kw">use</span> <span class="ident">schemadb</span>::{
     <span class="ident">define_schema</span>,
     <span class="ident">schema</span>::{<span class="ident">KeyCodec</span>, <span class="ident">ValueCodec</span>},

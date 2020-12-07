@@ -84,7 +84,7 @@
 <span id="81">81</span>
 <span id="82">82</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -93,10 +93,10 @@
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">channel</span>::{
-    <span class="ident">libra_channel</span>::{<span class="self">self</span>, <span class="ident">Receiver</span>, <span class="ident">Sender</span>},
+    <span class="ident">diem_channel</span>::{<span class="self">self</span>, <span class="ident">Receiver</span>, <span class="ident">Sender</span>},
     <span class="ident">message_queues</span>::<span class="ident">QueueStyle</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">event</span>::<span class="ident">EventKey</span>,
     <span class="ident">on_chain_config</span>::{<span class="ident">ConfigID</span>, <span class="ident">OnChainConfigPayload</span>},
 };
@@ -113,7 +113,7 @@
     <span class="doccomment">/// Returns the subscription object, and the receiving end of a channel that subscription will be sent to</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subscribe</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">items</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>, <span class="ident">Receiver</span><span class="op">&lt;</span>(), <span class="ident">U</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span>
-            <span class="ident">libra_channel</span>::<span class="ident">new</span>(<span class="ident">QueueStyle</span>::<span class="ident">LIFO</span>, <span class="ident">NonZeroUsize</span>::<span class="ident">new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>(), <span class="prelude-val">None</span>);
+            <span class="ident">diem_channel</span>::<span class="ident">new</span>(<span class="ident">QueueStyle</span>::<span class="ident">LIFO</span>, <span class="ident">NonZeroUsize</span>::<span class="ident">new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>(), <span class="prelude-val">None</span>);
         (
             <span class="self">Self</span> {
                 <span class="ident">name</span>: <span class="ident">name</span>.<span class="ident">to_string</span>(),

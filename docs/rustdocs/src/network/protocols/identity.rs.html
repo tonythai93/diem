@@ -191,7 +191,7 @@
 <span id="188">188</span>
 <span id="189">189</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Protocol used to exchange supported protocol information with a remote.</span>
@@ -241,9 +241,9 @@
         },
         <span class="ident">ProtocolId</span>,
     };
+    <span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkId</span>;
+    <span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">chain_id</span>::<span class="ident">ChainId</span>;
     <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor</span>::<span class="ident">block_on</span>, <span class="ident">future</span>::<span class="ident">join</span>};
-    <span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkId</span>;
-    <span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">chain_id</span>::<span class="ident">ChainId</span>;
     <span class="kw">use</span> <span class="ident">memsocket</span>::<span class="ident">MemorySocket</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
 

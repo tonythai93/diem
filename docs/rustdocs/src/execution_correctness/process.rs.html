@@ -69,15 +69,15 @@
 <span id="66">66</span>
 <span id="67">67</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">execution_correctness_manager</span>,
     <span class="ident">remote_service</span>::{<span class="self">self</span>, <span class="ident">RemoteService</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">config</span>::{<span class="ident">ExecutionCorrectnessService</span>, <span class="ident">NodeConfig</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">config</span>::{<span class="ident">ExecutionCorrectnessService</span>, <span class="ident">NodeConfig</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">SocketAddr</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Process</span> {

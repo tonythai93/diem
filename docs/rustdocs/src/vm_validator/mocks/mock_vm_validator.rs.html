@@ -85,19 +85,19 @@
 <span id="82">82</span>
 <span id="83">83</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">vm_validator</span>::<span class="ident">TransactionValidation</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
-<span class="kw">use</span> <span class="ident">libra_state_view</span>::<span class="ident">StateView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_state_view</span>::<span class="ident">StateView</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">on_chain_config</span>::<span class="ident">OnChainConfigPayload</span>,
     <span class="ident">transaction</span>::{<span class="ident">GovernanceRole</span>, <span class="ident">SignedTransaction</span>, <span class="ident">VMValidatorResult</span>},
     <span class="ident">vm_status</span>::<span class="ident">StatusCode</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::<span class="ident">VMValidator</span>;
+<span class="kw">use</span> <span class="ident">diem_vm</span>::<span class="ident">VMValidator</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>

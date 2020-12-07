@@ -31,15 +31,15 @@
 <span id="28">28</span>
 <span id="29">29</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">libra_secure_push_metrics</span>::{<span class="ident">register_int_gauge</span>, <span class="ident">IntGauge</span>};
+<span class="kw">use</span> <span class="ident">diem_secure_push_metrics</span>::{<span class="ident">register_int_gauge</span>, <span class="ident">IntGauge</span>};
 <span class="kw">use</span> <span class="ident">once_cell</span>::<span class="ident">sync</span>::<span class="ident">Lazy</span>;
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">NUM_META_FILES</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_backup_metadata_num_files&quot;</span>,
+        <span class="string">&quot;diem_backup_metadata_num_files&quot;</span>,
         <span class="string">&quot;Number of metadata files in total.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -47,7 +47,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">NUM_META_MISS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_backup_metadata_num_file_cache_misses&quot;</span>,
+        <span class="string">&quot;diem_backup_metadata_num_file_cache_misses&quot;</span>,
         <span class="string">&quot;Number of metadata files to download due to non-existence in local cache.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -55,7 +55,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">NUM_META_DOWNLOAD</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_backup_metadata_num_file_downloads&quot;</span>,
+        <span class="string">&quot;diem_backup_metadata_num_file_downloads&quot;</span>,
         <span class="string">&quot;Number of metadata files to download due to non-existence in local cache.&quot;</span>
     )
     .<span class="ident">unwrap</span>()

@@ -79,23 +79,23 @@
 <span id="76">76</span>
 <span id="77">77</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class="doccomment">//! Libra Client</span>
+<span class="doccomment">//! Diem Client</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Client (binary) is the CLI tool to interact with Libra validator.</span>
+<span class="doccomment">//! Client (binary) is the CLI tool to interact with Diem validator.</span>
 <span class="doccomment">//! It supposes all public APIs.</span>
 
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>},
     <span class="ident">test_utils</span>::<span class="ident">KeyPair</span>,
     <span class="ident">traits</span>::<span class="ident">ValidCryptoMaterialStringExt</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">mod</span> <span class="ident">account_commands</span>;
@@ -105,9 +105,9 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">commands</span>;
 <span class="kw">mod</span> <span class="ident">counters</span>;
 <span class="kw">mod</span> <span class="ident">dev_commands</span>;
-<span class="kw">mod</span> <span class="ident">info_commands</span>;
 <span class="doccomment">/// Client wrapper to connect to validator.</span>
-<span class="kw">mod</span> <span class="ident">libra_client</span>;
+<span class="kw">mod</span> <span class="ident">diem_client</span>;
+<span class="kw">mod</span> <span class="ident">info_commands</span>;
 <span class="kw">mod</span> <span class="ident">query_commands</span>;
 <span class="kw">mod</span> <span class="ident">transfer_commands</span>;
 

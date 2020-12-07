@@ -433,12 +433,12 @@
 <span id="430">430</span>
 <span id="431">431</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::{<span class="ident">ArgumentABI</span>, <span class="ident">ScriptABI</span>, <span class="ident">TypeArgumentABI</span>};
 <span class="kw">use</span> <span class="ident">heck</span>::{<span class="ident">CamelCase</span>, <span class="ident">ShoutySnakeCase</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::{<span class="ident">ArgumentABI</span>, <span class="ident">ScriptABI</span>, <span class="ident">TypeArgumentABI</span>};
 <span class="kw">use</span> <span class="ident">move_core_types</span>::<span class="ident">language_storage</span>::<span class="ident">TypeTag</span>;
 <span class="kw">use</span> <span class="ident">serde_generate</span>::{
     <span class="ident">indent</span>::{<span class="ident">IndentConfig</span>, <span class="ident">IndentedWriter</span>},
@@ -455,13 +455,13 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output</span>(
     <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dyn</span> <span class="ident">Write</span>,
     <span class="ident">serde_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="ident">libra_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="ident">diem_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">abis</span>: <span class="kw-2">&amp;</span>[<span class="ident">ScriptABI</span>],
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">emitter</span> <span class="op">=</span> <span class="ident">PythonEmitter</span> {
         <span class="ident">out</span>: <span class="ident">IndentedWriter</span>::<span class="ident">new</span>(<span class="ident">out</span>, <span class="ident">IndentConfig</span>::<span class="ident">Space</span>(<span class="number">4</span>)),
         <span class="ident">serde_package_name</span>,
-        <span class="ident">libra_package_name</span>,
+        <span class="ident">diem_package_name</span>,
     };
     <span class="ident">emitter</span>.<span class="ident">output_script_call_enum_with_imports</span>(<span class="ident">abis</span>)<span class="question-mark">?</span>;
     <span class="ident">emitter</span>.<span class="ident">output_additional_imports</span>()<span class="question-mark">?</span>;
@@ -493,8 +493,8 @@
     <span class="ident">out</span>: <span class="ident">IndentedWriter</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Package where to find the serde module (if any).</span>
     <span class="ident">serde_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Package where to find the libra module (if any).</span>
-    <span class="ident">libra_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Package where to find the diem module (if any).</span>
+    <span class="ident">diem_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">PythonEmitter</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
@@ -505,8 +505,8 @@
         <span class="macro">writeln</span><span class="macro">!</span>(
             <span class="self">self</span>.<span class="ident">out</span>,
             <span class="string">r#&quot;
-from {}libra_types import (Script, TypeTag, AccountAddress, TransactionArgument, TransactionArgument__Bool, TransactionArgument__U8, TransactionArgument__U64, TransactionArgument__U128, TransactionArgument__Address, TransactionArgument__U8Vector)&quot;#</span>,
-            <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">libra_package_name</span> {
+from {}diem_types import (Script, TypeTag, AccountAddress, TransactionArgument, TransactionArgument__Bool, TransactionArgument__U8, TransactionArgument__U64, TransactionArgument__U128, TransactionArgument__Address, TransactionArgument__U8Vector)&quot;#</span>,
+            <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">diem_package_name</span> {
                 <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&quot;</span>.<span class="ident">into</span>(),
                 <span class="prelude-val">Some</span>(<span class="ident">package</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">package</span>.<span class="ident">clone</span>() <span class="op">+</span> <span class="string">&quot;.&quot;</span>,
             },
@@ -518,7 +518,7 @@ from {}libra_types import (Script, TypeTag, AccountAddress, TransactionArgument,
             <span class="self">self</span>.<span class="ident">out</span>,
             <span class="string">r#&quot;
 def encode_script(call: ScriptCall) -&gt; Script:
-    &quot;&quot;&quot;Build a Libra `Script` from a structured object `ScriptCall`.
+    &quot;&quot;&quot;Build a Diem `Script` from a structured object `ScriptCall`.
     &quot;&quot;&quot;
     helper = SCRIPT_ENCODER_MAP[call.__class__]
     return helper(call)
@@ -531,7 +531,7 @@ def encode_script(call: ScriptCall) -&gt; Script:
             <span class="self">self</span>.<span class="ident">out</span>,
             <span class="string">r#&quot;
 def decode_script(script: Script) -&gt; ScriptCall:
-    &quot;&quot;&quot;Try to recognize a Libra `Script` and convert it into a structured object `ScriptCall`.
+    &quot;&quot;&quot;Try to recognize a Diem `Script` and convert it into a structured object `ScriptCall`.
     &quot;&quot;&quot;
     helper = SCRIPT_DECODER_MAP.get(script.code)
     if helper is None:
@@ -542,11 +542,11 @@ def decode_script(script: Script) -&gt; ScriptCall:
     }
 
     <span class="kw">fn</span> <span class="ident">output_script_call_enum_with_imports</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">abis</span>: <span class="kw-2">&amp;</span>[<span class="ident">ScriptABI</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">libra_types_module</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">libra_package_name</span> {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;libra_types&quot;</span>.<span class="ident">into</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">package</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.libra_types&quot;</span>, <span class="ident">package</span>),
+        <span class="kw">let</span> <span class="ident">diem_types_module</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">diem_package_name</span> {
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;diem_types&quot;</span>.<span class="ident">into</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">package</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.diem_types&quot;</span>, <span class="ident">package</span>),
         };
-        <span class="kw">let</span> <span class="ident">external_definitions</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">get_external_definitions</span>(<span class="kw-2">&amp;</span><span class="ident">libra_types_module</span>);
+        <span class="kw">let</span> <span class="ident">external_definitions</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">get_external_definitions</span>(<span class="kw-2">&amp;</span><span class="ident">diem_types_module</span>);
         <span class="kw">let</span> <span class="ident">script_registry</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[(
             <span class="string">&quot;ScriptCall&quot;</span>.<span class="ident">to_string</span>(),
             <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">make_abi_enum_container</span>(<span class="ident">abis</span>),
@@ -823,19 +823,19 @@ def decode_{}_argument(arg: TransactionArgument) -&gt; {}:
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Installer</span> {
     <span class="ident">install_dir</span>: <span class="ident">PathBuf</span>,
     <span class="ident">serde_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="ident">libra_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="ident">diem_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Installer</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">install_dir</span>: <span class="ident">PathBuf</span>,
         <span class="ident">serde_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="ident">libra_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">diem_package_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Installer</span> {
             <span class="ident">install_dir</span>,
             <span class="ident">serde_package_name</span>,
-            <span class="ident">libra_package_name</span>,
+            <span class="ident">diem_package_name</span>,
         }
     }
 
@@ -858,7 +858,7 @@ def decode_{}_argument(arg: TransactionArgument) -&gt; {}:
         <span class="ident">output</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">file</span>,
             <span class="self">self</span>.<span class="ident">serde_package_name</span>.<span class="ident">clone</span>(),
-            <span class="self">self</span>.<span class="ident">libra_package_name</span>.<span class="ident">clone</span>(),
+            <span class="self">self</span>.<span class="ident">diem_package_name</span>.<span class="ident">clone</span>(),
             <span class="ident">abis</span>,
         )<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())

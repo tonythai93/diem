@@ -110,12 +110,12 @@
 <span id="107">107</span>
 <span id="108">108</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This crate implements wrappers around our [Noise][noise] implementation.</span>
 <span class="doccomment">//! Noise is a protocol framework to encrypt and authentication connections.</span>
-<span class="doccomment">//! We use Noise to secure connections between peers in Libra.</span>
+<span class="doccomment">//! We use Noise to secure connections between peers in Diem.</span>
 <span class="doccomment">//! Specifically, we use the [Noise IK][ik] handshake which is a one round-trip protocol</span>
 <span class="doccomment">//! (the client sends one message, then the server responds).</span>
 <span class="doccomment">//! For more information about Noise and our implementation, refer to the [crypto] crate.</span>
@@ -126,11 +126,11 @@
 <span class="doccomment">//! use network::noise::{AntiReplayTimestamps, HandshakeAuthMode, NoiseUpgrader};</span>
 <span class="doccomment">//! use futures::{executor, future, io::{AsyncReadExt, AsyncWriteExt}};</span>
 <span class="doccomment">//! use memsocket::MemorySocket;</span>
-<span class="doccomment">//! use libra_config::{config::RoleType, network_id::{NetworkContext, NetworkId}};</span>
-<span class="doccomment">//! use libra_crypto::{x25519, ed25519, Uniform, PrivateKey, test_utils::TEST_SEED};</span>
-<span class="doccomment">//! use libra_infallible::RwLock;</span>
+<span class="doccomment">//! use diem_config::{config::RoleType, network_id::{NetworkContext, NetworkId}};</span>
+<span class="doccomment">//! use diem_crypto::{x25519, ed25519, Uniform, PrivateKey, test_utils::TEST_SEED};</span>
+<span class="doccomment">//! use diem_infallible::RwLock;</span>
 <span class="doccomment">//! use rand::{rngs::StdRng, SeedableRng};</span>
-<span class="doccomment">//! use libra_types::PeerId;</span>
+<span class="doccomment">//! use diem_types::PeerId;</span>
 <span class="doccomment">//! use std::{collections::{HashSet, HashMap}, io, sync::Arc};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! fn example() -&gt; io::Result&lt;()&gt; {</span>
@@ -207,7 +207,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [noise]: http://noiseprotocol.org/</span>
 <span class="doccomment">//! [ik]: https://noiseexplorer.com/patterns/IK</span>
-<span class="doccomment">//! [crypto]: ../libra_crypto/noise/index.html</span>
+<span class="doccomment">//! [crypto]: ../diem_crypto/noise/index.html</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">handshake</span>;

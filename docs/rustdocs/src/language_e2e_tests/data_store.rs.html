@@ -133,22 +133,22 @@
 <span id="130">130</span>
 <span id="131">131</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="doccomment">//! Support for mocking the Libra data store.</span>
+<span class="doccomment">//! Support for mocking the Diem data store.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">AccountData</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">compiled_stdlib</span>::<span class="ident">StdLibOptions</span>;
-<span class="kw">use</span> <span class="ident">libra_state_view</span>::<span class="ident">StateView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_state_view</span>::<span class="ident">StateView</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">access_path</span>::<span class="ident">AccessPath</span>,
     <span class="ident">on_chain_config</span>::<span class="ident">ConfigStorage</span>,
     <span class="ident">transaction</span>::<span class="ident">ChangeSet</span>,
     <span class="ident">write_set</span>::{<span class="ident">WriteOp</span>, <span class="ident">WriteSet</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::<span class="ident">data_cache</span>::<span class="ident">RemoteStorage</span>;
+<span class="kw">use</span> <span class="ident">diem_vm</span>::<span class="ident">data_cache</span>::<span class="ident">RemoteStorage</span>;
 <span class="kw">use</span> <span class="ident">move_core_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">language_storage</span>::{<span class="ident">ModuleId</span>, <span class="ident">StructTag</span>},

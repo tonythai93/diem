@@ -325,7 +325,7 @@
 <span id="322">322</span>
 <span id="323">323</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -335,7 +335,7 @@
         <span class="ident">ConstantName</span>, <span class="ident">FunctionName</span>, <span class="ident">ModuleIdent</span>, <span class="ident">ModuleIdent_</span>, <span class="ident">ModuleName</span>, <span class="ident">StructName</span>, <span class="ident">Var</span>,
     },
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span> <span class="kw">as</span> <span class="ident">LibraAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span> <span class="kw">as</span> <span class="ident">DiemAddress</span>;
 <span class="kw">use</span> <span class="ident">move_ir_types</span>::<span class="ident">ast</span> <span class="kw">as</span> <span class="ident">IR</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">clone</span>::<span class="ident">Clone</span>,
@@ -545,7 +545,7 @@
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">translate_module_name</span>(<span class="ident">name</span>);
         <span class="ident">IR</span>::<span class="ident">ModuleIdent</span>::<span class="ident">Qualified</span>(<span class="ident">IR</span>::<span class="ident">QualifiedModuleIdent</span>::<span class="ident">new</span>(
             <span class="ident">name</span>,
-            <span class="ident">LibraAddress</span>::<span class="ident">new</span>(<span class="ident">address</span>.<span class="ident">to_u8</span>()),
+            <span class="ident">DiemAddress</span>::<span class="ident">new</span>(<span class="ident">address</span>.<span class="ident">to_u8</span>()),
         ))
     }
 

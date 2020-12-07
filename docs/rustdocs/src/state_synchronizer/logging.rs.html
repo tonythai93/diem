@@ -154,7 +154,7 @@
 <span id="151">151</span>
 <span id="152">152</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -162,9 +162,9 @@
     <span class="ident">request_manager</span>::<span class="ident">ChunkRequestInfo</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">config</span>::<span class="ident">PeerNetworkId</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">Schema</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">config</span>::<span class="ident">PeerNetworkId</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">Schema</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>, <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>,
 };
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;

@@ -255,14 +255,14 @@
 <span id="252">252</span>
 <span id="253">253</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module implements a checker for verifying signature tokens used in types of function</span>
 <span class="doccomment">//! parameters, locals, and fields of structs are well-formed. References can only occur at the</span>
 <span class="doccomment">//! top-level in all tokens.  Additionally, references cannot occur at all in field types.</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">binary_views</span>::<span class="ident">BinaryIndexedView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
 <span class="kw">use</span> <span class="ident">vm</span>::{
     <span class="ident">access</span>::{<span class="ident">ModuleAccess</span>, <span class="ident">ScriptAccess</span>},
     <span class="ident">errors</span>::{<span class="ident">Location</span>, <span class="ident">PartialVMError</span>, <span class="ident">PartialVMResult</span>, <span class="ident">VMResult</span>},

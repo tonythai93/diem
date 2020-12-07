@@ -74,16 +74,16 @@
 <span id="71">71</span>
 <span id="72">72</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
-<span class="doccomment">//! Test infrastructure for the Libra VM.</span>
+<span class="doccomment">//! Test infrastructure for the Diem VM.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This crate contains helpers for executing tests against the Libra VM.</span>
+<span class="doccomment">//! This crate contains helpers for executing tests against the Diem VM.</span>
 
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">transaction</span>::<span class="ident">TransactionStatus</span>, <span class="ident">vm_status</span>::<span class="ident">KeptVMStatus</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">transaction</span>::<span class="ident">TransactionStatus</span>, <span class="ident">vm_status</span>::<span class="ident">KeptVMStatus</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">account</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">account_universe</span>;

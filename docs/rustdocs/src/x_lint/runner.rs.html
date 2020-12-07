@@ -257,7 +257,7 @@
 <span id="254">254</span>
 <span id="255">255</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">LintContext</span>};
@@ -502,7 +502,7 @@
         <span class="comment">// TODO: make global exclusions configurable</span>
         <span class="prelude-val">Ok</span>(<span class="ident">tracked_files</span>
             .<span class="ident">iter</span>()
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="op">!</span><span class="ident">f</span>.<span class="ident">starts_with</span>(<span class="string">&quot;testsuite/libra-fuzzer/artifacts/&quot;</span>)))
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="op">!</span><span class="ident">f</span>.<span class="ident">starts_with</span>(<span class="string">&quot;testsuite/diem-fuzzer/artifacts/&quot;</span>)))
     }
 }
 

@@ -325,13 +325,13 @@
 <span id="322">322</span>
 <span id="323">323</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">options</span>::<span class="ident">ModuleGeneratorOptions</span>, <span class="ident">padding</span>::<span class="ident">Pad</span>, <span class="ident">utils</span>::<span class="ident">random_string</span>};
 <span class="kw">use</span> <span class="ident">bytecode_verifier</span>::<span class="ident">verify_module</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">ir_to_bytecode</span>::<span class="ident">compiler</span>::<span class="ident">compile_module</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>;
 <span class="kw">use</span> <span class="ident">move_ir_types</span>::{<span class="ident">ast</span>::<span class="kw-2">*</span>, <span class="ident">location</span>::<span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">rngs</span>::<span class="ident">StdRng</span>, <span class="ident">Rng</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">BTreeSet</span>, <span class="ident">VecDeque</span>};

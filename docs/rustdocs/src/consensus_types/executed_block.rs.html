@@ -104,7 +104,7 @@
 <span id="101">101</span>
 <span id="102">102</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -113,9 +113,9 @@
     <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>,
     <span class="ident">vote_proposal</span>::{<span class="ident">MaybeSignedVoteProposal</span>, <span class="ident">VoteProposal</span>},
 };
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">hash</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">block_info</span>::<span class="ident">BlockInfo</span>;
 <span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">StateComputeResult</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">hash</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">block_info</span>::<span class="ident">BlockInfo</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
 
 <span class="doccomment">/// ExecutedBlocks are managed in a speculative tree, the committed blocks form a chain. Besides</span>

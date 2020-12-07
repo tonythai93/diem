@@ -21,11 +21,11 @@
 <span id="18">18</span>
 <span id="19">19</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::{<span class="ident">SignedTransaction</span>, <span class="ident">TransactionOutput</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::{<span class="ident">SignedTransaction</span>, <span class="ident">TransactionOutput</span>};
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Block</span><span class="op">&lt;</span><span class="ident">Txn</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Txn</span><span class="op">&gt;</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ExecutorResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TransactionOutput</span><span class="op">&gt;</span>, <span class="ident">T</span><span class="op">&gt;</span>;

@@ -197,7 +197,7 @@
 <span id="194">194</span>
 <span id="195">195</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">block_storage</span>::{<span class="ident">BlockReader</span>, <span class="ident">BlockStore</span>};
@@ -208,9 +208,9 @@
     <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>,
     <span class="ident">sync_info</span>::<span class="ident">SyncInfo</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">Level</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">ledger_info</span>::<span class="ident">LedgerInfo</span>, <span class="ident">validator_signer</span>::<span class="ident">ValidatorSigner</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">Level</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">ledger_info</span>::<span class="ident">LedgerInfo</span>, <span class="ident">validator_signer</span>::<span class="ident">ValidatorSigner</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">future</span>::<span class="ident">Future</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>, <span class="ident">time</span>::<span class="ident">Duration</span>};
 <span class="kw">use</span> <span class="ident">tokio</span>::{<span class="ident">runtime</span>, <span class="ident">time</span>::<span class="ident">timeout</span>};
 
@@ -221,7 +221,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">util</span>::<span class="ident">mock_time_service</span>::<span class="ident">SimulatedTimeService</span>;
 <span class="kw">use</span> <span class="ident">consensus_types</span>::{<span class="ident">block</span>::<span class="ident">block_test_utils</span>::<span class="ident">gen_test_certificate</span>, <span class="ident">common</span>::<span class="ident">Payload</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">block_info</span>::<span class="ident">BlockInfo</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">block_info</span>::<span class="ident">BlockInfo</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">mock_state_computer</span>::{<span class="ident">EmptyStateComputer</span>, <span class="ident">MockStateComputer</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">mock_storage</span>::{<span class="ident">EmptyStorage</span>, <span class="ident">MockSharedStorage</span>, <span class="ident">MockStorage</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">mock_txn_manager</span>::<span class="ident">MockTransactionManager</span>;
@@ -374,7 +374,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">consensus_runtime</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">runtime</span>::<span class="ident">Runtime</span> {
     <span class="kw">if</span> <span class="ident">nocapture</span>() {
-        ::<span class="ident">libra_logger</span>::<span class="ident">Logger</span>::<span class="ident">new</span>().<span class="ident">level</span>(<span class="ident">Level</span>::<span class="ident">Debug</span>).<span class="ident">init</span>();
+        ::<span class="ident">diem_logger</span>::<span class="ident">Logger</span>::<span class="ident">new</span>().<span class="ident">level</span>(<span class="ident">Level</span>::<span class="ident">Debug</span>).<span class="ident">init</span>();
     }
 
     <span class="ident">runtime</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()

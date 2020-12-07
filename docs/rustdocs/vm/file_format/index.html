@@ -9,7 +9,7 @@ modules stored on chain or the format of the code section of a transaction.</p>
 <p>Overall the binary format is structured in a number of sections:</p>
 <ul>
 <li><strong>Header</strong>: this must start at offset 0 in the binary. It contains a blob that starts every
-Libra binary, followed by the version of the VM used to compile the code, and last is the
+Diem binary, followed by the version of the VM used to compile the code, and last is the
 number of tables present in this binary.</li>
 <li><strong>Table Specification</strong>: it's a number of tuple of the form
 <code>(table type, starting_offset, byte_count)</code>. The number of entries is specified in the

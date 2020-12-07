@@ -525,7 +525,7 @@
 <span id="522">522</span>
 <span id="523">523</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -535,12 +535,12 @@
     <span class="ident">network</span>::{<span class="ident">StateSynchronizerMsg</span>, <span class="ident">StateSynchronizerSender</span>},
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::{
+<span class="kw">use</span> <span class="ident">diem_config</span>::{
     <span class="ident">config</span>::{<span class="ident">PeerNetworkId</span>, <span class="ident">UpstreamConfig</span>},
     <span class="ident">network_id</span>::{<span class="ident">NetworkId</span>, <span class="ident">NodeNetworkId</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::<span class="ident">ConnectionOrigin</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::{
     <span class="ident">distributions</span>::{<span class="ident">Distribution</span>, <span class="ident">WeightedIndex</span>},

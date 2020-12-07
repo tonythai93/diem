@@ -694,7 +694,7 @@
 <span id="691">691</span>
 <span id="692">692</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! The handshake module implements the handshake part of the protocol.</span>
@@ -707,12 +707,12 @@
 <span class="doccomment">//! [stream]: network::noise::stream</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">noise</span>::{<span class="ident">error</span>::<span class="ident">NoiseHandshakeError</span>, <span class="ident">stream</span>::<span class="ident">NoiseStream</span>};
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">noise</span>, <span class="ident">x25519</span>};
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::{<span class="ident">duration_since_epoch</span>, <span class="ident">RwLock</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">trace</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncReadExt</span>, <span class="ident">AsyncWrite</span>, <span class="ident">AsyncWriteExt</span>};
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">noise</span>, <span class="ident">x25519</span>};
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::{<span class="ident">duration_since_epoch</span>, <span class="ident">RwLock</span>};
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">trace</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::<span class="ident">ConnectionOrigin</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
@@ -772,7 +772,7 @@
     <span class="doccomment">/// In `Mutual` mode, both sides will authenticate each other with their</span>
     <span class="doccomment">/// `trusted_peers` set. We also include replay attack mitigation in this mode.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For example, in the Libra validator network, validator peers will only</span>
+    <span class="doccomment">/// For example, in the Diem validator network, validator peers will only</span>
     <span class="doccomment">/// allow connections from other validator peers. They will use this mode to</span>
     <span class="doccomment">/// check that inbound connections authenticate to a network public key</span>
     <span class="doccomment">/// actually contained in the current validator set.</span>
@@ -1139,8 +1139,8 @@
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">testutils</span>::<span class="ident">fake_socket</span>::<span class="ident">ReadWriteTestSocket</span>;
+    <span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">traits</span>::<span class="ident">Uniform</span> <span class="kw">as</span> <span class="kw">_</span>};
     <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor</span>::<span class="ident">block_on</span>, <span class="ident">future</span>::<span class="ident">join</span>};
-    <span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">traits</span>::<span class="ident">Uniform</span> <span class="kw">as</span> <span class="kw">_</span>};
     <span class="kw">use</span> <span class="ident">memsocket</span>::<span class="ident">MemorySocket</span>;
     <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">SeedableRng</span> <span class="kw">as</span> <span class="kw">_</span>;
 
@@ -1353,7 +1353,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_handshake_client_peerid_mismatch_fails_server_only_auth</span>() {
-        ::<span class="ident">libra_logger</span>::<span class="ident">Logger</span>::<span class="ident">init_for_testing</span>();
+        ::<span class="ident">diem_logger</span>::<span class="ident">Logger</span>::<span class="ident">init_for_testing</span>();
 
         <span class="kw">let</span> ((<span class="kw-2">mut</span> <span class="ident">client</span>, <span class="kw">_</span>), (<span class="ident">server</span>, <span class="ident">server_public_key</span>)) <span class="op">=</span>
             <span class="ident">build_peers</span>(<span class="bool-val">false</span> <span class="comment">/* is_mutual_auth */</span>);

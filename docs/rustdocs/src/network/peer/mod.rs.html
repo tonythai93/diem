@@ -572,7 +572,7 @@
 <span id="569">569</span>
 <span id="570">570</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! The Peer actor owns the underlying connection and is responsible for listening for</span>
@@ -588,6 +588,9 @@
     <span class="ident">ProtocolId</span>,
 };
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">BytesMut</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="self">self</span>,
     <span class="ident">channel</span>::<span class="ident">oneshot</span>,
@@ -595,9 +598,6 @@
     <span class="ident">stream</span>::<span class="ident">StreamExt</span>,
     <span class="ident">FutureExt</span>, <span class="ident">SinkExt</span>, <span class="ident">TryFutureExt</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">compat</span>::<span class="ident">IoCompat</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">export</span>::<span class="ident">Formatter</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>::<span class="ident">Debug</span>, <span class="ident">io</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};

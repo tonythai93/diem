@@ -584,7 +584,7 @@
 <span id="581">581</span>
 <span id="582">582</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -603,26 +603,26 @@
     },
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">info</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">future</span>::<span class="ident">try_join_all</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">info</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs</span>::<span class="ident">File</span>, <span class="ident">io</span>::<span class="ident">Write</span>, <span class="ident">path</span>::<span class="ident">Path</span>};
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
 
 <span class="kw">use</span> <span class="ident">consensus_types</span>::<span class="ident">safety_data</span>::<span class="ident">SafetyData</span>;
-<span class="kw">use</span> <span class="ident">libra_genesis_tool</span>::<span class="ident">layout</span>::<span class="ident">Layout</span>;
-<span class="kw">use</span> <span class="ident">libra_global_constants</span>::{
-    <span class="ident">CONSENSUS_KEY</span>, <span class="ident">EXECUTION_KEY</span>, <span class="ident">FULLNODE_NETWORK_KEY</span>, <span class="ident">GENESIS_WAYPOINT</span>, <span class="ident">LIBRA_ROOT_KEY</span>,
+<span class="kw">use</span> <span class="ident">diem_genesis_tool</span>::<span class="ident">layout</span>::<span class="ident">Layout</span>;
+<span class="kw">use</span> <span class="ident">diem_global_constants</span>::{
+    <span class="ident">CONSENSUS_KEY</span>, <span class="ident">DIEM_ROOT_KEY</span>, <span class="ident">EXECUTION_KEY</span>, <span class="ident">FULLNODE_NETWORK_KEY</span>, <span class="ident">GENESIS_WAYPOINT</span>,
     <span class="ident">OPERATOR_KEY</span>, <span class="ident">OWNER_KEY</span>, <span class="ident">SAFETY_DATA</span>, <span class="ident">TREASURY_COMPLIANCE_KEY</span>, <span class="ident">VALIDATOR_NETWORK_ADDRESS_KEYS</span>,
     <span class="ident">VALIDATOR_NETWORK_KEY</span>, <span class="ident">WAYPOINT</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_secure_storage</span>::{<span class="ident">CryptoStorage</span>, <span class="ident">KVStorage</span>, <span class="ident">Storage</span>, <span class="ident">VaultStorage</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">chain_id</span>::<span class="ident">ChainId</span>, <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>};
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_secure_storage</span>::{<span class="ident">CryptoStorage</span>, <span class="ident">KVStorage</span>, <span class="ident">Storage</span>, <span class="ident">VaultStorage</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">chain_id</span>::<span class="ident">ChainId</span>, <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
 
 <span class="kw">const</span> <span class="ident">VAULT_TOKEN</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;root&quot;</span>;
 <span class="kw">const</span> <span class="ident">VAULT_PORT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">8200</span>;
-<span class="kw">const</span> <span class="ident">LIBRA_ROOT_NS</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;val-0&quot;</span>;
+<span class="kw">const</span> <span class="ident">DIEM_ROOT_NS</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;val-0&quot;</span>;
 <span class="kw">const</span> <span class="ident">VAULT_BACKEND</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;vault&quot;</span>;
 <span class="kw">const</span> <span class="ident">GENESIS_PATH</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/tmp/genesis.blob&quot;</span>;
 
@@ -836,7 +836,7 @@
         <span class="kw">if</span> <span class="op">!</span><span class="ident">vault_nodes</span>.<span class="ident">is_empty</span>() {
             <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Generating genesis with management tool.&quot;</span>);
             <span class="ident">try_join_all</span>(<span class="ident">vault_nodes</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">i</span>, <span class="ident">node</span>)<span class="op">|</span> <span class="ident">async</span> <span class="kw">move</span> {
-                <span class="ident">libra_retrier</span>::<span class="ident">retry_async</span>(<span class="ident">libra_retrier</span>::<span class="ident">fixed_retry_strategy</span>(<span class="number">5000</span>, <span class="number">15</span>), <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">diem_retrier</span>::<span class="ident">retry_async</span>(<span class="ident">diem_retrier</span>::<span class="ident">fixed_retry_strategy</span>(<span class="number">5000</span>, <span class="number">15</span>), <span class="op">|</span><span class="op">|</span> {
                     <span class="ident">Box</span>::<span class="ident">pin</span>(<span class="ident">async</span> <span class="kw">move</span> { <span class="self">self</span>.<span class="ident">initialize_vault</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="ident">node</span>).<span class="ident">await</span> })
                 })
                 .<span class="ident">await</span>
@@ -958,13 +958,13 @@
                 <span class="bool-val">true</span>,
             ));
             <span class="kw">if</span> <span class="ident">validator_index</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="ident">vault_storage</span>.<span class="ident">create_key</span>(<span class="ident">LIBRA_ROOT_KEY</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                    <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to create {}__{} : {}&quot;</span>, <span class="ident">pod_name</span>, <span class="ident">LIBRA_ROOT_KEY</span>, <span class="ident">e</span>)
+                <span class="ident">vault_storage</span>.<span class="ident">create_key</span>(<span class="ident">DIEM_ROOT_KEY</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                    <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to create {}__{} : {}&quot;</span>, <span class="ident">pod_name</span>, <span class="ident">DIEM_ROOT_KEY</span>, <span class="ident">e</span>)
                 })<span class="question-mark">?</span>;
                 <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">vault_storage</span>
-                    .<span class="ident">export_private_key</span>(<span class="ident">LIBRA_ROOT_KEY</span>)
+                    .<span class="ident">export_private_key</span>(<span class="ident">DIEM_ROOT_KEY</span>)
                     .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                        <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to export {}__{} : {}&quot;</span>, <span class="ident">pod_name</span>, <span class="ident">LIBRA_ROOT_KEY</span>, <span class="ident">e</span>)
+                        <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to export {}__{} : {}&quot;</span>, <span class="ident">pod_name</span>, <span class="ident">DIEM_ROOT_KEY</span>, <span class="ident">e</span>)
                     })<span class="question-mark">?</span>;
                 <span class="ident">vault_storage</span>
                     .<span class="ident">import_private_key</span>(<span class="ident">TREASURY_COMPLIANCE_KEY</span>, <span class="ident">key</span>)
@@ -999,7 +999,7 @@
             <span class="ident">vault_storage</span>
                 .<span class="ident">set</span>(<span class="ident">GENESIS_WAYPOINT</span>, <span class="ident">Waypoint</span>::<span class="ident">default</span>())
                 .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to create {}/{} : {}&quot;</span>, <span class="ident">pod_name</span>, <span class="ident">WAYPOINT</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
-            <span class="ident">libra_network_address_encryption</span>::<span class="ident">Encryptor</span>::<span class="ident">new</span>(<span class="ident">vault_storage</span>)
+            <span class="ident">diem_network_address_encryption</span>::<span class="ident">Encryptor</span>::<span class="ident">new</span>(<span class="ident">vault_storage</span>)
                 .<span class="ident">initialize_for_testing</span>()
                 .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                     <span class="macro">format_err</span><span class="macro">!</span>(
@@ -1027,8 +1027,8 @@
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout</span> {
             <span class="ident">owners</span>: <span class="ident">owners</span>.<span class="ident">clone</span>(),
             <span class="ident">operators</span>: <span class="ident">owners</span>,
-            <span class="ident">libra_root</span>: <span class="ident">LIBRA_ROOT_NS</span>.<span class="ident">to_string</span>(),
-            <span class="ident">treasury_compliance</span>: <span class="ident">LIBRA_ROOT_NS</span>.<span class="ident">to_string</span>(),
+            <span class="ident">diem_root</span>: <span class="ident">DIEM_ROOT_NS</span>.<span class="ident">to_string</span>(),
+            <span class="ident">treasury_compliance</span>: <span class="ident">DIEM_ROOT_NS</span>.<span class="ident">to_string</span>(),
         };
         <span class="kw">let</span> <span class="ident">layout_path</span> <span class="op">=</span> <span class="string">&quot;/tmp/layout.yaml&quot;</span>;
         <span class="macro">write</span><span class="macro">!</span>(
@@ -1057,25 +1057,25 @@
             .<span class="ident">await</span>
             .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to set_layout : {}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
         <span class="ident">genesis_helper</span>
-            .<span class="ident">libra_root_key</span>(
+            .<span class="ident">diem_root_key</span>(
                 <span class="ident">VAULT_BACKEND</span>,
                 <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;http://{}:{}&quot;</span>, <span class="ident">vault_nodes</span>[<span class="number">0</span>].<span class="ident">internal_ip</span>, <span class="ident">VAULT_PORT</span>).<span class="ident">as_str</span>(),
                 <span class="ident">token_path</span>,
-                <span class="ident">LIBRA_ROOT_NS</span>,
-                <span class="ident">LIBRA_ROOT_NS</span>,
+                <span class="ident">DIEM_ROOT_NS</span>,
+                <span class="ident">DIEM_ROOT_NS</span>,
             )
             .<span class="ident">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to libra_root_key : {}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to diem_root_key : {}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
         <span class="ident">genesis_helper</span>
             .<span class="ident">treasury_compliance_key</span>(
                 <span class="ident">VAULT_BACKEND</span>,
                 <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;http://{}:{}&quot;</span>, <span class="ident">vault_nodes</span>[<span class="number">0</span>].<span class="ident">internal_ip</span>, <span class="ident">VAULT_PORT</span>).<span class="ident">as_str</span>(),
                 <span class="ident">token_path</span>,
-                <span class="ident">LIBRA_ROOT_NS</span>,
-                <span class="ident">LIBRA_ROOT_NS</span>,
+                <span class="ident">DIEM_ROOT_NS</span>,
+                <span class="ident">DIEM_ROOT_NS</span>,
             )
             .<span class="ident">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to libra_root_key : {}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to diem_root_key : {}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
 
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">node</span>) <span class="kw">in</span> <span class="ident">vault_nodes</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">let</span> <span class="ident">pod_name</span> <span class="op">=</span> <span class="ident">validator_pod_name</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span>);
@@ -1155,7 +1155,7 @@
         }
         <span class="ident">genesis_helper</span>
             .<span class="ident">extract_private_key</span>(
-                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}__{}&quot;</span>, <span class="ident">LIBRA_ROOT_NS</span>, <span class="ident">LIBRA_ROOT_KEY</span>).<span class="ident">as_str</span>(),
+                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}__{}&quot;</span>, <span class="ident">DIEM_ROOT_NS</span>, <span class="ident">DIEM_ROOT_KEY</span>).<span class="ident">as_str</span>(),
                 <span class="string">&quot;/tmp/mint.key&quot;</span>,
                 <span class="ident">VAULT_BACKEND</span>,
                 <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;http://{}:{}&quot;</span>, <span class="ident">vault_nodes</span>[<span class="number">0</span>].<span class="ident">internal_ip</span>, <span class="ident">VAULT_PORT</span>).<span class="ident">as_str</span>(),

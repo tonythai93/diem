@@ -189,7 +189,7 @@
 <span id="186">186</span>
 <span id="187">187</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -206,8 +206,8 @@
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">consensus_types</span>::{<span class="ident">block</span>::<span class="ident">Block</span>, <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">schema</span>::{<span class="ident">BLOCK_CF_NAME</span>, <span class="ident">QC_CF_NAME</span>, <span class="ident">SINGLE_ENTRY_CF_NAME</span>};
 <span class="kw">use</span> <span class="ident">schemadb</span>::{<span class="ident">Options</span>, <span class="ident">ReadOptions</span>, <span class="ident">SchemaBatch</span>, <span class="ident">DB</span>, <span class="ident">DEFAULT_CF_NAME</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>::<span class="ident">HashMap</span>, <span class="ident">iter</span>::<span class="ident">Iterator</span>, <span class="ident">path</span>::<span class="ident">Path</span>, <span class="ident">time</span>::<span class="ident">Instant</span>};

@@ -86,15 +86,15 @@
 <span id="83">83</span>
 <span id="84">84</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Interface between StateSynchronizer and Network layers.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">chunk_request</span>::<span class="ident">GetChunkRequest</span>, <span class="ident">chunk_response</span>::<span class="ident">GetChunkResponse</span>, <span class="ident">counters</span>};
 <span class="kw">use</span> <span class="ident">channel</span>::<span class="ident">message_queues</span>::<span class="ident">QueueStyle</span>;
-<span class="kw">use</span> <span class="ident">libra_metrics</span>::<span class="ident">IntCounterVec</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
+<span class="kw">use</span> <span class="ident">diem_metrics</span>::<span class="ident">IntCounterVec</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">network</span>::{
     <span class="ident">error</span>::<span class="ident">NetworkError</span>,
     <span class="ident">peer_manager</span>::{<span class="ident">ConnectionRequestSender</span>, <span class="ident">PeerManagerRequestSender</span>},

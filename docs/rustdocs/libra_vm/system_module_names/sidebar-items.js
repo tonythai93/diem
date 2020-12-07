@@ -1,1 +1,0 @@
-initSidebarItems({"static":[["BLOCK_PROLOGUE",""],["LIBRA_BLOCK_MODULE","The ModuleId for the libra writeset manager module The ModuleId for the libra block module"],["MODULE_PROLOGUE_NAME",""],["SCRIPT_PROLOGUE_NAME",""],["USER_EPILOGUE_NAME",""],["WRITESET_EPILOGUE_NAME",""],["WRITESET_PROLOGUE_NAME",""]]});

@@ -1003,7 +1003,7 @@
 <span id="1000">1000</span>
 <span id="1001">1001</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -1024,28 +1024,23 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">logging</span>::{<span class="ident">LogEntry</span>, <span class="ident">LogSchema</span>},
     <span class="ident">metrics</span>::{
-        <span class="ident">LIBRA_EXECUTOR_COMMIT_BLOCKS_SECONDS</span>, <span class="ident">LIBRA_EXECUTOR_ERRORS</span>,
-        <span class="ident">LIBRA_EXECUTOR_EXECUTE_AND_COMMIT_CHUNK_SECONDS</span>, <span class="ident">LIBRA_EXECUTOR_EXECUTE_BLOCK_SECONDS</span>,
-        <span class="ident">LIBRA_EXECUTOR_SAVE_TRANSACTIONS_SECONDS</span>, <span class="ident">LIBRA_EXECUTOR_TRANSACTIONS_SAVED</span>,
-        <span class="ident">LIBRA_EXECUTOR_VM_EXECUTE_BLOCK_SECONDS</span>,
+        <span class="ident">DIEM_EXECUTOR_COMMIT_BLOCKS_SECONDS</span>, <span class="ident">DIEM_EXECUTOR_ERRORS</span>,
+        <span class="ident">DIEM_EXECUTOR_EXECUTE_AND_COMMIT_CHUNK_SECONDS</span>, <span class="ident">DIEM_EXECUTOR_EXECUTE_BLOCK_SECONDS</span>,
+        <span class="ident">DIEM_EXECUTOR_SAVE_TRANSACTIONS_SECONDS</span>, <span class="ident">DIEM_EXECUTOR_TRANSACTIONS_SAVED</span>,
+        <span class="ident">DIEM_EXECUTOR_VM_EXECUTE_BLOCK_SECONDS</span>,
     },
     <span class="ident">speculation_cache</span>::<span class="ident">SpeculationCache</span>,
     <span class="ident">types</span>::{<span class="ident">ProcessedVMOutput</span>, <span class="ident">TransactionData</span>},
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="ident">ensure</span>, <span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">executor_types</span>::{
-    <span class="ident">BlockExecutor</span>, <span class="ident">ChunkExecutor</span>, <span class="ident">Error</span>, <span class="ident">ExecutedTrees</span>, <span class="ident">ProofReader</span>, <span class="ident">StateComputeResult</span>,
-    <span class="ident">TransactionReplayer</span>,
-};
-<span class="kw">use</span> <span class="ident">fail</span>::<span class="ident">fail_point</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">hash</span>::{<span class="ident">CryptoHash</span>, <span class="ident">EventAccumulatorHasher</span>, <span class="ident">TransactionAccumulatorHasher</span>},
     <span class="ident">HashValue</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_state_view</span>::<span class="ident">StateViewId</span>;
-<span class="kw">use</span> <span class="ident">libra_trace</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_state_view</span>::<span class="ident">StateViewId</span>;
+<span class="kw">use</span> <span class="ident">diem_trace</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_state</span>::<span class="ident">AccountState</span>,
     <span class="ident">account_state_blob</span>::<span class="ident">AccountStateBlob</span>,
@@ -1060,7 +1055,12 @@
     },
     <span class="ident">write_set</span>::{<span class="ident">WriteOp</span>, <span class="ident">WriteSet</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::<span class="ident">VMExecutor</span>;
+<span class="kw">use</span> <span class="ident">diem_vm</span>::<span class="ident">VMExecutor</span>;
+<span class="kw">use</span> <span class="ident">executor_types</span>::{
+    <span class="ident">BlockExecutor</span>, <span class="ident">ChunkExecutor</span>, <span class="ident">Error</span>, <span class="ident">ExecutedTrees</span>, <span class="ident">ProofReader</span>, <span class="ident">StateComputeResult</span>,
+    <span class="ident">TransactionReplayer</span>,
+};
+<span class="kw">use</span> <span class="ident">fail</span>::<span class="ident">fail_point</span>;
 <span class="kw">use</span> <span class="ident">scratchpad</span>::<span class="ident">SparseMerkleTree</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">hash_map</span>, <span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
@@ -1331,7 +1331,7 @@
                              Transaction: {:?}. Status: {:?}.&quot;</span>,
                             <span class="ident">txn</span>, <span class="ident">status</span>,
                         );
-                        <span class="ident">LIBRA_EXECUTOR_ERRORS</span>.<span class="ident">inc</span>();
+                        <span class="ident">DIEM_EXECUTOR_ERRORS</span>.<span class="ident">inc</span>();
                     }
                 }
                 <span class="ident">TransactionStatus</span>::<span class="ident">Retry</span> <span class="op">=</span><span class="op">&gt;</span> (),
@@ -1566,7 +1566,7 @@
         <span class="comment">// carrying any epoch change LI.</span>
         <span class="ident">epoch_change_li</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LedgerInfoWithSignatures</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ContractEvent</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_EXECUTOR_EXECUTE_AND_COMMIT_CHUNK_SECONDS</span>.<span class="ident">start_timer</span>();
+        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_EXECUTOR_EXECUTE_AND_COMMIT_CHUNK_SECONDS</span>.<span class="ident">start_timer</span>();
         <span class="comment">// 1. Update the cache in executor to be consistent with latest synced state.</span>
         <span class="self">self</span>.<span class="ident">reset_cache</span>()<span class="question-mark">?</span>;
 
@@ -1728,7 +1728,7 @@
                 <span class="string">&quot;execute_block&quot;</span>
             );
 
-            <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_EXECUTOR_EXECUTE_BLOCK_SECONDS</span>.<span class="ident">start_timer</span>();
+            <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_EXECUTOR_EXECUTE_BLOCK_SECONDS</span>.<span class="ident">start_timer</span>();
 
             <span class="kw">let</span> <span class="ident">parent_block_executed_trees</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_executed_trees</span>(<span class="ident">parent_block_id</span>)<span class="question-mark">?</span>;
 
@@ -1739,7 +1739,7 @@
 
             <span class="kw">let</span> <span class="ident">vm_outputs</span> <span class="op">=</span> {
                 <span class="macro">trace_code_block</span><span class="macro">!</span>(<span class="string">&quot;executor::execute_block&quot;</span>, {<span class="string">&quot;block&quot;</span>, <span class="ident">block_id</span>});
-                <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_EXECUTOR_VM_EXECUTE_BLOCK_SECONDS</span>.<span class="ident">start_timer</span>();
+                <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_EXECUTOR_VM_EXECUTE_BLOCK_SECONDS</span>.<span class="ident">start_timer</span>();
                 <span class="macro">fail_point</span><span class="macro">!</span>(<span class="string">&quot;executor::vm_execute_block&quot;</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
                     <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">from</span>(<span class="ident">anyhow</span>::<span class="macro">anyhow</span><span class="macro">!</span>(
                         <span class="string">&quot;Injected error in vm_execute_block&quot;</span>
@@ -1789,7 +1789,7 @@
         <span class="ident">block_ids</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">HashValue</span><span class="op">&gt;</span>,
         <span class="ident">ledger_info_with_sigs</span>: <span class="ident">LedgerInfoWithSignatures</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ContractEvent</span><span class="op">&gt;</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_EXECUTOR_COMMIT_BLOCKS_SECONDS</span>.<span class="ident">start_timer</span>();
+        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_EXECUTOR_COMMIT_BLOCKS_SECONDS</span>.<span class="ident">start_timer</span>();
         <span class="kw">let</span> <span class="ident">block_id_to_commit</span> <span class="op">=</span> <span class="ident">ledger_info_with_sigs</span>.<span class="ident">ledger_info</span>().<span class="ident">consensus_block_id</span>();
 
         <span class="macro">info</span><span class="macro">!</span>(
@@ -1888,8 +1888,8 @@
 
         <span class="kw">let</span> <span class="ident">num_txns_to_commit</span> <span class="op">=</span> <span class="ident">txns_to_commit</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>;
         {
-            <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_EXECUTOR_SAVE_TRANSACTIONS_SECONDS</span>.<span class="ident">start_timer</span>();
-            <span class="ident">LIBRA_EXECUTOR_TRANSACTIONS_SAVED</span>.<span class="ident">observe</span>(<span class="ident">num_txns_to_commit</span> <span class="kw">as</span> <span class="ident">f64</span>);
+            <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_EXECUTOR_SAVE_TRANSACTIONS_SECONDS</span>.<span class="ident">start_timer</span>();
+            <span class="ident">DIEM_EXECUTOR_TRANSACTIONS_SAVED</span>.<span class="ident">observe</span>(<span class="ident">num_txns_to_commit</span> <span class="kw">as</span> <span class="ident">f64</span>);
 
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">first_version_to_commit</span>, <span class="ident">num_txns_in_li</span> <span class="op">-</span> <span class="ident">num_txns_to_commit</span>);
             <span class="macro">fail_point</span><span class="macro">!</span>(<span class="string">&quot;executor::commit_blocks&quot;</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> {

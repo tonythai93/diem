@@ -1183,7 +1183,7 @@
 <span id="1180">1180</span>
 <span id="1181">1181</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -1192,8 +1192,8 @@
     <span class="ident">native_functions</span>::<span class="ident">FunctionContext</span>,
     <span class="ident">trace</span>,
 };
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">fail</span>::<span class="ident">fail_point</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">move_core_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">gas_schedule</span>::{<span class="ident">AbstractMemorySize</span>, <span class="ident">GasAlgebra</span>, <span class="ident">GasCarrier</span>},

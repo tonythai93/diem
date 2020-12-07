@@ -841,20 +841,20 @@
 <span id="838">838</span>
 <span id="839">839</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="doccomment">//! Test infrastructure for modeling Libra accounts.</span>
+<span class="doccomment">//! Test infrastructure for modeling Diem accounts.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">gas_costs</span>, <span class="ident">keygen</span>::<span class="ident">KeyGen</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">ed25519</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">ed25519</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">access_path</span>::<span class="ident">AccessPath</span>,
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_config</span>::{
         <span class="self">self</span>, <span class="ident">from_currency_code_string</span>, <span class="ident">type_tag_for_currency_code</span>, <span class="ident">AccountResource</span>,
-        <span class="ident">BalanceResource</span>, <span class="ident">RoleId</span>, <span class="ident">COIN1_NAME</span>,
+        <span class="ident">BalanceResource</span>, <span class="ident">RoleId</span>, <span class="ident">XUS_NAME</span>,
     },
     <span class="ident">chain_id</span>::<span class="ident">ChainId</span>,
     <span class="ident">event</span>::<span class="ident">EventHandle</span>,
@@ -877,18 +877,18 @@
 <span class="comment">// TTL is 86400s. Initial time was set to 0.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DEFAULT_EXPIRATION_TIME</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">40_000</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coin1_tmp_currency_code</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Identifier</span> {
-    <span class="ident">from_currency_code_string</span>(<span class="ident">COIN1_NAME</span>).<span class="ident">unwrap</span>()
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">xus_currency_code</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Identifier</span> {
+    <span class="ident">from_currency_code_string</span>(<span class="ident">XUS_NAME</span>).<span class="ident">unwrap</span>()
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">currency_code</span>(<span class="ident">code</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Identifier</span> {
     <span class="ident">from_currency_code_string</span>(<span class="ident">code</span>).<span class="ident">unwrap</span>()
 }
 
-<span class="doccomment">/// Details about a Libra account.</span>
+<span class="doccomment">/// Details about a Diem account.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Tests will typically create a set of `Account` instances to run transactions on. This type</span>
-<span class="doccomment">/// encodes the logic to operate on and verify operations on any Libra account.</span>
+<span class="doccomment">/// encodes the logic to operate on and verify operations on any Diem account.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Account</span> {
     <span class="ident">addr</span>: <span class="ident">AccountAddress</span>,
@@ -902,7 +902,7 @@
     <span class="doccomment">/// Creates a new account in memory.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The account returned by this constructor is a purely logical entity, meaning that it does</span>
-    <span class="doccomment">/// not automatically get added to the Libra store. To add an account to the store, use</span>
+    <span class="doccomment">/// not automatically get added to the Diem store. To add an account to the store, use</span>
     <span class="doccomment">/// [`AccountData`] instances with</span>
     <span class="doccomment">/// [`FakeExecutor::add_account_data`][crate::executor::FakeExecutor::add_account_data].</span>
     <span class="doccomment">/// This function returns distinct values upon every call.</span>
@@ -922,7 +922,7 @@
     <span class="doccomment">/// Like with [`Account::new`], the account returned by this constructor is a purely logical</span>
     <span class="doccomment">/// entity.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_keypair</span>(<span class="ident">privkey</span>: <span class="ident">Ed25519PrivateKey</span>, <span class="ident">pubkey</span>: <span class="ident">Ed25519PublicKey</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">from_public_key</span>(<span class="kw-2">&amp;</span><span class="ident">pubkey</span>);
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">from_public_key</span>(<span class="kw-2">&amp;</span><span class="ident">pubkey</span>);
         <span class="ident">Account</span> {
             <span class="ident">addr</span>,
             <span class="ident">privkey</span>,
@@ -958,12 +958,12 @@
         }
     }
 
-    <span class="doccomment">/// Creates a new account representing the libra root account in memory.</span>
+    <span class="doccomment">/// Creates a new account representing the diem root account in memory.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The address will be [`libra_root_address`][account_config::libra_root_address], and</span>
+    <span class="doccomment">/// The address will be [`diem_root_address`][account_config::diem_root_address], and</span>
     <span class="doccomment">/// the account will use [`GENESIS_KEYPAIR`][struct@GENESIS_KEYPAIR] as its keypair.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_libra_root</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new_genesis_account</span>(<span class="ident">account_config</span>::<span class="ident">libra_root_address</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_diem_root</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span>::<span class="ident">new_genesis_account</span>(<span class="ident">account_config</span>::<span class="ident">diem_root_address</span>())
     }
 
     <span class="doccomment">/// Creates a new account representing treasury compliance in memory.</span>
@@ -1117,7 +1117,7 @@
             <span class="self">self</span>.<span class="ident">max_gas_amount</span>.<span class="ident">unwrap_or</span>(<span class="ident">gas_costs</span>::<span class="ident">TXN_RESERVED</span>),
             <span class="self">self</span>.<span class="ident">gas_unit_price</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>),
             <span class="self">self</span>.<span class="ident">gas_currency_code</span>
-                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">COIN1_NAME</span>.<span class="ident">to_owned</span>()),
+                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">XUS_NAME</span>.<span class="ident">to_owned</span>()),
             <span class="self">self</span>.<span class="ident">ttl</span>.<span class="ident">unwrap_or</span>(<span class="ident">DEFAULT_EXPIRATION_TIME</span>),
             <span class="ident">ChainId</span>::<span class="ident">test</span>(),
         )
@@ -1131,7 +1131,7 @@
             <span class="self">self</span>.<span class="ident">max_gas_amount</span>.<span class="ident">unwrap_or</span>(<span class="ident">gas_costs</span>::<span class="ident">TXN_RESERVED</span>),
             <span class="self">self</span>.<span class="ident">gas_unit_price</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>),
             <span class="self">self</span>.<span class="ident">gas_currency_code</span>
-                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">COIN1_NAME</span>.<span class="ident">to_owned</span>()),
+                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">XUS_NAME</span>.<span class="ident">to_owned</span>()),
             <span class="self">self</span>.<span class="ident">ttl</span>.<span class="ident">unwrap_or</span>(<span class="ident">DEFAULT_EXPIRATION_TIME</span>),
             <span class="self">self</span>.<span class="ident">chain_id</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">ChainId</span>::<span class="ident">test</span>),
         )
@@ -1179,7 +1179,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AccountRoleSpecifier</span> {
-    <span class="ident">LibraRoot</span>,
+    <span class="ident">DiemRoot</span>,
     <span class="ident">TreasuryCompliance</span>,
     <span class="ident">DesignatedDealer</span>,
     <span class="ident">Validator</span>,
@@ -1191,7 +1191,7 @@
 <span class="kw">impl</span> <span class="ident">AccountRoleSpecifier</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">LibraRoot</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
+            <span class="self">Self</span>::<span class="ident">DiemRoot</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
             <span class="self">Self</span>::<span class="ident">TreasuryCompliance</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
             <span class="self">Self</span>::<span class="ident">DesignatedDealer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
             <span class="self">Self</span>::<span class="ident">Validator</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">3</span>,
@@ -1327,7 +1327,7 @@
         <span class="self">Self</span>::<span class="ident">with_account</span>(
             <span class="ident">Account</span>::<span class="ident">new</span>(),
             <span class="ident">balance</span>,
-            <span class="ident">coin1_tmp_currency_code</span>(),
+            <span class="ident">xus_currency_code</span>(),
             <span class="ident">sequence_number</span>,
             <span class="ident">AccountRoleSpecifier</span>::<span class="ident">ParentVASP</span>,
         )
@@ -1340,7 +1340,7 @@
         <span class="self">Self</span>::<span class="ident">with_account</span>(
             <span class="ident">Account</span>::<span class="ident">new_from_seed</span>(<span class="ident">seed</span>),
             <span class="ident">balance</span>,
-            <span class="ident">coin1_tmp_currency_code</span>(),
+            <span class="ident">xus_currency_code</span>(),
             <span class="ident">sequence_number</span>,
             <span class="ident">AccountRoleSpecifier</span>::<span class="ident">ParentVASP</span>,
         )
@@ -1443,7 +1443,7 @@
         ])
     }
 
-    <span class="doccomment">/// Returns the (Move value) layout of the LibraAccount::LibraAccount struct</span>
+    <span class="doccomment">/// Returns the (Move value) layout of the DiemAccount::DiemAccount struct</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">layout</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MoveStructLayout</span> {
         <span class="kw">use</span> <span class="ident">MoveStructLayout</span> <span class="kw">as</span> <span class="ident">S</span>;
         <span class="kw">use</span> <span class="ident">MoveTypeLayout</span> <span class="kw">as</span> <span class="ident">T</span>;

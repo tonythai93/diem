@@ -381,7 +381,7 @@
 <span id="378">378</span>
 <span id="379">379</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -397,14 +397,14 @@
     },
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">ensure</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">StreamExt</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">epoch_change</span>::<span class="ident">Verifier</span>,
     <span class="ident">ledger_info</span>::{<span class="ident">LedgerInfo</span>, <span class="ident">LedgerInfoWithSignatures</span>},
     <span class="ident">transaction</span>::<span class="ident">Version</span>,
     <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>,
 };
+<span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">StreamExt</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">sync</span>::<span class="ident">Arc</span>, <span class="ident">time</span>::<span class="ident">Instant</span>};
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
 

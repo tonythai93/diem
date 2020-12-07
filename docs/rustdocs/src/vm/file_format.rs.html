@@ -1966,7 +1966,7 @@
 <span id="1963">1963</span>
 <span id="1964">1964</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Binary format for transactions and modules.</span>
@@ -1979,7 +1979,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Overall the binary format is structured in a number of sections:</span>
 <span class="doccomment">//! - **Header**: this must start at offset 0 in the binary. It contains a blob that starts every</span>
-<span class="doccomment">//! Libra binary, followed by the version of the VM used to compile the code, and last is the</span>
+<span class="doccomment">//! Diem binary, followed by the version of the VM used to compile the code, and last is the</span>
 <span class="doccomment">//! number of tables present in this binary.</span>
 <span class="doccomment">//! - **Table Specification**: it&#39;s a number of tuple of the form</span>
 <span class="doccomment">//! `(table type, starting_offset, byte_count)`. The number of entries is specified in the</span>
@@ -2175,7 +2175,7 @@
 <span class="doccomment">/// The `address` is a reference to the account that holds the code and the `name` is used as a</span>
 <span class="doccomment">/// key in order to load the module.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Modules live in the *code* namespace of an LibraAccount.</span>
+<span class="doccomment">/// Modules live in the *code* namespace of an DiemAccount.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Modules introduce a scope made of all types defined in the module and all functions.</span>
 <span class="doccomment">/// Type definitions (fields) are private to the module. Outside the module a</span>

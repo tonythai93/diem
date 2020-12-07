@@ -191,14 +191,14 @@
 <span id="188">188</span>
 <span id="189">189</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module defines the transfer functions for verifying type safety of a procedure body.</span>
 <span class="doccomment">//! It does not utilize control flow, but does check each block independently</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">binary_views</span>::<span class="ident">BinaryIndexedView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
 <span class="kw">use</span> <span class="ident">vm</span>::{
     <span class="ident">access</span>::<span class="ident">ModuleAccess</span>,
     <span class="ident">errors</span>::{<span class="ident">Location</span>, <span class="ident">PartialVMError</span>, <span class="ident">PartialVMResult</span>, <span class="ident">VMResult</span>},

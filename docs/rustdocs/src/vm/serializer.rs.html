@@ -1283,7 +1283,7 @@
 <span id="1280">1280</span>
 <span id="1281">1281</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Serialization of transactions and modules.</span>
@@ -1570,7 +1570,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">serialize_magic</span>(<span class="ident">binary</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BinaryData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">for</span> <span class="ident">byte</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">BinaryConstants</span>::<span class="ident">LIBRA_MAGIC</span> {
+    <span class="kw">for</span> <span class="ident">byte</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">BinaryConstants</span>::<span class="ident">DIEM_MAGIC</span> {
         <span class="ident">binary</span>.<span class="ident">push</span>(<span class="kw-2">*</span><span class="ident">byte</span>)<span class="question-mark">?</span>;
     }
     <span class="prelude-val">Ok</span>(())

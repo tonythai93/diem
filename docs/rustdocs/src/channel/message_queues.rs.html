@@ -209,10 +209,10 @@
 <span id="206">206</span>
 <span id="207">207</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">libra_metrics</span>::<span class="ident">IntCounterVec</span>;
+<span class="kw">use</span> <span class="ident">diem_metrics</span>::<span class="ident">IntCounterVec</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">VecDeque</span>},
     <span class="ident">fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Formatter</span>, <span class="prelude-ty">Result</span>},
@@ -379,7 +379,7 @@
             <span class="comment">// Remove empty per-key-queues every `POPS_PER_GC` successful dequeue</span>
             <span class="comment">// operations.</span>
             <span class="comment">//</span>
-            <span class="comment">// libra-channel never removes keys from its PerKeyQueue (without</span>
+            <span class="comment">// diem-channel never removes keys from its PerKeyQueue (without</span>
             <span class="comment">// this logic). This works fine for the validator network, where we</span>
             <span class="comment">// have a bounded set of peers that almost never changes; however,</span>
             <span class="comment">// this does not work for servicing public clients, where we can have</span>

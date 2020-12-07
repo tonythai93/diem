@@ -176,7 +176,7 @@
 <span id="173">173</span>
 <span id="174">174</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Support for encoding transactions for common situations.</span>
@@ -184,7 +184,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">Account</span>;
 <span class="kw">use</span> <span class="ident">compiled_stdlib</span>::<span class="ident">transaction_scripts</span>::<span class="ident">StdlibScript</span>;
 <span class="kw">use</span> <span class="ident">compiler</span>::<span class="ident">Compiler</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_config</span>,
     <span class="ident">transaction</span>::{<span class="ident">RawTransaction</span>, <span class="ident">Script</span>, <span class="ident">SignedTransaction</span>, <span class="ident">TransactionArgument</span>},
 };
@@ -193,15 +193,15 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">CREATE_ACCOUNT_SCRIPT</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="string">&quot;
-    import 0x1.Libra;
-    import 0x1.LibraAccount;
+    import 0x1.Diem;
+    import 0x1.DiemAccount;
 
     main&lt;Token&gt;(account: &amp;signer, fresh_address: address, auth_key_prefix: vector&lt;u8&gt;, initial_amount: u64) {
-      let with_cap: LibraAccount.WithdrawCapability;
+      let with_cap: DiemAccount.WithdrawCapability;
       let name: vector&lt;u8&gt;;
       name = h\&quot;\&quot;;
 
-      LibraAccount.create_parent_vasp_account&lt;Token&gt;(
+      DiemAccount.create_parent_vasp_account&lt;Token&gt;(
         copy(account),
         copy(fresh_address),
         move(auth_key_prefix),
@@ -209,15 +209,15 @@
         false
       );
       if (copy(initial_amount) &gt; 0) {
-         with_cap = LibraAccount.extract_withdraw_capability(copy(account));
-         LibraAccount.pay_from&lt;Token&gt;(
+         with_cap = DiemAccount.extract_withdraw_capability(copy(account));
+         DiemAccount.pay_from&lt;Token&gt;(
            &amp;with_cap,
            move(fresh_address),
            move(initial_amount),
            h\&quot;\&quot;,
            h\&quot;\&quot;
          );
-         LibraAccount.restore_withdraw_capability(move(with_cap));
+         DiemAccount.restore_withdraw_capability(move(with_cap));
       }
       return;
     }
@@ -312,7 +312,7 @@
             <span class="ident">StdlibScript</span>::<span class="ident">PeerToPeerWithMetadata</span>
                 .<span class="ident">compiled_bytes</span>()
                 .<span class="ident">into_vec</span>(),
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">account_config</span>::<span class="ident">coin1_tmp_tag</span>()],
+            <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">account_config</span>::<span class="ident">xus_tag</span>()],
             <span class="ident">args</span>,
         ))
         .<span class="ident">sequence_number</span>(<span class="ident">seq_num</span>)

@@ -213,17 +213,17 @@
 <span id="210">210</span>
 <span id="211">211</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">Mutex</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">warn</span>;
-<span class="kw">use</span> <span class="ident">libra_secure_net</span>::<span class="ident">NetworkClient</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">Mutex</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">warn</span>;
+<span class="kw">use</span> <span class="ident">diem_secure_net</span>::<span class="ident">NetworkClient</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_state_blob</span>::{<span class="ident">AccountStateBlob</span>, <span class="ident">AccountStateWithProof</span>},
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>,

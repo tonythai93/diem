@@ -332,7 +332,7 @@
 <span id="329">329</span>
 <span id="330">330</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -341,9 +341,9 @@
     <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="ident">ensure</span>, <span class="ident">format_err</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">ed25519</span>::<span class="ident">Ed25519Signature</span>, <span class="ident">hash</span>::<span class="ident">CryptoHash</span>, <span class="ident">HashValue</span>};
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">duration_since_epoch</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">ed25519</span>::<span class="ident">Ed25519Signature</span>, <span class="ident">hash</span>::<span class="ident">CryptoHash</span>, <span class="ident">HashValue</span>};
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">duration_since_epoch</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">block_info</span>::<span class="ident">BlockInfo</span>, <span class="ident">block_metadata</span>::<span class="ident">BlockMetadata</span>,
     <span class="ident">epoch_state</span>::<span class="ident">EpochState</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfo</span>, <span class="ident">transaction</span>::<span class="ident">Version</span>,
     <span class="ident">validator_signer</span>::<span class="ident">ValidatorSigner</span>, <span class="ident">validator_verifier</span>::<span class="ident">ValidatorVerifier</span>,

@@ -111,7 +111,7 @@
 <span id="108">108</span>
 <span id="109">109</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -128,7 +128,7 @@
     <span class="ident">tx_emitter</span>::<span class="ident">EmitJobRequest</span>,
 };
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">info</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">info</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
@@ -193,7 +193,7 @@
         );
         <span class="kw">while</span> <span class="self">self</span>
             .<span class="ident">instance</span>
-            .<span class="ident">counter</span>(<span class="string">&quot;libra_consensus_last_committed_round&quot;</span>)
+            .<span class="ident">counter</span>(<span class="string">&quot;diem_consensus_last_committed_round&quot;</span>)
             .<span class="ident">is_err</span>()
         {
             <span class="ident">time</span>::<span class="ident">delay_for</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">1</span>)).<span class="ident">await</span>;

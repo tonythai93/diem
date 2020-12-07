@@ -296,7 +296,7 @@
 <span id="293">293</span>
 <span id="294">294</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This implements an algorithm that detects loops during the instantiation of generics.</span>
@@ -310,7 +310,7 @@
 <span class="doccomment">//! instances. We do reject recursive functions that create a new type upon each call but do</span>
 <span class="doccomment">//! terminate eventually.</span>
 
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
 <span class="kw">use</span> <span class="ident">petgraph</span>::{
     <span class="ident">algo</span>::<span class="ident">tarjan_scc</span>,
     <span class="ident">graph</span>::{<span class="ident">EdgeIndex</span>, <span class="ident">NodeIndex</span>},

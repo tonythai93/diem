@@ -1001,7 +1001,7 @@
 <span id="998">998</span>
 <span id="999">999</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">context</span>::<span class="kw-2">*</span>, <span class="ident">remove_fallthrough_jumps</span>};
@@ -1022,7 +1022,7 @@
     <span class="ident">shared</span>::{<span class="ident">unique_map</span>::<span class="ident">UniqueMap</span>, <span class="kw-2">*</span>},
 };
 <span class="kw">use</span> <span class="ident">bytecode_source_map</span>::<span class="ident">source_map</span>::<span class="ident">SourceMap</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span> <span class="kw">as</span> <span class="ident">LibraAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span> <span class="kw">as</span> <span class="ident">DiemAddress</span>;
 <span class="kw">use</span> <span class="ident">move_ir_types</span>::{<span class="ident">ast</span> <span class="kw">as</span> <span class="ident">IR</span>, <span class="ident">location</span>::<span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="ident">move_vm</span>::<span class="ident">file_format</span> <span class="kw">as</span> <span class="ident">F</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">BTreeSet</span>, <span class="ident">HashMap</span>};
@@ -1139,7 +1139,7 @@
         })
         .<span class="ident">collect</span>();
 
-    <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">LibraAddress</span>::<span class="ident">new</span>(<span class="ident">ident</span>.<span class="number">0</span>.<span class="ident">value</span>.<span class="ident">address</span>.<span class="ident">to_u8</span>());
+    <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">DiemAddress</span>::<span class="ident">new</span>(<span class="ident">ident</span>.<span class="number">0</span>.<span class="ident">value</span>.<span class="ident">address</span>.<span class="ident">to_u8</span>());
     <span class="kw">let</span> <span class="ident">mname</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="number">0</span>.<span class="ident">value</span>.<span class="ident">name</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> (<span class="ident">imports</span>, <span class="ident">explicit_dependency_declarations</span>) <span class="op">=</span> <span class="ident">context</span>.<span class="ident">materialize</span>(
         <span class="ident">dependency_orderings</span>,
@@ -1792,7 +1792,7 @@
             <span class="ident">code</span>.<span class="ident">push</span>(<span class="ident">sp</span>(
                 <span class="ident">loc</span>,
                 <span class="kw">match</span> <span class="ident">v</span>.<span class="ident">value</span> {
-                    <span class="ident">V</span>::<span class="ident">Address</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">B</span>::<span class="ident">LdAddr</span>(<span class="ident">LibraAddress</span>::<span class="ident">new</span>(<span class="ident">a</span>.<span class="ident">to_u8</span>())),
+                    <span class="ident">V</span>::<span class="ident">Address</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">B</span>::<span class="ident">LdAddr</span>(<span class="ident">DiemAddress</span>::<span class="ident">new</span>(<span class="ident">a</span>.<span class="ident">to_u8</span>())),
                     <span class="ident">V</span>::<span class="ident">Bytearray</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">B</span>::<span class="ident">LdByteArray</span>(<span class="ident">bytes</span>),
                     <span class="ident">V</span>::<span class="ident">U8</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">B</span>::<span class="ident">LdU8</span>(<span class="ident">u</span>),
                     <span class="ident">V</span>::<span class="ident">U64</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">B</span>::<span class="ident">LdU64</span>(<span class="ident">u</span>),

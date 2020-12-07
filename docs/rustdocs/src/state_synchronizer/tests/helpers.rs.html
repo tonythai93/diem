@@ -169,21 +169,21 @@
 <span id="166">166</span>
 <span id="167">167</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">executor_proxy</span>::<span class="ident">ExecutorProxyTrait</span>, <span class="ident">tests</span>::<span class="ident">mock_storage</span>::<span class="ident">MockStorage</span>, <span class="ident">SynchronizerState</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">config</span>::<span class="ident">HANDSHAKE_VERSION</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">hash</span>::<span class="ident">ACCUMULATOR_PLACEHOLDER_HASH</span>, <span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">x25519</span>, <span class="ident">Uniform</span>};
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">RwLock</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::{
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">config</span>::<span class="ident">HANDSHAKE_VERSION</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">hash</span>::<span class="ident">ACCUMULATOR_PLACEHOLDER_HASH</span>, <span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">x25519</span>, <span class="ident">Uniform</span>};
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">RwLock</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::{
     <span class="ident">encrypted</span>::{<span class="ident">TEST_SHARED_VAL_NETADDR_KEY</span>, <span class="ident">TEST_SHARED_VAL_NETADDR_KEY_VERSION</span>},
     <span class="ident">NetworkAddress</span>, <span class="ident">Protocol</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>,
     <span class="ident">on_chain_config</span>::<span class="ident">ValidatorSet</span>, <span class="ident">proof</span>::<span class="ident">TransactionListProof</span>,
     <span class="ident">transaction</span>::<span class="ident">TransactionListWithProof</span>, <span class="ident">validator_config</span>::<span class="ident">ValidatorConfig</span>,

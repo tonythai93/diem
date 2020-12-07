@@ -741,7 +741,7 @@
 <span id="738">738</span>
 <span id="739">739</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! The socket module implements the post-handshake part of the protocol.</span>
@@ -762,8 +762,8 @@
     <span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
 };
 
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">noise</span>, <span class="ident">x25519</span>};
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">noise</span>, <span class="ident">x25519</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 
 <span class="comment">//</span>
 <span class="comment">// NoiseStream</span>
@@ -1293,14 +1293,14 @@
         <span class="ident">noise</span>::{<span class="ident">AntiReplayTimestamps</span>, <span class="ident">HandshakeAuthMode</span>, <span class="ident">NoiseUpgrader</span>},
         <span class="ident">testutils</span>::<span class="ident">fake_socket</span>::{<span class="ident">ReadOnlyTestSocket</span>, <span class="ident">ReadWriteTestSocket</span>},
     };
+    <span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+    <span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">traits</span>::<span class="ident">Uniform</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">x25519</span>};
+    <span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
     <span class="kw">use</span> <span class="ident">futures</span>::{
         <span class="ident">executor</span>::<span class="ident">block_on</span>,
         <span class="ident">future</span>::<span class="ident">join</span>,
         <span class="ident">io</span>::{<span class="ident">AsyncReadExt</span>, <span class="ident">AsyncWriteExt</span>},
     };
-    <span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-    <span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">test_utils</span>::<span class="ident">TEST_SEED</span>, <span class="ident">traits</span>::<span class="ident">Uniform</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">x25519</span>};
-    <span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
     <span class="kw">use</span> <span class="ident">memsocket</span>::<span class="ident">MemorySocket</span>;
     <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">SeedableRng</span> <span class="kw">as</span> <span class="kw">_</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;

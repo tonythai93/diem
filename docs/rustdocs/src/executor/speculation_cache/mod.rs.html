@@ -312,7 +312,7 @@
 <span id="309">309</span>
 <span id="310">310</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! In a leader based consensus algorithm, each participant maintains a block tree that looks like</span>
@@ -337,13 +337,13 @@
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">consensus_types</span>::<span class="ident">block</span>::<span class="ident">Block</span>;
-<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">Error</span>, <span class="ident">ExecutedTrees</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">hash</span>::<span class="ident">PRE_GENESIS_BLOCK_ID</span>, <span class="ident">HashValue</span>};
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">Mutex</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">hash</span>::<span class="ident">PRE_GENESIS_BLOCK_ID</span>, <span class="ident">HashValue</span>};
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">Mutex</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfo</span>, <span class="ident">transaction</span>::<span class="ident">Transaction</span>,
 };
+<span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">Error</span>, <span class="ident">ExecutedTrees</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::<span class="ident">HashMap</span>,
     <span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Weak</span>},

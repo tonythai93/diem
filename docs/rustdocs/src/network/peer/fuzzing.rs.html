@@ -144,7 +144,7 @@
 <span id="141">141</span>
 <span id="142">142</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -159,11 +159,11 @@
     <span class="ident">transport</span>::{<span class="ident">Connection</span>, <span class="ident">ConnectionId</span>, <span class="ident">ConnectionMetadata</span>},
     <span class="ident">ProtocolId</span>,
 };
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_proptest_helpers</span>::<span class="ident">ValueGenerator</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor</span>::<span class="ident">block_on</span>, <span class="ident">future</span>, <span class="ident">io</span>::<span class="ident">AsyncReadExt</span>, <span class="ident">sink</span>::<span class="ident">SinkExt</span>, <span class="ident">stream</span>::<span class="ident">StreamExt</span>};
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_proptest_helpers</span>::<span class="ident">ValueGenerator</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">memsocket</span>::<span class="ident">MemorySocket</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::{<span class="ident">compat</span>::<span class="ident">IoCompat</span>, <span class="ident">transport</span>::<span class="ident">ConnectionOrigin</span>};
 <span class="kw">use</span> <span class="ident">proptest</span>::{<span class="ident">arbitrary</span>::<span class="ident">any</span>, <span class="ident">collection</span>::<span class="ident">vec</span>};

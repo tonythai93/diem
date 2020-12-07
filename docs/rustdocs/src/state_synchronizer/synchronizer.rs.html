@@ -219,7 +219,7 @@
 <span id="216">216</span>
 <span id="217">217</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">coordinator</span>::{<span class="ident">CoordinatorMessage</span>, <span class="ident">SyncCoordinator</span>, <span class="ident">SyncRequest</span>},
@@ -229,20 +229,20 @@
     <span class="ident">SynchronizerState</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">diem_config</span>::{
+    <span class="ident">config</span>::{<span class="ident">NodeConfig</span>, <span class="ident">RoleType</span>, <span class="ident">StateSyncConfig</span>, <span class="ident">UpstreamConfig</span>},
+    <span class="ident">network_id</span>::<span class="ident">NodeNetworkId</span>,
+};
+<span class="kw">use</span> <span class="ident">diem_mempool</span>::{<span class="ident">CommitNotification</span>, <span class="ident">CommitResponse</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
+    <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>, <span class="ident">transaction</span>::<span class="ident">Transaction</span>,
+    <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>,
+};
 <span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">ChunkExecutor</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">channel</span>::{<span class="ident">mpsc</span>, <span class="ident">oneshot</span>},
     <span class="ident">future</span>::<span class="ident">Future</span>,
     <span class="ident">SinkExt</span>,
-};
-<span class="kw">use</span> <span class="ident">libra_config</span>::{
-    <span class="ident">config</span>::{<span class="ident">NodeConfig</span>, <span class="ident">RoleType</span>, <span class="ident">StateSyncConfig</span>, <span class="ident">UpstreamConfig</span>},
-    <span class="ident">network_id</span>::<span class="ident">NodeNetworkId</span>,
-};
-<span class="kw">use</span> <span class="ident">libra_mempool</span>::{<span class="ident">CommitNotification</span>, <span class="ident">CommitResponse</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
-    <span class="ident">contract_event</span>::<span class="ident">ContractEvent</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>, <span class="ident">transaction</span>::<span class="ident">Transaction</span>,
-    <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>,
 };
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">boxed</span>::<span class="ident">Box</span>,

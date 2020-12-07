@@ -57,7 +57,7 @@
 <span id="54">54</span>
 <span id="55">55</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This provides a runtime separation between ExecutionCorrectness and the rest without requiring the</span>
@@ -67,8 +67,8 @@
 <span class="doccomment">//! in testing correctness of the communication layer between ExecutionCorrectness and SafetyRules.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">remote_service</span>::{<span class="self">self</span>, <span class="ident">RemoteService</span>};
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">utils</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>;
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">utils</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">ed25519</span>::<span class="ident">Ed25519PrivateKey</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">net</span>::{<span class="ident">IpAddr</span>, <span class="ident">Ipv4Addr</span>, <span class="ident">SocketAddr</span>},
     <span class="ident">thread</span>::{<span class="self">self</span>, <span class="ident">JoinHandle</span>},

@@ -126,11 +126,11 @@
 <span id="123">123</span>
 <span id="124">124</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">Future</span>, <span class="ident">FutureExt</span>, <span class="ident">SinkExt</span>};
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">pin</span>::<span class="ident">Pin</span>, <span class="ident">thread</span>, <span class="ident">time</span>::<span class="ident">Duration</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">counters</span>;
@@ -243,7 +243,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">get_current_timestamp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
-        <span class="ident">libra_infallible</span>::<span class="ident">duration_since_epoch</span>()
+        <span class="ident">diem_infallible</span>::<span class="ident">duration_since_epoch</span>()
     }
 
     <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">t</span>: <span class="ident">Duration</span>) {

@@ -458,7 +458,7 @@
 <span id="455">455</span>
 <span id="456">456</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module implements an in-memory Sparse Merkle Tree that is similar to what we use in</span>
@@ -528,11 +528,11 @@
 <span class="kw">mod</span> <span class="ident">sparse_merkle_test</span>;
 
 <span class="kw">use</span> <span class="self">self</span>::<span class="ident">node</span>::{<span class="ident">LeafNode</span>, <span class="ident">LeafValue</span>, <span class="ident">Node</span>, <span class="ident">SparseMerkleNode</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">hash</span>::{<span class="ident">HashValueBitIterator</span>, <span class="ident">SPARSE_MERKLE_PLACEHOLDER_HASH</span>},
     <span class="ident">HashValue</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">account_state_blob</span>::<span class="ident">AccountStateBlob</span>, <span class="ident">proof</span>::<span class="ident">SparseMerkleProof</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">account_state_blob</span>::<span class="ident">AccountStateBlob</span>, <span class="ident">proof</span>::<span class="ident">SparseMerkleProof</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
 <span class="doccomment">/// `AccountStatus` describes the result of querying an account from this SparseMerkleTree.</span>

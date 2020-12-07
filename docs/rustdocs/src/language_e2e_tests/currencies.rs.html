@@ -118,36 +118,36 @@
 <span id="115">115</span>
 <span id="116">116</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">account</span>::<span class="ident">Account</span>, <span class="ident">compile</span>, <span class="ident">executor</span>::<span class="ident">FakeExecutor</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">transaction</span>::<span class="ident">WriteSetPayload</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">transaction</span>::<span class="ident">WriteSetPayload</span>};
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_currency_to_system</span>(
     <span class="ident">executor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FakeExecutor</span>,
     <span class="ident">currency_code_to_register</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">current_lr_sequence_number</span>: <span class="ident">u64</span>,
+    <span class="ident">current_dr_sequence_number</span>: <span class="ident">u64</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-    <span class="kw">let</span> <span class="ident">lr_account</span> <span class="op">=</span> <span class="ident">Account</span>::<span class="ident">new_libra_root</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lr_sequence_number</span> <span class="op">=</span> <span class="ident">current_lr_sequence_number</span>;
+    <span class="kw">let</span> <span class="ident">dr_account</span> <span class="op">=</span> <span class="ident">Account</span>::<span class="ident">new_diem_root</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dr_sequence_number</span> <span class="op">=</span> <span class="ident">current_dr_sequence_number</span>;
 
     {
         <span class="kw">let</span> <span class="ident">compiled_script</span> <span class="op">=</span> {
             <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">&quot;
-            import 0x1.LibraTransactionPublishingOption;
+            import 0x1.DiemTransactionPublishingOption;
             main(config: &amp;signer) {
-                LibraTransactionPublishingOption.set_open_module(move(config), false);
+                DiemTransactionPublishingOption.set_open_module(move(config), false);
                 return;
             }
             &quot;</span>;
-            <span class="ident">compile</span>::<span class="ident">compile_script_with_address</span>(<span class="ident">lr_account</span>.<span class="ident">address</span>(), <span class="string">&quot;file_name&quot;</span>, <span class="ident">script</span>, <span class="macro">vec</span><span class="macro">!</span>[])
+            <span class="ident">compile</span>::<span class="ident">compile_script_with_address</span>(<span class="ident">dr_account</span>.<span class="ident">address</span>(), <span class="string">&quot;file_name&quot;</span>, <span class="ident">script</span>, <span class="macro">vec</span><span class="macro">!</span>[])
         };
 
-        <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="ident">lr_account</span>
+        <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="ident">dr_account</span>
             .<span class="ident">transaction</span>()
             .<span class="ident">script</span>(<span class="ident">compiled_script</span>)
-            .<span class="ident">sequence_number</span>(<span class="ident">lr_sequence_number</span>)
+            .<span class="ident">sequence_number</span>(<span class="ident">dr_sequence_number</span>)
             .<span class="ident">sign</span>();
 
         <span class="ident">executor</span>.<span class="ident">execute_and_apply</span>(<span class="ident">txn</span>);
@@ -155,18 +155,18 @@
 
     <span class="ident">executor</span>.<span class="ident">new_block</span>();
 
-    <span class="ident">lr_sequence_number</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+    <span class="ident">dr_sequence_number</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
     <span class="kw">let</span> (<span class="ident">compiled_module</span>, <span class="ident">module</span>) <span class="op">=</span> {
         <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
             <span class="string">r#&quot;
             module {} {{
-                import 0x1.Libra;
+                import 0x1.Diem;
                 import 0x1.FixedPoint32;
                 resource {currency_code} {{ x: bool }}
-                public init(lr_account: &amp;signer, tc_account: &amp;signer) {{
-                    Libra.register_SCS_currency&lt;Self.{currency_code}&gt;(
-                        move(lr_account),
+                public init(dr_account: &amp;signer, tc_account: &amp;signer) {{
+                    Diem.register_SCS_currency&lt;Self.{currency_code}&gt;(
+                        move(dr_account),
                         move(tc_account),
                         FixedPoint32.create_from_rational(1, 1),
                         100,
@@ -188,30 +188,30 @@
         )
     };
 
-    <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="ident">lr_account</span>
+    <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="ident">dr_account</span>
         .<span class="ident">transaction</span>()
         .<span class="ident">module</span>(<span class="ident">module</span>)
-        .<span class="ident">sequence_number</span>(<span class="ident">lr_sequence_number</span>)
+        .<span class="ident">sequence_number</span>(<span class="ident">dr_sequence_number</span>)
         .<span class="ident">sign</span>();
 
     <span class="ident">executor</span>.<span class="ident">execute_and_apply</span>(<span class="ident">txn</span>);
 
-    <span class="ident">lr_sequence_number</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+    <span class="ident">dr_sequence_number</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
     {
         <span class="kw">let</span> <span class="ident">compiled_script</span> <span class="op">=</span> {
             <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
                 <span class="string">r#&quot;
             import 0x1.{currency_code};
-            main(lr_account: &amp;signer, tc_account: &amp;signer) {{
-                {currency_code}.init(move(lr_account), move(tc_account));
+            main(dr_account: &amp;signer, tc_account: &amp;signer) {{
+                {currency_code}.init(move(dr_account), move(tc_account));
                 return;
             }}
             &quot;#</span>,
                 <span class="ident">currency_code</span> <span class="op">=</span> <span class="ident">currency_code_to_register</span>
             );
             <span class="ident">compile</span>::<span class="ident">compile_script_with_address</span>(
-                <span class="ident">lr_account</span>.<span class="ident">address</span>(),
+                <span class="ident">dr_account</span>.<span class="ident">address</span>(),
                 <span class="string">&quot;file_name&quot;</span>,
                 <span class="kw-2">&amp;</span><span class="ident">script</span>,
                 <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">compiled_module</span>],
@@ -222,17 +222,17 @@
             <span class="ident">execute_as</span>: <span class="kw-2">*</span><span class="ident">Account</span>::<span class="ident">new_blessed_tc</span>().<span class="ident">address</span>(),
             <span class="ident">script</span>: <span class="ident">compiled_script</span>,
         };
-        <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="ident">lr_account</span>
+        <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="ident">dr_account</span>
             .<span class="ident">transaction</span>()
             .<span class="ident">write_set</span>(<span class="ident">write_set_payload</span>)
-            .<span class="ident">sequence_number</span>(<span class="ident">lr_sequence_number</span>)
+            .<span class="ident">sequence_number</span>(<span class="ident">dr_sequence_number</span>)
             .<span class="ident">sign</span>();
         <span class="ident">executor</span>.<span class="ident">execute_and_apply</span>(<span class="ident">txn</span>);
     };
 
     <span class="ident">executor</span>.<span class="ident">new_block</span>();
 
-    <span class="ident">lr_sequence_number</span> <span class="op">+</span> <span class="number">1</span>
+    <span class="ident">dr_sequence_number</span> <span class="op">+</span> <span class="number">1</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "language_e2e_tests";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

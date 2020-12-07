@@ -474,14 +474,14 @@
 <span id="471">471</span>
 <span id="472">472</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
 <span class="doccomment">//! This library implements a schematized DB on top of [RocksDB](https://rocksdb.org/). It makes</span>
 <span class="doccomment">//! sure all data passed in and out are structured according to predefined schemas and prevents</span>
-<span class="doccomment">//! access to raw keys and values. This library also enforces a set of Libra specific DB options,</span>
+<span class="doccomment">//! access to raw keys and values. This library also enforces a set of Diem specific DB options,</span>
 <span class="doccomment">//! like custom comparators and schema-to-column-family mapping.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! It requires that different kinds of key-value pairs be stored in separate column</span>
@@ -495,9 +495,9 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">metrics</span>::{
-        <span class="ident">LIBRA_SCHEMADB_BATCH_COMMIT_BYTES</span>, <span class="ident">LIBRA_SCHEMADB_BATCH_COMMIT_LATENCY_SECONDS</span>,
-        <span class="ident">LIBRA_SCHEMADB_DELETES</span>, <span class="ident">LIBRA_SCHEMADB_GET_BYTES</span>, <span class="ident">LIBRA_SCHEMADB_GET_LATENCY_SECONDS</span>,
-        <span class="ident">LIBRA_SCHEMADB_ITER_BYTES</span>, <span class="ident">LIBRA_SCHEMADB_ITER_LATENCY_SECONDS</span>, <span class="ident">LIBRA_SCHEMADB_PUT_BYTES</span>,
+        <span class="ident">DIEM_SCHEMADB_BATCH_COMMIT_BYTES</span>, <span class="ident">DIEM_SCHEMADB_BATCH_COMMIT_LATENCY_SECONDS</span>,
+        <span class="ident">DIEM_SCHEMADB_DELETES</span>, <span class="ident">DIEM_SCHEMADB_GET_BYTES</span>, <span class="ident">DIEM_SCHEMADB_GET_LATENCY_SECONDS</span>,
+        <span class="ident">DIEM_SCHEMADB_ITER_BYTES</span>, <span class="ident">DIEM_SCHEMADB_ITER_LATENCY_SECONDS</span>, <span class="ident">DIEM_SCHEMADB_PUT_BYTES</span>,
     },
     <span class="ident">schema</span>::{<span class="ident">KeyCodec</span>, <span class="ident">Schema</span>, <span class="ident">SeekKeyCodec</span>, <span class="ident">ValueCodec</span>},
 };
@@ -625,7 +625,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">next_impl</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">S</span>::<span class="ident">Key</span>, <span class="ident">S</span>::<span class="ident">Value</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_SCHEMADB_ITER_LATENCY_SECONDS</span>
+        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_SCHEMADB_ITER_LATENCY_SECONDS</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">S</span>::<span class="ident">COLUMN_FAMILY_NAME</span>])
             .<span class="ident">start_timer</span>();
 
@@ -636,7 +636,7 @@
 
         <span class="kw">let</span> <span class="ident">raw_key</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">db_iter</span>.<span class="ident">key</span>().<span class="ident">expect</span>(<span class="string">&quot;Iterator must be valid.&quot;</span>);
         <span class="kw">let</span> <span class="ident">raw_value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">db_iter</span>.<span class="ident">value</span>().<span class="ident">expect</span>(<span class="string">&quot;Iterator must be valid.&quot;</span>);
-        <span class="ident">LIBRA_SCHEMADB_ITER_BYTES</span>
+        <span class="ident">DIEM_SCHEMADB_ITER_BYTES</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">S</span>::<span class="ident">COLUMN_FAMILY_NAME</span>])
             .<span class="ident">observe</span>((<span class="ident">raw_key</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">raw_value</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="ident">f64</span>);
 
@@ -711,7 +711,7 @@
 
     <span class="doccomment">/// Open db as secondary.</span>
     <span class="doccomment">/// This allows to read the DB in another process while it&#39;s already opened for read / write in</span>
-    <span class="doccomment">/// one (e.g. a Libra Node)</span>
+    <span class="doccomment">/// one (e.g. a Diem Node)</span>
     <span class="doccomment">/// https://github.com/facebook/rocksdb/blob/493f425e77043cc35ea2d89ee3c4ec0274c700cb/include/rocksdb/db.h#L176-L222</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_as_secondary</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">primary_path</span>: <span class="ident">P</span>,
@@ -789,7 +789,7 @@
 
     <span class="doccomment">/// Reads single record by key.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Schema</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">schema_key</span>: <span class="kw-2">&amp;</span><span class="ident">S</span>::<span class="ident">Key</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_SCHEMADB_GET_LATENCY_SECONDS</span>
+        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_SCHEMADB_GET_LATENCY_SECONDS</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">S</span>::<span class="ident">COLUMN_FAMILY_NAME</span>])
             .<span class="ident">start_timer</span>();
 
@@ -797,7 +797,7 @@
         <span class="kw">let</span> <span class="ident">cf_handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_cf_handle</span>(<span class="ident">S</span>::<span class="ident">COLUMN_FAMILY_NAME</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get_cf</span>(<span class="ident">cf_handle</span>, <span class="kw-2">&amp;</span><span class="ident">k</span>)<span class="question-mark">?</span>;
-        <span class="ident">LIBRA_SCHEMADB_GET_BYTES</span>
+        <span class="ident">DIEM_SCHEMADB_GET_BYTES</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">S</span>::<span class="ident">COLUMN_FAMILY_NAME</span>])
             .<span class="ident">observe</span>(<span class="ident">result</span>.<span class="ident">as_ref</span>().<span class="ident">map_or</span>(<span class="number">0.0</span>, <span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">f64</span>));
 
@@ -857,7 +857,7 @@
 
     <span class="doccomment">/// Writes a group of records wrapped in a [`SchemaBatch`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_schemas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">batch</span>: <span class="ident">SchemaBatch</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">LIBRA_SCHEMADB_BATCH_COMMIT_LATENCY_SECONDS</span>
+        <span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">DIEM_SCHEMADB_BATCH_COMMIT_LATENCY_SECONDS</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="self">self</span>.<span class="ident">name</span>])
             .<span class="ident">start_timer</span>();
 
@@ -880,17 +880,17 @@
             <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">write_op</span>) <span class="kw">in</span> <span class="ident">rows</span> {
                 <span class="kw">match</span> <span class="ident">write_op</span> {
                     <span class="ident">WriteOp</span>::<span class="ident">Value</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">LIBRA_SCHEMADB_PUT_BYTES</span>
+                        <span class="ident">DIEM_SCHEMADB_PUT_BYTES</span>
                             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">cf_name</span>])
                             .<span class="ident">observe</span>((<span class="ident">key</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">value</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="ident">f64</span>);
                     }
                     <span class="ident">WriteOp</span>::<span class="ident">Deletion</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="ident">LIBRA_SCHEMADB_DELETES</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">cf_name</span>]).<span class="ident">inc</span>();
+                        <span class="ident">DIEM_SCHEMADB_DELETES</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">cf_name</span>]).<span class="ident">inc</span>();
                     }
                 }
             }
         }
-        <span class="ident">LIBRA_SCHEMADB_BATCH_COMMIT_BYTES</span>
+        <span class="ident">DIEM_SCHEMADB_BATCH_COMMIT_BYTES</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="self">self</span>.<span class="ident">name</span>])
             .<span class="ident">observe</span>(<span class="ident">serialized_size</span> <span class="kw">as</span> <span class="ident">f64</span>);
 

@@ -295,7 +295,7 @@
 <span id="292">292</span>
 <span id="293">293</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -308,9 +308,9 @@
 <span class="kw">use</span> <span class="ident">consensus_types</span>::{
     <span class="ident">block</span>::<span class="ident">Block</span>, <span class="ident">quorum_cert</span>::<span class="ident">QuorumCert</span>, <span class="ident">timeout_certificate</span>::<span class="ident">TimeoutCertificate</span>, <span class="ident">vote</span>::<span class="ident">Vote</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">Mutex</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">Mutex</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">epoch_change</span>::<span class="ident">EpochChangeProof</span>,
     <span class="ident">ledger_info</span>::{<span class="ident">LedgerInfo</span>, <span class="ident">LedgerInfoWithSignatures</span>},
     <span class="ident">on_chain_config</span>::<span class="ident">ValidatorSet</span>,
@@ -520,7 +520,7 @@
         <span class="prelude-val">Ok</span>(<span class="ident">EpochChangeProof</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">lis</span>], <span class="bool-val">false</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">libra_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">diem_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span> {
         <span class="macro">unimplemented</span><span class="macro">!</span>()
     }
 }
@@ -584,7 +584,7 @@
         <span class="macro">unimplemented</span><span class="macro">!</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">libra_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">diem_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">DbReader</span><span class="op">&gt;</span> {
         <span class="macro">unimplemented</span><span class="macro">!</span>()
     }
 }

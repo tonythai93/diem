@@ -95,15 +95,15 @@
 <span id="92">92</span>
 <span id="93">93</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">libra_secure_push_metrics</span>::{<span class="ident">register_int_gauge</span>, <span class="ident">IntGauge</span>};
+<span class="kw">use</span> <span class="ident">diem_secure_push_metrics</span>::{<span class="ident">register_int_gauge</span>, <span class="ident">IntGauge</span>};
 <span class="kw">use</span> <span class="ident">once_cell</span>::<span class="ident">sync</span>::<span class="ident">Lazy</span>;
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">COORDINATOR_TARGET_VERSION</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_coordinator_target_version&quot;</span>,
+        <span class="string">&quot;diem_db_restore_coordinator_target_version&quot;</span>,
         <span class="string">&quot;The target version to restore to by the restore coordinator.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -111,7 +111,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">EPOCH_ENDING_EPOCH</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_epoch_ending_epoch&quot;</span>,
+        <span class="string">&quot;diem_db_restore_epoch_ending_epoch&quot;</span>,
         <span class="string">&quot;Current epoch ending epoch being restored.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -119,7 +119,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">EPOCH_ENDING_VERSION</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_epoch_ending_version&quot;</span>,
+        <span class="string">&quot;diem_db_restore_epoch_ending_version&quot;</span>,
         <span class="string">&quot;Last version of the current epoch ending being restored.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -127,7 +127,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">STATE_SNAPSHOT_VERSION</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_state_snapshot_version&quot;</span>,
+        <span class="string">&quot;diem_db_restore_state_snapshot_version&quot;</span>,
         <span class="string">&quot;The version that a state snapshot restores to.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -135,7 +135,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">STATE_SNAPSHOT_TARGET_LEAF_INDEX</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_state_snapshot_target_leaf_index&quot;</span>,
+        <span class="string">&quot;diem_db_restore_state_snapshot_target_leaf_index&quot;</span>,
         <span class="string">&quot;The biggest leaf index in state snapshot being restored (# of accounts - 1).&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -143,7 +143,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">STATE_SNAPSHOT_LEAF_INDEX</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_state_snapshot_leaf_index&quot;</span>,
+        <span class="string">&quot;diem_db_restore_state_snapshot_leaf_index&quot;</span>,
         <span class="string">&quot;Current leaf index being restored.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -151,7 +151,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TRANSACTION_SAVE_VERSION</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_transaction_save_version&quot;</span>,
+        <span class="string">&quot;diem_db_restore_transaction_save_version&quot;</span>,
         <span class="string">&quot;Version of the transaction being restored without replaying.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -159,7 +159,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TRANSACTION_REPLAY_VERSION</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_transaction_replay_version&quot;</span>,
+        <span class="string">&quot;diem_db_restore_transaction_replay_version&quot;</span>,
         <span class="string">&quot;Version of the transaction being replayed&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -167,7 +167,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">COORDINATOR_START_TS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_coordinator_start_timestamp_s&quot;</span>,
+        <span class="string">&quot;diem_db_restore_coordinator_start_timestamp_s&quot;</span>,
         <span class="string">&quot;Timestamp when the verify coordinator starts.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -175,7 +175,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">COORDINATOR_SUCC_TS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_coordinator_succeed_timestamp_s&quot;</span>,
+        <span class="string">&quot;diem_db_restore_coordinator_succeed_timestamp_s&quot;</span>,
         <span class="string">&quot;Timestamp when the verify coordinator fails.&quot;</span>
     )
     .<span class="ident">unwrap</span>()
@@ -183,7 +183,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">COORDINATOR_FAIL_TS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGauge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_db_restore_coordinator_fail_timestamp_s&quot;</span>,
+        <span class="string">&quot;diem_db_restore_coordinator_fail_timestamp_s&quot;</span>,
         <span class="string">&quot;Timestamp when the verify coordinator fails.&quot;</span>
     )
     .<span class="ident">unwrap</span>()

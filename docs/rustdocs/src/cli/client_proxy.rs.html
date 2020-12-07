@@ -1811,34 +1811,32 @@
 <span id="1808">1808</span>
 <span id="1809">1809</span>
 <span id="1810">1810</span>
-<span id="1811">1811</span>
-<span id="1812">1812</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">commands</span>::{<span class="ident">is_address</span>, <span class="ident">is_authentication_key</span>},
-    <span class="ident">libra_client</span>::<span class="ident">LibraClient</span>,
+    <span class="ident">diem_client</span>::<span class="ident">DiemClient</span>,
     <span class="ident">AccountData</span>, <span class="ident">AccountStatus</span>,
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="ident">ensure</span>, <span class="ident">format_err</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">compiled_stdlib</span>::<span class="ident">StdLibOptions</span>;
 <span class="kw">use</span> <span class="ident">compiler</span>::<span class="ident">Compiler</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>, <span class="ident">Ed25519Signature</span>},
     <span class="ident">test_utils</span>::<span class="ident">KeyPair</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_json_rpc_client</span>::<span class="ident">async_client</span>::{<span class="ident">types</span> <span class="kw">as</span> <span class="ident">jsonrpc</span>, <span class="ident">WaitForTransactionError</span>};
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::{<span class="ident">error</span>, <span class="ident">info</span>};
-<span class="kw">use</span> <span class="ident">libra_temppath</span>::<span class="ident">TempPath</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_json_rpc_client</span>::<span class="ident">async_client</span>::{<span class="ident">types</span> <span class="kw">as</span> <span class="ident">jsonrpc</span>, <span class="ident">WaitForTransactionError</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::{<span class="ident">error</span>, <span class="ident">info</span>};
+<span class="kw">use</span> <span class="ident">diem_temppath</span>::<span class="ident">TempPath</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">access_path</span>::<span class="ident">AccessPath</span>,
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_config</span>::{
-        <span class="ident">from_currency_code_string</span>, <span class="ident">libra_root_address</span>, <span class="ident">testnet_dd_account_address</span>,
+        <span class="ident">diem_root_address</span>, <span class="ident">from_currency_code_string</span>, <span class="ident">testnet_dd_account_address</span>,
         <span class="ident">treasury_compliance_account_address</span>, <span class="ident">type_tag_for_currency_code</span>,
-        <span class="ident">ACCOUNT_RECEIVED_EVENT_PATH</span>, <span class="ident">ACCOUNT_SENT_EVENT_PATH</span>, <span class="ident">COIN1_NAME</span>, <span class="ident">LBR_NAME</span>,
+        <span class="ident">ACCOUNT_RECEIVED_EVENT_PATH</span>, <span class="ident">ACCOUNT_SENT_EVENT_PATH</span>, <span class="ident">XDX_NAME</span>, <span class="ident">XUS_NAME</span>,
     },
     <span class="ident">account_state</span>::<span class="ident">AccountState</span>,
     <span class="ident">chain_id</span>::<span class="ident">ChainId</span>,
@@ -1851,7 +1849,7 @@
     },
     <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_wallet</span>::{<span class="ident">io_utils</span>, <span class="ident">WalletLibrary</span>};
+<span class="kw">use</span> <span class="ident">diem_wallet</span>::{<span class="ident">io_utils</span>, <span class="ident">WalletLibrary</span>};
 <span class="kw">use</span> <span class="ident">num_traits</span>::{
     <span class="ident">cast</span>::{<span class="ident">FromPrimitive</span>, <span class="ident">ToPrimitive</span>},
     <span class="ident">identities</span>::<span class="ident">Zero</span>,
@@ -1911,18 +1909,18 @@
 
 <span class="doccomment">/// Proxy handling CLI commands/inputs.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ClientProxy</span> {
-    <span class="doccomment">/// chain ID of the Libra network this client is interacting with</span>
+    <span class="doccomment">/// chain ID of the Diem network this client is interacting with</span>
     <span class="kw">pub</span> <span class="ident">chain_id</span>: <span class="ident">ChainId</span>,
     <span class="doccomment">/// client for admission control interface.</span>
-    <span class="kw">pub</span> <span class="ident">client</span>: <span class="ident">LibraClient</span>,
+    <span class="kw">pub</span> <span class="ident">client</span>: <span class="ident">DiemClient</span>,
     <span class="doccomment">/// Created accounts.</span>
     <span class="kw">pub</span> <span class="ident">accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountData</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Address to account_ref_id map.</span>
     <span class="ident">address_to_ref_id</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AccountAddress</span>, <span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Host that operates a faucet service</span>
     <span class="ident">faucet_url</span>: <span class="ident">Url</span>,
-    <span class="doccomment">/// Account used for Libra Root operations (e.g., adding a new transaction script)</span>
-    <span class="kw">pub</span> <span class="ident">libra_root_account</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountData</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Account used for Diem Root operations (e.g., adding a new transaction script)</span>
+    <span class="kw">pub</span> <span class="ident">diem_root_account</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountData</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Account used for Treasury Compliance operations</span>
     <span class="kw">pub</span> <span class="ident">tc_account</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountData</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Account used for &quot;minting&quot; operations</span>
@@ -1943,7 +1941,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">chain_id</span>: <span class="ident">ChainId</span>,
         <span class="ident">url</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">libra_root_account_file</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+        <span class="ident">diem_root_account_file</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">tc_account_file</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">testnet_designated_dealer_account_file</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">sync_on_wallet_recovery</span>: <span class="ident">bool</span>,
@@ -1954,22 +1952,22 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="comment">// fail fast if url is not valid</span>
         <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">Url</span>::<span class="ident">parse</span>(<span class="ident">url</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">LibraClient</span>::<span class="ident">new</span>(<span class="ident">url</span>.<span class="ident">clone</span>(), <span class="ident">waypoint</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">DiemClient</span>::<span class="ident">new</span>(<span class="ident">url</span>.<span class="ident">clone</span>(), <span class="ident">waypoint</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">accounts</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
 
-        <span class="kw">let</span> <span class="ident">libra_root_account</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">libra_root_account_file</span>.<span class="ident">is_empty</span>() {
+        <span class="kw">let</span> <span class="ident">diem_root_account</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">diem_root_account_file</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">libra_root_account_key</span> <span class="op">=</span> <span class="ident">generate_key</span>::<span class="ident">load_key</span>(<span class="ident">libra_root_account_file</span>);
-            <span class="kw">let</span> <span class="ident">libra_root_account_data</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">get_account_data_from_address</span>(
+            <span class="kw">let</span> <span class="ident">diem_root_account_key</span> <span class="op">=</span> <span class="ident">generate_key</span>::<span class="ident">load_key</span>(<span class="ident">diem_root_account_file</span>);
+            <span class="kw">let</span> <span class="ident">diem_root_account_data</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">get_account_data_from_address</span>(
                 <span class="kw-2">&amp;</span><span class="ident">client</span>,
-                <span class="ident">libra_root_address</span>(),
+                <span class="ident">diem_root_address</span>(),
                 <span class="bool-val">true</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">KeyPair</span>::<span class="ident">from</span>(<span class="ident">libra_root_account_key</span>)),
+                <span class="prelude-val">Some</span>(<span class="ident">KeyPair</span>::<span class="ident">from</span>(<span class="ident">diem_root_account_key</span>)),
                 <span class="prelude-val">None</span>,
             )<span class="question-mark">?</span>;
-            <span class="prelude-val">Some</span>(<span class="ident">libra_root_account_data</span>)
+            <span class="prelude-val">Some</span>(<span class="ident">diem_root_account_data</span>)
         };
 
         <span class="kw">let</span> <span class="ident">tc_account</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">tc_account_file</span>.<span class="ident">is_empty</span>() {
@@ -2019,10 +2017,10 @@
             <span class="ident">accounts</span>,
             <span class="ident">address_to_ref_id</span>,
             <span class="ident">faucet_url</span>,
-            <span class="ident">libra_root_account</span>,
+            <span class="ident">diem_root_account</span>,
             <span class="ident">tc_account</span>,
             <span class="ident">testnet_designated_dealer_account</span>: <span class="ident">dd_account</span>,
-            <span class="ident">wallet</span>: <span class="self">Self</span>::<span class="ident">get_libra_wallet</span>(<span class="ident">mnemonic_file</span>)<span class="question-mark">?</span>,
+            <span class="ident">wallet</span>: <span class="self">Self</span>::<span class="ident">get_diem_wallet</span>(<span class="ident">mnemonic_file</span>)<span class="question-mark">?</span>,
             <span class="ident">sync_on_wallet_recovery</span>,
             <span class="ident">temp_files</span>: <span class="macro">vec</span><span class="macro">!</span>[],
             <span class="ident">quiet_wait</span>,
@@ -2079,12 +2077,12 @@
             }
         }
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">libra_root_account</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">libra_root_account</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">diem_root_account</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">diem_root_account</span> {
             <span class="macro">println</span><span class="macro">!</span>(
                 <span class="string">&quot;AssocRoot account address: {}, sequence_number: {}, status: {:?}&quot;</span>,
-                <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="ident">libra_root_account</span>.<span class="ident">address</span>),
-                <span class="ident">libra_root_account</span>.<span class="ident">sequence_number</span>,
-                <span class="ident">libra_root_account</span>.<span class="ident">status</span>,
+                <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="ident">diem_root_account</span>.<span class="ident">address</span>),
+                <span class="ident">diem_root_account</span>.<span class="ident">sequence_number</span>,
+                <span class="ident">diem_root_account</span>.<span class="ident">status</span>,
             );
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">tc_account</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tc_account</span> {
@@ -2381,17 +2379,17 @@
         );
         <span class="kw">let</span> <span class="ident">script_body</span> <span class="op">=</span> {
             <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="string">&quot;
-                import 0x1.LibraTransactionPublishingOption;
+                import 0x1.DiemTransactionPublishingOption;
 
                 main(account: &amp;signer) {
-                    LibraTransactionPublishingOption.set_open_script(move(account));
+                    DiemTransactionPublishingOption.set_open_script(move(account));
 
                     return;
                 }
             &quot;</span>;
 
             <span class="kw">let</span> <span class="ident">compiler</span> <span class="op">=</span> <span class="ident">Compiler</span> {
-                <span class="ident">address</span>: <span class="ident">libra_types</span>::<span class="ident">account_config</span>::<span class="ident">CORE_CODE_ADDRESS</span>,
+                <span class="ident">address</span>: <span class="ident">diem_types</span>::<span class="ident">account_config</span>::<span class="ident">CORE_CODE_ADDRESS</span>,
                 <span class="ident">extra_deps</span>: <span class="macro">vec</span><span class="macro">!</span>[],
                 ..<span class="ident">Compiler</span>::<span class="ident">default</span>()
             };
@@ -2399,8 +2397,8 @@
                 .<span class="ident">into_script_blob</span>(<span class="string">&quot;file_name&quot;</span>, <span class="ident">code</span>)
                 .<span class="ident">expect</span>(<span class="string">&quot;Failed to compile&quot;</span>)
         };
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">libra_root_account</span> {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_libra_root_account</span>(
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">diem_root_account</span> {
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_diem_root_account</span>(
                 <span class="ident">TransactionPayload</span>::<span class="ident">Script</span>(<span class="ident">Script</span>::<span class="ident">new</span>(<span class="ident">script_body</span>, <span class="macro">vec</span><span class="macro">!</span>[], <span class="macro">vec</span><span class="macro">!</span>[])),
                 <span class="ident">is_blocking</span>,
             ),
@@ -2423,12 +2421,12 @@
             <span class="ident">space_delim_strings</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">2</span>,
             <span class="string">&quot;Invalid number of arguments for adding hash to script whitelist&quot;</span>
         );
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">libra_root_account</span> {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_libra_root_account</span>(
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">diem_root_account</span> {
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_diem_root_account</span>(
                 <span class="ident">TransactionPayload</span>::<span class="ident">Script</span>(
                     <span class="ident">transaction_builder</span>::<span class="ident">encode_add_to_script_allow_list_script</span>(
                         <span class="ident">hex</span>::<span class="ident">decode</span>(<span class="ident">space_delim_strings</span>[<span class="number">1</span>])<span class="question-mark">?</span>,
-                        <span class="self">self</span>.<span class="ident">libra_root_account</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">sequence_number</span>,
+                        <span class="self">self</span>.<span class="ident">diem_root_account</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">sequence_number</span>,
                     ),
                 ),
                 <span class="ident">is_blocking</span>,
@@ -2437,29 +2435,27 @@
         }
     }
 
-    <span class="doccomment">/// Modify the stored LibraVersion on chain.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">change_libra_version</span>(
+    <span class="doccomment">/// Modify the stored DiemVersion on chain.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">change_diem_version</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">space_delim_strings</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
         <span class="ident">is_blocking</span>: <span class="ident">bool</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">ensure</span><span class="macro">!</span>(
-            <span class="ident">space_delim_strings</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;change_libra_version&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">space_delim_strings</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;v&quot;</span>,
-            <span class="string">&quot;inconsistent command &#39;{}&#39; for change_libra_version&quot;</span>,
+            <span class="ident">space_delim_strings</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;change_diem_version&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">space_delim_strings</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;v&quot;</span>,
+            <span class="string">&quot;inconsistent command &#39;{}&#39; for change_diem_version&quot;</span>,
             <span class="ident">space_delim_strings</span>[<span class="number">0</span>]
         );
         <span class="macro">ensure</span><span class="macro">!</span>(
             <span class="ident">space_delim_strings</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">2</span>,
-            <span class="string">&quot;Invalid number of arguments for changing libra_version&quot;</span>
+            <span class="string">&quot;Invalid number of arguments for changing diem_version&quot;</span>
         );
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">libra_root_account</span> {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_libra_root_account</span>(
-                <span class="ident">TransactionPayload</span>::<span class="ident">Script</span>(
-                    <span class="ident">transaction_builder</span>::<span class="ident">encode_update_libra_version_script</span>(
-                        <span class="self">self</span>.<span class="ident">libra_root_account</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">sequence_number</span>,
-                        <span class="ident">space_delim_strings</span>[<span class="number">1</span>].<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(),
-                    ),
-                ),
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">diem_root_account</span> {
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_diem_root_account</span>(
+                <span class="ident">TransactionPayload</span>::<span class="ident">Script</span>(<span class="ident">transaction_builder</span>::<span class="ident">encode_update_diem_version_script</span>(
+                    <span class="self">self</span>.<span class="ident">diem_root_account</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">sequence_number</span>,
+                    <span class="ident">space_delim_strings</span>[<span class="number">1</span>].<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(),
+                )),
                 <span class="ident">is_blocking</span>,
             ),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented</span><span class="macro">!</span>(),
@@ -2482,8 +2478,8 @@
             <span class="string">&quot;Invalid number of arguments for upgrading_stdlib_transaction&quot;</span>
         );
 
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">libra_root_account</span> {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_libra_root_account</span>(
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">diem_root_account</span> {
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">association_transaction_with_local_diem_root_account</span>(
                 <span class="ident">TransactionPayload</span>::<span class="ident">WriteSet</span>(<span class="ident">WriteSetPayload</span>::<span class="ident">Direct</span>(
                     <span class="ident">transaction_builder</span>::<span class="ident">encode_stdlib_upgrade_transaction</span>(<span class="ident">StdLibOptions</span>::<span class="ident">Fresh</span>),
                 )),
@@ -2635,7 +2631,7 @@
             <span class="ident">sender_sequence_number</span>,
             <span class="ident">max_gas_amount</span>.<span class="ident">unwrap_or</span>(<span class="ident">MAX_GAS_AMOUNT</span>),
             <span class="ident">gas_unit_price</span>.<span class="ident">unwrap_or</span>(<span class="ident">GAS_UNIT_PRICE</span>),
-            <span class="ident">gas_currency_code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">COIN1_NAME</span>.<span class="ident">to_owned</span>()),
+            <span class="ident">gas_currency_code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">XUS_NAME</span>.<span class="ident">to_owned</span>()),
             <span class="ident">TX_EXPIRATION</span>,
             <span class="self">self</span>.<span class="ident">chain_id</span>,
         ))
@@ -3101,9 +3097,9 @@
 
     <span class="doccomment">/// Update account seq</span>
     <span class="kw">fn</span> <span class="ident">update_account_seq</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">AccountAddress</span>, <span class="ident">seq</span>: <span class="ident">u64</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">libra_root_account</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">libra_root_account</span> {
-            <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">libra_root_account</span>.<span class="ident">address</span> <span class="op">=</span><span class="op">=</span> <span class="ident">address</span> {
-                <span class="ident">libra_root_account</span>.<span class="ident">sequence_number</span> <span class="op">=</span> <span class="ident">seq</span>;
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">diem_root_account</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">diem_root_account</span> {
+            <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">diem_root_account</span>.<span class="ident">address</span> <span class="op">=</span><span class="op">=</span> <span class="ident">address</span> {
+                <span class="ident">diem_root_account</span>.<span class="ident">sequence_number</span> <span class="op">=</span> <span class="ident">seq</span>;
             }
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">tc_account</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tc_account</span> {
@@ -3137,7 +3133,7 @@
     <span class="doccomment">/// Sync with validator for account sequence number in case it is already created on chain.</span>
     <span class="doccomment">/// This assumes we have a very low probability of mnemonic word conflict.</span>
     <span class="kw">fn</span> <span class="ident">get_account_data_from_address</span>(
-        <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">LibraClient</span>,
+        <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">DiemClient</span>,
         <span class="ident">address</span>: <span class="ident">AccountAddress</span>,
         <span class="ident">sync_with_validator</span>: <span class="ident">bool</span>,
         <span class="ident">key_pair</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">KeyPair</span><span class="op">&lt;</span><span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -3171,7 +3167,7 @@
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">get_libra_wallet</span>(<span class="ident">mnemonic_file</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WalletLibrary</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_diem_wallet</span>(<span class="ident">mnemonic_file</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WalletLibrary</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">wallet_recovery_file_path</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">input_mnemonic_word</span>) <span class="op">=</span> <span class="ident">mnemonic_file</span> {
             <span class="ident">Path</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">input_mnemonic_word</span>).<span class="ident">to_path_buf</span>()
         } <span class="kw">else</span> {
@@ -3228,16 +3224,16 @@
         <span class="prelude-val">Ok</span>(<span class="ident">auth_key</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">association_transaction_with_local_libra_root_account</span>(
+    <span class="kw">fn</span> <span class="ident">association_transaction_with_local_diem_root_account</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">payload</span>: <span class="ident">TransactionPayload</span>,
         <span class="ident">is_blocking</span>: <span class="ident">bool</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">ensure</span><span class="macro">!</span>(
-            <span class="self">self</span>.<span class="ident">libra_root_account</span>.<span class="ident">is_some</span>(),
+            <span class="self">self</span>.<span class="ident">diem_root_account</span>.<span class="ident">is_some</span>(),
             <span class="string">&quot;No assoc root account loaded&quot;</span>
         );
-        <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">libra_root_account</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">diem_root_account</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">txn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_txn_to_submit</span>(<span class="ident">payload</span>, <span class="ident">sender</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
 
         <span class="self">self</span>.<span class="ident">submit_and_wait</span>(<span class="kw-2">&amp;</span><span class="ident">txn</span>, <span class="ident">is_blocking</span>)<span class="question-mark">?</span>;
@@ -3325,7 +3321,7 @@
         <span class="ident">scaling_factor</span>: <span class="ident">i64</span>,
         <span class="ident">fractional_part</span>: <span class="ident">i64</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-        <span class="macro">ensure</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">input</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;Empty input not allowed for libra unit&quot;</span>);
+        <span class="macro">ensure</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">input</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;Empty input not allowed for diem unit&quot;</span>);
         <span class="kw">let</span> <span class="ident">max_value</span> <span class="op">=</span> <span class="ident">Decimal</span>::<span class="ident">from_u64</span>(<span class="ident">std</span>::<span class="ident">u64</span>::<span class="ident">MAX</span>).<span class="ident">unwrap</span>() <span class="op">/</span> <span class="ident">Decimal</span>::<span class="ident">new</span>(<span class="ident">scaling_factor</span>, <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">scale</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">find</span>(<span class="string">&#39;.&#39;</span>).<span class="ident">unwrap_or</span>(<span class="ident">input</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">digits_after_decimal</span> <span class="op">=</span> <span class="ident">input</span>
@@ -3368,10 +3364,10 @@
         <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">currency</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-        <span class="macro">ensure</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">input</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;Empty input not allowed for libra unit&quot;</span>);
+        <span class="macro">ensure</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">input</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;Empty input not allowed for diem unit&quot;</span>);
         <span class="macro">ensure</span><span class="macro">!</span>(
-            <span class="ident">currency</span> <span class="op">!</span><span class="op">=</span> <span class="ident">LBR_NAME</span>,
-            <span class="string">&quot;LBR not allowed to be minted or transferred. Use Coin1 instead&quot;</span>
+            <span class="ident">currency</span> <span class="op">!</span><span class="op">=</span> <span class="ident">XDX_NAME</span>,
+            <span class="string">&quot;XDX not allowed to be minted or transferred. Use XUS instead&quot;</span>
         );
         <span class="comment">// This is not supposed to panic as it is used as constant here.</span>
         <span class="kw">let</span> <span class="ident">currencies_info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">get_currency_info</span>()<span class="question-mark">?</span>;
@@ -3411,7 +3407,7 @@
             <span class="ident">sender_account</span>.<span class="ident">sequence_number</span>,
             <span class="ident">max_gas_amount</span>.<span class="ident">unwrap_or</span>(<span class="ident">MAX_GAS_AMOUNT</span>),
             <span class="ident">gas_unit_price</span>.<span class="ident">unwrap_or</span>(<span class="ident">GAS_UNIT_PRICE</span>),
-            <span class="ident">gas_currency_code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">COIN1_NAME</span>.<span class="ident">to_owned</span>()),
+            <span class="ident">gas_currency_code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">XUS_NAME</span>.<span class="ident">to_owned</span>()),
             <span class="ident">TX_EXPIRATION</span>,
             <span class="self">self</span>.<span class="ident">chain_id</span>,
         )
@@ -3458,12 +3454,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">client_proxy</span>::{<span class="ident">parse_bool</span>, <span class="ident">AddressAndIndex</span>, <span class="ident">ClientProxy</span>};
-    <span class="kw">use</span> <span class="ident">libra_temppath</span>::<span class="ident">TempPath</span>;
-    <span class="kw">use</span> <span class="ident">libra_types</span>::{
+    <span class="kw">use</span> <span class="ident">diem_temppath</span>::<span class="ident">TempPath</span>;
+    <span class="kw">use</span> <span class="ident">diem_types</span>::{
         <span class="ident">chain_id</span>::<span class="ident">ChainId</span>, <span class="ident">ledger_info</span>::<span class="ident">LedgerInfo</span>, <span class="ident">on_chain_config</span>::<span class="ident">ValidatorSet</span>,
         <span class="ident">waypoint</span>::<span class="ident">Waypoint</span>,
     };
-    <span class="kw">use</span> <span class="ident">libra_wallet</span>::<span class="ident">io_utils</span>;
+    <span class="kw">use</span> <span class="ident">diem_wallet</span>::<span class="ident">io_utils</span>;
     <span class="kw">use</span> <span class="ident">proptest</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 
     <span class="kw">fn</span> <span class="ident">generate_accounts_from_wallet</span>(<span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">ClientProxy</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AddressAndIndex</span><span class="op">&gt;</span>) {
@@ -3516,7 +3512,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_micro_libra_conversion</span>() {
+    <span class="kw">fn</span> <span class="ident">test_micro_diem_conversion</span>() {
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="string">&quot;&quot;</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>).<span class="ident">is_err</span>());
         <span class="macro">assert</span><span class="macro">!</span>(
             <span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="string">&quot;-11&quot;</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>).<span class="ident">is_err</span>()
@@ -3536,7 +3532,7 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="string">&quot;1&quot;</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="string">&quot;0.1&quot;</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="string">&quot;1.1&quot;</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>).<span class="ident">is_ok</span>());
-        <span class="comment">// Max of micro libra is u64::MAX (18446744073709551615).</span>
+        <span class="comment">// Max of micro diem is u64::MAX (18446744073709551615).</span>
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(
             <span class="string">&quot;18446744073709.551615&quot;</span>,
             <span class="number">1_000_000</span>,
@@ -3611,16 +3607,16 @@
     <span class="macro">proptest</span><span class="macro">!</span> {
         <span class="comment">// Proptest is used to verify that the conversion will not panic with random input.</span>
         <span class="attribute">#[<span class="ident">test</span>]</span>
-        <span class="kw">fn</span> <span class="ident">test_micro_libra_conversion_random_string</span>(<span class="ident">req</span> <span class="kw">in</span> <span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()) {
+        <span class="kw">fn</span> <span class="ident">test_micro_diem_conversion_random_string</span>(<span class="ident">req</span> <span class="kw">in</span> <span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()) {
             <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>);
         }
         <span class="attribute">#[<span class="ident">test</span>]</span>
-        <span class="kw">fn</span> <span class="ident">test_micro_libra_conversion_random_f64</span>(<span class="ident">req</span> <span class="kw">in</span> <span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>()) {
+        <span class="kw">fn</span> <span class="ident">test_micro_diem_conversion_random_f64</span>(<span class="ident">req</span> <span class="kw">in</span> <span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>()) {
             <span class="kw">let</span> <span class="ident">req_str</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">to_string</span>();
             <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="kw-2">&amp;</span><span class="ident">req_str</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>);
         }
         <span class="attribute">#[<span class="ident">test</span>]</span>
-        <span class="kw">fn</span> <span class="ident">test_micro_libra_conversion_random_u64</span>(<span class="ident">req</span> <span class="kw">in</span> <span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()) {
+        <span class="kw">fn</span> <span class="ident">test_micro_diem_conversion_random_u64</span>(<span class="ident">req</span> <span class="kw">in</span> <span class="ident">any</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()) {
             <span class="kw">let</span> <span class="ident">req_str</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">to_string</span>();
             <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">ClientProxy</span>::<span class="ident">convert_to_scaled_representation</span>(<span class="kw-2">&amp;</span><span class="ident">req_str</span>, <span class="number">1_000_000</span>, <span class="number">1_000_000</span>);
         }

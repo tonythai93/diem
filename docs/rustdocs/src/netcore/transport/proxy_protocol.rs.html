@@ -336,7 +336,7 @@
 <span id="333">333</span>
 <span id="334">334</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! # An implementation of ProxyProtocol for HAProxy</span>
@@ -353,8 +353,8 @@
 <span class="doccomment">//! - An address space that doesn&#39;t match the size expected is rejected e.g. too big for IPv4</span>
 <span class="doccomment">//! - Address space that&#39;s larger than the current supported requests is rejected</span>
 
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncReadExt</span>};
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert</span>::<span class="ident">TryInto</span>,
     <span class="ident">io</span>,

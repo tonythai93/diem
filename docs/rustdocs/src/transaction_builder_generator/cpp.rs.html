@@ -278,11 +278,11 @@
 <span id="275">275</span>
 <span id="276">276</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::{<span class="ident">ArgumentABI</span>, <span class="ident">ScriptABI</span>, <span class="ident">TypeArgumentABI</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::{<span class="ident">ArgumentABI</span>, <span class="ident">ScriptABI</span>, <span class="ident">TypeArgumentABI</span>};
 <span class="kw">use</span> <span class="ident">move_core_types</span>::<span class="ident">language_storage</span>::<span class="ident">TypeTag</span>;
 <span class="kw">use</span> <span class="ident">serde_generate</span>::<span class="ident">indent</span>::{<span class="ident">IndentConfig</span>, <span class="ident">IndentedWriter</span>};
 
@@ -367,7 +367,7 @@
             <span class="self">self</span>.<span class="ident">out</span>,
             <span class="string">r#&quot;#pragma once
 
-#include &quot;libra_types.hpp&quot;
+#include &quot;diem_types.hpp&quot;
 &quot;#</span>
         )
     }
@@ -377,7 +377,7 @@
             <span class="self">self</span>.<span class="ident">out</span>,
             <span class="string">r#&quot;
 using namespace serde;
-using namespace libra_types;
+using namespace diem_types;
 &quot;#</span>
         )
     }

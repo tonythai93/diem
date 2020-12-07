@@ -90,7 +90,7 @@
 <span id="87">87</span>
 <span id="88">88</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">error</span>::<span class="ident">MempoolError</span>, <span class="ident">state_replication</span>::<span class="ident">TxnManager</span>, <span class="ident">txn_manager</span>::<span class="ident">MempoolProxy</span>};
@@ -99,13 +99,13 @@
     <span class="ident">block</span>::{<span class="ident">block_test_utils</span>::<span class="ident">random_payload</span>, <span class="ident">Block</span>},
     <span class="ident">common</span>::<span class="ident">Payload</span>,
 };
-<span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">StateComputeResult</span>;
-<span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">channel</span>::<span class="ident">mpsc</span>;
-<span class="kw">use</span> <span class="ident">libra_mempool</span>::<span class="ident">ConsensusRequest</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_mempool</span>::<span class="ident">ConsensusRequest</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">transaction</span>::<span class="ident">TransactionStatus</span>,
     <span class="ident">vm_status</span>::{<span class="ident">KeptVMStatus</span>, <span class="ident">StatusCode</span>},
 };
+<span class="kw">use</span> <span class="ident">executor_types</span>::<span class="ident">StateComputeResult</span>;
+<span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">channel</span>::<span class="ident">mpsc</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">Rng</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>

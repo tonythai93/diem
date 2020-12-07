@@ -49,7 +49,7 @@
 <span id="46">46</span>
 <span id="47">47</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">prometheus</span>::<span class="ident">Prometheus</span>;
@@ -74,14 +74,14 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">avg_txns_per_block</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">query_avg</span>(
             <span class="string">&quot;txn_per_block&quot;</span>,
-            <span class="string">&quot;irate(libra_consensus_num_txns_per_block_sum[1m])/irate(libra_consensus_num_txns_per_block_count[1m])&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;irate(diem_consensus_num_txns_per_block_sum[1m])/irate(diem_consensus_num_txns_per_block_count[1m])&quot;</span>.<span class="ident">to_string</span>(),
         )
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">avg_backup_bytes_per_second</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">query_avg</span>(
             <span class="string">&quot;backup_bytes_per_second&quot;</span>,
-            <span class="string">&quot;sum(irate(libra_backup_service_sent_bytes[1m])) by(peer_id)&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;sum(irate(diem_backup_service_sent_bytes[1m])) by(peer_id)&quot;</span>.<span class="ident">to_string</span>(),
         )
     }
 }

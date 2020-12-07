@@ -960,7 +960,7 @@
 <span id="957">957</span>
 <span id="958">958</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! The ConnectivityManager actor is responsible for ensuring that we are</span>
@@ -993,17 +993,17 @@
     <span class="ident">logging</span>::<span class="ident">NetworkSchema</span>,
     <span class="ident">peer_manager</span>::{<span class="self">self</span>, <span class="ident">conn_notifs_channel</span>, <span class="ident">ConnectionRequestSender</span>, <span class="ident">PeerManagerError</span>},
 };
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">x25519</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">RwLock</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">channel</span>::<span class="ident">oneshot</span>,
     <span class="ident">future</span>::{<span class="ident">BoxFuture</span>, <span class="ident">FutureExt</span>},
     <span class="ident">stream</span>::{<span class="ident">FusedStream</span>, <span class="ident">FuturesUnordered</span>, <span class="ident">Stream</span>, <span class="ident">StreamExt</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">x25519</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">RwLock</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">num_variants</span>::<span class="ident">NumVariants</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::{
     <span class="ident">prelude</span>::{<span class="ident">SeedableRng</span>, <span class="ident">SmallRng</span>},

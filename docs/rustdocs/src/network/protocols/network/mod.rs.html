@@ -305,10 +305,10 @@
 <span id="302">302</span>
 <span id="303">303</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="doccomment">//! Convenience Network API for Libra</span>
+<span class="doccomment">//! Convenience Network API for Diem</span>
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">protocols</span>::<span class="ident">rpc</span>::<span class="ident">error</span>::<span class="ident">RpcError</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -320,16 +320,16 @@
     <span class="ident">ProtocolId</span>,
 };
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
-<span class="kw">use</span> <span class="ident">channel</span>::<span class="ident">libra_channel</span>;
+<span class="kw">use</span> <span class="ident">channel</span>::<span class="ident">diem_channel</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">channel</span>::<span class="ident">oneshot</span>,
     <span class="ident">future</span>,
     <span class="ident">stream</span>::{<span class="ident">FilterMap</span>, <span class="ident">FusedStream</span>, <span class="ident">Map</span>, <span class="ident">Select</span>, <span class="ident">Stream</span>, <span class="ident">StreamExt</span>},
     <span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::<span class="ident">ConnectionOrigin</span>;
 <span class="kw">use</span> <span class="ident">pin_project</span>::<span class="ident">pin_project</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>, <span class="ident">Serialize</span>};
@@ -390,12 +390,12 @@
     <span class="attribute">#[<span class="ident">pin</span>]</span>
     <span class="ident">event_stream</span>: <span class="ident">Select</span><span class="op">&lt;</span>
         <span class="ident">FilterMap</span><span class="op">&lt;</span>
-            <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
+            <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
             <span class="ident">future</span>::<span class="ident">Ready</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="ident">TMessage</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="kw">fn</span>(<span class="ident">PeerManagerNotification</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">future</span>::<span class="ident">Ready</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="ident">TMessage</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="op">&gt;</span>,
         <span class="ident">Map</span><span class="op">&lt;</span>
-            <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>,
+            <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>,
             <span class="kw">fn</span>(<span class="ident">ConnectionNotification</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">TMessage</span><span class="op">&gt;</span>,
         <span class="op">&gt;</span>,
     <span class="op">&gt;</span>,
@@ -405,15 +405,15 @@
 <span class="doccomment">/// Trait specifying the signature for `new()` `NetworkEvents`</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">NewNetworkEvents</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">peer_mgr_notifs_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
-        <span class="ident">connection_notifs_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>,
+        <span class="ident">peer_mgr_notifs_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
+        <span class="ident">connection_notifs_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TMessage</span>: <span class="ident">Message</span><span class="op">&gt;</span> <span class="ident">NewNetworkEvents</span> <span class="kw">for</span> <span class="ident">NetworkEvents</span><span class="op">&lt;</span><span class="ident">TMessage</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">peer_mgr_notifs_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
-        <span class="ident">connection_notifs_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>,
+        <span class="ident">peer_mgr_notifs_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
+        <span class="ident">connection_notifs_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionNotification</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">data_event_stream</span> <span class="op">=</span> <span class="ident">peer_mgr_notifs_rx</span>.<span class="ident">filter_map</span>(
             <span class="ident">peer_mgr_notif_to_event</span>
@@ -504,7 +504,7 @@
 <span class="doccomment">/// keys.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `NetworkSender` is in fact a thin wrapper around a `PeerManagerRequestSender`, which in turn is</span>
-<span class="doccomment">/// a thin wrapper on `libra_channel::Sender&lt;(PeerId, ProtocolId), PeerManagerRequest&gt;`,</span>
+<span class="doccomment">/// a thin wrapper on `diem_channel::Sender&lt;(PeerId, ProtocolId), PeerManagerRequest&gt;`,</span>
 <span class="doccomment">/// mostly focused on providing a more ergonomic API. However, network applications will usually</span>
 <span class="doccomment">/// provide their own thin wrapper around `NetworkSender` that narrows the API to the specific</span>
 <span class="doccomment">/// interface they need. For instance, `mempool` only requires direct-send functionality so its</span>

@@ -154,7 +154,7 @@
 <span id="151">151</span>
 <span id="152">152</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -165,8 +165,8 @@
     <span class="ident">instance</span>::<span class="ident">Instance</span>,
 };
 <span class="kw">use</span> <span class="ident">debug_interface</span>::<span class="ident">AsyncNodeDebugClient</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::{<span class="ident">duration_since_epoch</span>, <span class="ident">Mutex</span>};
-<span class="kw">use</span> <span class="ident">libra_logger</span>::{<span class="ident">json_log</span>::<span class="ident">JsonLogEntry</span> <span class="kw">as</span> <span class="ident">DebugInterfaceEvent</span>, <span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::{<span class="ident">duration_since_epoch</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::{<span class="ident">json_log</span>::<span class="ident">JsonLogEntry</span> <span class="kw">as</span> <span class="ident">DebugInterfaceEvent</span>, <span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="self">self</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">json</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">env</span>,

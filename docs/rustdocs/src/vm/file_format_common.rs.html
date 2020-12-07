@@ -438,7 +438,7 @@
 <span id="435">435</span>
 <span id="436">436</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Constants for the binary format.</span>
@@ -463,11 +463,11 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BinaryConstants</span> {}
 <span class="kw">impl</span> <span class="ident">BinaryConstants</span> {
     <span class="doccomment">/// The blob that must start a binary.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIBRA_MAGIC_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LIBRA_MAGIC</span>: [<span class="ident">u8</span>; <span class="ident">BinaryConstants</span>::<span class="ident">LIBRA_MAGIC_SIZE</span>] <span class="op">=</span> [<span class="number">0xA1</span>, <span class="number">0x1C</span>, <span class="number">0xEB</span>, <span class="number">0x0B</span>];
-    <span class="doccomment">/// The `LIBRA_MAGIC` size, 4 byte for major version and 1 byte</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DIEM_MAGIC_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DIEM_MAGIC</span>: [<span class="ident">u8</span>; <span class="ident">BinaryConstants</span>::<span class="ident">DIEM_MAGIC_SIZE</span>] <span class="op">=</span> [<span class="number">0xA1</span>, <span class="number">0x1C</span>, <span class="number">0xEB</span>, <span class="number">0x0B</span>];
+    <span class="doccomment">/// The `DIEM_MAGIC` size, 4 byte for major version and 1 byte</span>
     <span class="doccomment">/// for table count.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEADER_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">BinaryConstants</span>::<span class="ident">LIBRA_MAGIC_SIZE</span> <span class="op">+</span> <span class="number">5</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEADER_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">BinaryConstants</span>::<span class="ident">DIEM_MAGIC_SIZE</span> <span class="op">+</span> <span class="number">5</span>;
     <span class="doccomment">/// A (Table Type, Start Offset, Byte Count) size, which is 1 byte for the type and</span>
     <span class="doccomment">/// 4 bytes for the offset/count.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TABLE_HEADER_SIZE</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span> <span class="op">*</span> <span class="number">2</span> <span class="op">+</span> <span class="number">1</span>;

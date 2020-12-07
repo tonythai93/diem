@@ -158,15 +158,15 @@
 <span id="155">155</span>
 <span id="156">156</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module provides mock dbreader for tests.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">DbReader</span>, <span class="ident">Order</span>, <span class="ident">StartupInfo</span>, <span class="ident">TreeState</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_config</span>::<span class="ident">AccountResource</span>,
     <span class="ident">account_state</span>::<span class="ident">AccountState</span>,

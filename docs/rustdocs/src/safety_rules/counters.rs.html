@@ -49,10 +49,10 @@
 <span id="46">46</span>
 <span id="47">47</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="ident">libra_secure_push_metrics</span>::{
+<span class="kw">use</span> <span class="ident">diem_secure_push_metrics</span>::{
     <span class="ident">register_histogram_vec</span>, <span class="ident">register_int_counter_vec</span>, <span class="ident">register_int_gauge_vec</span>, <span class="ident">HistogramTimer</span>,
     <span class="ident">HistogramVec</span>, <span class="ident">IntCounterVec</span>, <span class="ident">IntGaugeVec</span>,
 };
@@ -60,7 +60,7 @@
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">LATENCY</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">HistogramVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram_vec</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_safety_rules_latency&quot;</span>,
+        <span class="string">&quot;diem_safety_rules_latency&quot;</span>,
         <span class="string">&quot;Time to perform an operation&quot;</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;source&quot;</span>, <span class="string">&quot;field&quot;</span>]
     )
@@ -69,7 +69,7 @@
 
 <span class="kw">static</span> <span class="ident">QUERY_COUNTER</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntCounterVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_counter_vec</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_safety_rules_queries&quot;</span>,
+        <span class="string">&quot;diem_safety_rules_queries&quot;</span>,
         <span class="string">&quot;Outcome of calling into LSR&quot;</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;method&quot;</span>, <span class="string">&quot;result&quot;</span>]
     )
@@ -78,7 +78,7 @@
 
 <span class="kw">static</span> <span class="ident">STATE_GAUGE</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGaugeVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_gauge_vec</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_safety_rules_state&quot;</span>,
+        <span class="string">&quot;diem_safety_rules_state&quot;</span>,
         <span class="string">&quot;Current internal state of LSR&quot;</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;field&quot;</span>]
     )

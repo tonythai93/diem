@@ -1225,7 +1225,7 @@
 <span id="1222">1222</span>
 <span id="1223">1223</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! The PeerManager module is responsible for establishing connections between Peers and for</span>
@@ -1252,7 +1252,11 @@
 };
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="ident">format_err</span>;
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
-<span class="kw">use</span> <span class="ident">channel</span>::{<span class="self">self</span>, <span class="ident">libra_channel</span>};
+<span class="kw">use</span> <span class="ident">channel</span>::{<span class="self">self</span>, <span class="ident">diem_channel</span>};
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_network_address</span>::<span class="ident">NetworkAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">channel</span>::<span class="ident">oneshot</span>,
     <span class="ident">future</span>::{<span class="ident">BoxFuture</span>, <span class="ident">FutureExt</span>},
@@ -1260,10 +1264,6 @@
     <span class="ident">sink</span>::<span class="ident">SinkExt</span>,
     <span class="ident">stream</span>::{<span class="ident">Fuse</span>, <span class="ident">FuturesUnordered</span>, <span class="ident">StreamExt</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_network_address</span>::<span class="ident">NetworkAddress</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">PeerId</span>;
 <span class="kw">use</span> <span class="ident">netcore</span>::<span class="ident">transport</span>::{<span class="ident">ConnectionOrigin</span>, <span class="ident">Transport</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -1351,19 +1351,19 @@
 <span class="doccomment">/// from PeerManager.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PeerManagerRequestSender</span> {
-    <span class="ident">inner</span>: <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Convenience wrapper which makes it easy to issue connection requests and await the responses</span>
 <span class="doccomment">/// from PeerManager.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ConnectionRequestSender</span> {
-    <span class="ident">inner</span>: <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PeerManagerRequestSender</span> {
     <span class="doccomment">/// Construct a new PeerManagerRequestSender with a raw channel::Sender</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">inner</span> }
     }
 
@@ -1440,8 +1440,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ConnectionRequestSender</span> {
-    <span class="doccomment">/// Construct a new ConnectionRequestSender with a raw libra_channel::Sender</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="doccomment">/// Construct a new ConnectionRequestSender with a raw diem_channel::Sender</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">inner</span> }
     }
 
@@ -1482,15 +1482,15 @@
         <span class="ident">PeerId</span>,
         (
             <span class="ident">ConnectionMetadata</span>,
-            <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">ProtocolId</span>, <span class="ident">NetworkRequest</span><span class="op">&gt;</span>,
+            <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">ProtocolId</span>, <span class="ident">NetworkRequest</span><span class="op">&gt;</span>,
         ),
     <span class="op">&gt;</span>,
     <span class="doccomment">/// Channel to receive requests from other actors.</span>
-    <span class="ident">requests_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>,
+    <span class="ident">requests_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Upstream handlers for RPC and DirectSend protocols. The handlers are promised fair delivery</span>
     <span class="doccomment">/// of messages across (PeerId, ProtocolId).</span>
     <span class="ident">upstream_handlers</span>:
-        <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ProtocolId</span>, <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ProtocolId</span>, <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Channels to send NewPeer/LostPeer notifications to.</span>
     <span class="ident">connection_event_handlers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">conn_notifs_channel</span>::<span class="ident">Sender</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Channel used to send Dial requests to the ConnectionHandler actor</span>
@@ -1498,7 +1498,7 @@
     <span class="doccomment">/// Sender for connection events.</span>
     <span class="ident">transport_notifs_tx</span>: <span class="ident">channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">TransportNotification</span><span class="op">&lt;</span><span class="ident">TSocket</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Receiver for connection requests.</span>
-    <span class="ident">connection_reqs_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>,
+    <span class="ident">connection_reqs_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Receiver for connection events.</span>
     <span class="ident">transport_notifs_rx</span>: <span class="ident">channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">TransportNotification</span><span class="op">&lt;</span><span class="ident">TSocket</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A map of outstanding disconnect requests.</span>
@@ -1530,11 +1530,11 @@
         <span class="ident">transport</span>: <span class="ident">TTransport</span>,
         <span class="ident">network_context</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">NetworkContext</span><span class="op">&gt;</span>,
         <span class="ident">listen_addr</span>: <span class="ident">NetworkAddress</span>,
-        <span class="ident">requests_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>,
-        <span class="ident">connection_reqs_rx</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>,
+        <span class="ident">requests_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerRequest</span><span class="op">&gt;</span>,
+        <span class="ident">connection_reqs_rx</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">ConnectionRequest</span><span class="op">&gt;</span>,
         <span class="ident">upstream_handlers</span>: <span class="ident">HashMap</span><span class="op">&lt;</span>
             <span class="ident">ProtocolId</span>,
-            <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
+            <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
         <span class="op">&gt;</span>,
         <span class="ident">connection_event_handlers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">conn_notifs_channel</span>::<span class="ident">Sender</span><span class="op">&gt;</span>,
         <span class="ident">channel_size</span>: <span class="ident">usize</span>,
@@ -1594,7 +1594,7 @@
         <span class="kw">let</span> <span class="ident">outbound</span> <span class="op">=</span> <span class="ident">total</span>.<span class="ident">saturating_sub</span>(<span class="ident">inbound</span>);
         <span class="kw">let</span> <span class="ident">role</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">network_context</span>.<span class="ident">role</span>().<span class="ident">as_str</span>();
 
-        <span class="ident">counters</span>::<span class="ident">LIBRA_NETWORK_PEERS</span>
+        <span class="ident">counters</span>::<span class="ident">DIEM_NETWORK_PEERS</span>
             .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">role</span>, <span class="string">&quot;connected&quot;</span>])
             .<span class="ident">set</span>(<span class="ident">total</span> <span class="kw">as</span> <span class="ident">i64</span>);
 
@@ -2039,7 +2039,7 @@
     <span class="kw">fn</span> <span class="ident">spawn_peer_network_events_handler</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">peer_id</span>: <span class="ident">PeerId</span>,
-        <span class="ident">network_events</span>: <span class="ident">libra_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">ProtocolId</span>, <span class="ident">NetworkNotification</span><span class="op">&gt;</span>,
+        <span class="ident">network_events</span>: <span class="ident">diem_channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">ProtocolId</span>, <span class="ident">NetworkNotification</span><span class="op">&gt;</span>,
     ) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">upstream_handlers</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">upstream_handlers</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">network_context</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">network_context</span>.<span class="ident">clone</span>();
@@ -2063,14 +2063,14 @@
         <span class="ident">peer_id</span>: <span class="ident">PeerId</span>,
         <span class="ident">upstream_handlers</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span>
             <span class="ident">ProtocolId</span>,
-            <span class="ident">libra_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
+            <span class="ident">diem_channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ProtocolId</span>), <span class="ident">PeerManagerNotification</span><span class="op">&gt;</span>,
         <span class="op">&gt;</span>,
     ) {
         <span class="kw">match</span> <span class="ident">inbound_event</span> {
             <span class="ident">NetworkNotification</span>::<span class="ident">RecvMessage</span>(<span class="ident">msg</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">protocol_id</span> <span class="op">=</span> <span class="ident">msg</span>.<span class="ident">protocol_id</span>;
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handler</span>) <span class="op">=</span> <span class="ident">upstream_handlers</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">protocol_id</span>) {
-                    <span class="comment">// Send over libra channel for fairness.</span>
+                    <span class="comment">// Send over diem channel for fairness.</span>
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">send_err</span>) <span class="op">=</span> <span class="ident">handler</span>.<span class="ident">push</span>(
                         (<span class="ident">peer_id</span>, <span class="ident">protocol_id</span>),
                         <span class="ident">PeerManagerNotification</span>::<span class="ident">RecvMessage</span>(<span class="ident">peer_id</span>, <span class="ident">msg</span>),
@@ -2096,7 +2096,7 @@
             <span class="ident">NetworkNotification</span>::<span class="ident">RecvRpc</span>(<span class="ident">rpc_req</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">protocol_id</span> <span class="op">=</span> <span class="ident">rpc_req</span>.<span class="ident">protocol_id</span>;
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handler</span>) <span class="op">=</span> <span class="ident">upstream_handlers</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">protocol_id</span>) {
-                    <span class="comment">// Send over libra channel for fairness.</span>
+                    <span class="comment">// Send over diem channel for fairness.</span>
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">handler</span>.<span class="ident">push</span>(
                         (<span class="ident">peer_id</span>, <span class="ident">protocol_id</span>),
                         <span class="ident">PeerManagerNotification</span>::<span class="ident">RecvRpc</span>(<span class="ident">peer_id</span>, <span class="ident">rpc_req</span>),

@@ -328,7 +328,7 @@
 <span id="325">325</span>
 <span id="326">326</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
@@ -341,8 +341,8 @@
     <span class="ident">tx_emitter</span>::<span class="ident">EmitJobRequest</span>,
 };
 <span class="kw">use</span> <span class="ident">async_trait</span>::<span class="ident">async_trait</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">future</span>::<span class="ident">try_join_all</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::<span class="ident">HashSet</span>,
     <span class="ident">env</span>, <span class="ident">fmt</span>,

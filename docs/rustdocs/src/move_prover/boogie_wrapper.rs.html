@@ -1687,7 +1687,7 @@
 <span id="1684">1684</span>
 <span id="1685">1685</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Wrapper around the boogie program. Allows to call boogie and analyze the output.</span>
@@ -2248,8 +2248,8 @@
     <span class="doccomment">/// output.bpl(2964,1): Related location: This is the postcondition that might not hold.</span>
     <span class="doccomment">/// Execution trace:</span>
     <span class="doccomment">///    output.bpl(3068,5): anon0</span>
-    <span class="doccomment">///    output.bpl(2960,23): inline$LibraAccount_pay_from_sender_with_metadata$0$Entry</span>
-    <span class="doccomment">///    output.bpl(2989,5): inline$LibraAccount_pay_from_sender_with_metadata$0$anon0</span>
+    <span class="doccomment">///    output.bpl(2960,23): inline$DiemAccount_pay_from_sender_with_metadata$0$Entry</span>
+    <span class="doccomment">///    output.bpl(2989,5): inline$DiemAccount_pay_from_sender_with_metadata$0$anon0</span>
     <span class="doccomment">///    ...</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">extract_verification_errors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BoogieError</span><span class="op">&gt;</span> {

@@ -116,15 +116,15 @@
 <span id="113">113</span>
 <span id="114">114</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">protocols</span>::<span class="ident">health_checker</span>::{
     <span class="ident">HealthChecker</span>, <span class="ident">HealthCheckerNetworkEvents</span>, <span class="ident">HealthCheckerNetworkSender</span>,
 };
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">stream</span>::<span class="ident">StreamExt</span>;
 <span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">stream</span>::<span class="ident">Fuse</span>;
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">network_id</span>::<span class="ident">NetworkContext</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">sync</span>::<span class="ident">Arc</span>, <span class="ident">time</span>::<span class="ident">Duration</span>};
 <span class="kw">use</span> <span class="ident">tokio</span>::{
     <span class="ident">runtime</span>::<span class="ident">Handle</span>,

@@ -192,7 +192,7 @@
 <span id="189">189</span>
 <span id="190">190</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">backup_service_client</span>;
@@ -204,12 +204,12 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">test_utils</span>;
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">libra_config</span>::<span class="ident">config</span>::<span class="ident">RocksdbConfig</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_infallible</span>::<span class="ident">duration_since_epoch</span>;
-<span class="kw">use</span> <span class="ident">libra_jellyfish_merkle</span>::{<span class="ident">restore</span>::<span class="ident">JellyfishMerkleRestore</span>, <span class="ident">NodeBatch</span>, <span class="ident">TreeWriter</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">transaction</span>::<span class="ident">Version</span>;
-<span class="kw">use</span> <span class="ident">libradb</span>::{<span class="ident">backup</span>::<span class="ident">restore_handler</span>::<span class="ident">RestoreHandler</span>, <span class="ident">GetRestoreHandler</span>, <span class="ident">LibraDB</span>};
+<span class="kw">use</span> <span class="ident">diem_config</span>::<span class="ident">config</span>::<span class="ident">RocksdbConfig</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_infallible</span>::<span class="ident">duration_since_epoch</span>;
+<span class="kw">use</span> <span class="ident">diem_jellyfish_merkle</span>::{<span class="ident">restore</span>::<span class="ident">JellyfishMerkleRestore</span>, <span class="ident">NodeBatch</span>, <span class="ident">TreeWriter</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">transaction</span>::<span class="ident">Version</span>;
+<span class="kw">use</span> <span class="ident">diemdb</span>::{<span class="ident">backup</span>::<span class="ident">restore_handler</span>::<span class="ident">RestoreHandler</span>, <span class="ident">DiemDB</span>, <span class="ident">GetRestoreHandler</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert</span>::<span class="ident">TryFrom</span>,
     <span class="ident">mem</span>::<span class="ident">size_of</span>,
@@ -338,7 +338,7 @@
     <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">opt</span>: <span class="ident">GlobalRestoreOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">target_version</span> <span class="op">=</span> <span class="ident">opt</span>.<span class="ident">target_version</span>.<span class="ident">unwrap_or</span>(<span class="ident">Version</span>::<span class="ident">max_value</span>());
         <span class="kw">let</span> <span class="ident">run_mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">db_dir</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">opt</span>.<span class="ident">db_dir</span> {
-            <span class="kw">let</span> <span class="ident">restore_handler</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">LibraDB</span>::<span class="ident">open</span>(
+            <span class="kw">let</span> <span class="ident">restore_handler</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">DiemDB</span>::<span class="ident">open</span>(
                 <span class="ident">db_dir</span>,
                 <span class="bool-val">false</span>, <span class="comment">/* read_only */</span>
                 <span class="prelude-val">None</span>,  <span class="comment">/* pruner */</span>

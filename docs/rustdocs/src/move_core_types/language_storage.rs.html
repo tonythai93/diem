@@ -185,15 +185,15 @@
 <span id="182">182</span>
 <span id="183">183</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">identifier</span>::{<span class="ident">IdentStr</span>, <span class="ident">Identifier</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">hash</span>::<span class="ident">CryptoHash</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto_derive</span>::{<span class="ident">CryptoHasher</span>, <span class="ident">LCSCryptoHash</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">hash</span>::<span class="ident">CryptoHash</span>;
+<span class="kw">use</span> <span class="ident">diem_crypto_derive</span>::{<span class="ident">CryptoHasher</span>, <span class="ident">LCSCryptoHash</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fuzzing&quot;</span>))]</span>
 <span class="kw">use</span> <span class="ident">proptest_derive</span>::<span class="ident">Arbitrary</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};

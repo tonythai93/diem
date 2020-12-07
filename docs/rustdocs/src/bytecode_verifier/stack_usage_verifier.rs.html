@@ -214,7 +214,7 @@
 <span id="211">211</span>
 <span id="212">212</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module implements a checker for verifying that basic blocks in the bytecode instruction</span>
@@ -228,7 +228,7 @@
     <span class="ident">binary_views</span>::{<span class="ident">BinaryIndexedView</span>, <span class="ident">FunctionView</span>},
     <span class="ident">control_flow_graph</span>::{<span class="ident">BlockId</span>, <span class="ident">ControlFlowGraph</span>},
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
 <span class="kw">use</span> <span class="ident">vm</span>::{
     <span class="ident">errors</span>::{<span class="ident">PartialVMError</span>, <span class="ident">PartialVMResult</span>},
     <span class="ident">file_format</span>::{<span class="ident">Bytecode</span>, <span class="ident">CodeUnit</span>, <span class="ident">FunctionDefinitionIndex</span>, <span class="ident">Signature</span>, <span class="ident">StructFieldInformation</span>},

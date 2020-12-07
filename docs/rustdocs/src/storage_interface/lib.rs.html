@@ -467,13 +467,12 @@
 <span id="464">464</span>
 <span id="465">465</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">format_err</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{<span class="ident">hash</span>::<span class="ident">SPARSE_MERKLE_PLACEHOLDER_HASH</span>, <span class="ident">HashValue</span>};
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{<span class="ident">hash</span>::<span class="ident">SPARSE_MERKLE_PLACEHOLDER_HASH</span>, <span class="ident">HashValue</span>};
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">access_path</span>::<span class="ident">AccessPath</span>,
     <span class="ident">account_address</span>::<span class="ident">AccountAddress</span>,
     <span class="ident">account_state</span>::<span class="ident">AccountState</span>,
@@ -490,6 +489,7 @@
         <span class="ident">Version</span>,
     },
 };
+<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
@@ -530,7 +530,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fuzzing&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_for_testing</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">on_chain_config</span>::<span class="ident">ValidatorSet</span>;
+        <span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">on_chain_config</span>::<span class="ident">ValidatorSet</span>;
 
         <span class="kw">let</span> <span class="ident">latest_ledger_info</span> <span class="op">=</span>
             <span class="ident">LedgerInfoWithSignatures</span>::<span class="ident">genesis</span>(<span class="ident">HashValue</span>::<span class="ident">zero</span>(), <span class="ident">ValidatorSet</span>::<span class="ident">empty</span>());
@@ -616,8 +616,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">libra_secure_net</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">libra_secure_net</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">diem_secure_net</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">diem_secure_net</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">ServiceError</span> {
             <span class="ident">error</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">error</span>),
         }
@@ -631,21 +631,21 @@
 }
 
 <span class="doccomment">/// Trait that is implemented by a DB that supports certain public (to client) read APIs</span>
-<span class="doccomment">/// expected of a Libra DB</span>
+<span class="doccomment">/// expected of a Diem DB</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DbReader</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="doccomment">/// See [`LibraDB::get_epoch_ending_ledger_infos`].</span>
+    <span class="doccomment">/// See [`DiemDB::get_epoch_ending_ledger_infos`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::get_epoch_ending_ledger_infos`]:</span>
-    <span class="doccomment">/// ../libradb/struct.LibraDB.html#method.get_epoch_ending_ledger_infos</span>
+    <span class="doccomment">/// [`DiemDB::get_epoch_ending_ledger_infos`]:</span>
+    <span class="doccomment">/// ../diemdb/struct.DiemDB.html#method.get_epoch_ending_ledger_infos</span>
     <span class="kw">fn</span> <span class="ident">get_epoch_ending_ledger_infos</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">start_epoch</span>: <span class="ident">u64</span>,
         <span class="ident">end_epoch</span>: <span class="ident">u64</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">EpochChangeProof</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// See [`LibraDB::get_transactions`].</span>
+    <span class="doccomment">/// See [`DiemDB::get_transactions`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::get_transactions`]: ../libradb/struct.LibraDB.html#method.get_transactions</span>
+    <span class="doccomment">/// [`DiemDB::get_transactions`]: ../diemdb/struct.DiemDB.html#method.get_transactions</span>
     <span class="kw">fn</span> <span class="ident">get_transactions</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">start_version</span>: <span class="ident">Version</span>,
@@ -663,16 +663,16 @@
         <span class="ident">limit</span>: <span class="ident">u64</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">ContractEvent</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// See [`LibraDB::get_block_timestamp`].</span>
+    <span class="doccomment">/// See [`DiemDB::get_block_timestamp`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::get_block_timestamp`]:</span>
-    <span class="doccomment">/// ../libradb/struct.LibraDB.html#method.get_block_timestamp</span>
+    <span class="doccomment">/// [`DiemDB::get_block_timestamp`]:</span>
+    <span class="doccomment">/// ../diemdb/struct.DiemDB.html#method.get_block_timestamp</span>
     <span class="kw">fn</span> <span class="ident">get_block_timestamp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">version</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// See [`LibraDB::get_latest_account_state`].</span>
+    <span class="doccomment">/// See [`DiemDB::get_latest_account_state`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::get_latest_account_state`]:</span>
-    <span class="doccomment">/// ../libradb/struct.LibraDB.html#method.get_latest_account_state</span>
+    <span class="doccomment">/// [`DiemDB::get_latest_account_state`]:</span>
+    <span class="doccomment">/// ../diemdb/struct.DiemDB.html#method.get_latest_account_state</span>
     <span class="kw">fn</span> <span class="ident">get_latest_account_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">address</span>: <span class="ident">AccountAddress</span>)
         <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountStateBlob</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
@@ -692,10 +692,10 @@
     }
 
     <span class="doccomment">/// Gets information needed from storage during the main node startup.</span>
-    <span class="doccomment">/// See [`LibraDB::get_startup_info`].</span>
+    <span class="doccomment">/// See [`DiemDB::get_startup_info`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::get_startup_info`]:</span>
-    <span class="doccomment">/// ../libradb/struct.LibraDB.html#method.get_startup_info</span>
+    <span class="doccomment">/// [`DiemDB::get_startup_info`]:</span>
+    <span class="doccomment">/// ../diemdb/struct.DiemDB.html#method.get_startup_info</span>
     <span class="kw">fn</span> <span class="ident">get_startup_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">StartupInfo</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">get_txn_by_account</span>(
@@ -735,22 +735,22 @@
 
     <span class="comment">// Gets an account state by account address, out of the ledger state indicated by the state</span>
     <span class="comment">// Merkle tree root with a sparse merkle proof proving state tree root.</span>
-    <span class="comment">// See [`LibraDB::get_account_state_with_proof_by_version`].</span>
+    <span class="comment">// See [`DiemDB::get_account_state_with_proof_by_version`].</span>
     <span class="comment">//</span>
-    <span class="comment">// [`LibraDB::get_account_state_with_proof_by_version`]:</span>
-    <span class="comment">// ../libradb/struct.LibraDB.html#method.get_account_state_with_proof_by_version</span>
+    <span class="comment">// [`DiemDB::get_account_state_with_proof_by_version`]:</span>
+    <span class="comment">// ../diemdb/struct.DiemDB.html#method.get_account_state_with_proof_by_version</span>
     <span class="comment">//</span>
-    <span class="comment">// This is used by libra core (executor) internally.</span>
+    <span class="comment">// This is used by diem core (executor) internally.</span>
     <span class="kw">fn</span> <span class="ident">get_account_state_with_proof_by_version</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">address</span>: <span class="ident">AccountAddress</span>,
         <span class="ident">version</span>: <span class="ident">Version</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountStateBlob</span><span class="op">&gt;</span>, <span class="ident">SparseMerkleProof</span>)<span class="op">&gt;</span>;
 
-    <span class="doccomment">/// See [`LibraDB::get_latest_state_root`].</span>
+    <span class="doccomment">/// See [`DiemDB::get_latest_state_root`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::get_latest_state_root`]:</span>
-    <span class="doccomment">/// ../libradb/struct.LibraDB.html#method.get_latest_state_root</span>
+    <span class="doccomment">/// [`DiemDB::get_latest_state_root`]:</span>
+    <span class="doccomment">/// ../diemdb/struct.DiemDB.html#method.get_latest_state_root</span>
     <span class="kw">fn</span> <span class="ident">get_latest_state_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Version</span>, <span class="ident">HashValue</span>)<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Gets the latest TreeState no matter if db has been bootstrapped.</span>
@@ -836,13 +836,13 @@
 }
 
 <span class="doccomment">/// Trait that is implemented by a DB that supports certain public (to client) write APIs</span>
-<span class="doccomment">/// expected of a Libra DB. This adds write APIs to DbReader.</span>
+<span class="doccomment">/// expected of a Diem DB. This adds write APIs to DbReader.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DbWriter</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
     <span class="doccomment">/// Persist transactions. Called by the executor module when either syncing nodes or committing</span>
     <span class="doccomment">/// blocks during normal operation.</span>
-    <span class="doccomment">/// See [`LibraDB::save_transactions`].</span>
+    <span class="doccomment">/// See [`DiemDB::save_transactions`].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`LibraDB::save_transactions`]: ../libradb/struct.LibraDB.html#method.save_transactions</span>
+    <span class="doccomment">/// [`DiemDB::save_transactions`]: ../diemdb/struct.DiemDB.html#method.save_transactions</span>
     <span class="kw">fn</span> <span class="ident">save_transactions</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">txns_to_commit</span>: <span class="kw-2">&amp;</span>[<span class="ident">TransactionToCommit</span>],

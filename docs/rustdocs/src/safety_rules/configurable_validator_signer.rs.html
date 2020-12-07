@@ -101,16 +101,16 @@
 <span id="98">98</span>
 <span id="99">99</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">PersistentSafetyStorage</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::{
     <span class="ident">ed25519</span>::{<span class="ident">Ed25519PrivateKey</span>, <span class="ident">Ed25519PublicKey</span>, <span class="ident">Ed25519Signature</span>},
     <span class="ident">hash</span>::<span class="ident">CryptoHash</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_global_constants</span>::<span class="ident">CONSENSUS_KEY</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">validator_signer</span>::<span class="ident">ValidatorSigner</span>};
+<span class="kw">use</span> <span class="ident">diem_global_constants</span>::<span class="ident">CONSENSUS_KEY</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{<span class="ident">account_address</span>::<span class="ident">AccountAddress</span>, <span class="ident">validator_signer</span>::<span class="ident">ValidatorSigner</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
 
 <span class="doccomment">/// A ConfigurableValidatorSigner is a ValidatorSigner wrapper that offers either</span>

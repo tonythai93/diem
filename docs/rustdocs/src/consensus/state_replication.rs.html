@@ -65,15 +65,15 @@
 <span id="62">62</span>
 <span id="63">63</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::{<span class="ident">MempoolError</span>, <span class="ident">StateSyncError</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">consensus_types</span>::{<span class="ident">block</span>::<span class="ident">Block</span>, <span class="ident">common</span>::<span class="ident">Payload</span>};
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>;
 <span class="kw">use</span> <span class="ident">executor_types</span>::{<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">ExecutionError</span>, <span class="ident">StateComputeResult</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">ledger_info</span>::<span class="ident">LedgerInfoWithSignatures</span>;
 
 <span class="doccomment">/// Retrieves and updates the status of transactions on demand (e.g., via talking with Mempool)</span>
 <span class="attribute">#[<span class="ident">async_trait</span>::<span class="ident">async_trait</span>]</span>

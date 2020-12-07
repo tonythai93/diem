@@ -280,7 +280,7 @@
 <span id="277">277</span>
 <span id="278">278</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Logic for account universes. This is not in the parent module to enforce privacy.</span>
@@ -290,7 +290,7 @@
     <span class="ident">account_universe</span>::{<span class="ident">default_num_accounts</span>, <span class="ident">default_num_transactions</span>, <span class="ident">AccountCurrent</span>},
     <span class="ident">executor</span>::<span class="ident">FakeExecutor</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_proptest_helpers</span>::{<span class="ident">pick_slice_idxs</span>, <span class="ident">Index</span>};
+<span class="kw">use</span> <span class="ident">diem_proptest_helpers</span>::{<span class="ident">pick_slice_idxs</span>, <span class="ident">Index</span>};
 <span class="kw">use</span> <span class="ident">proptest</span>::{
     <span class="ident">collection</span>::{<span class="ident">vec</span>, <span class="ident">SizeRange</span>},
     <span class="ident">prelude</span>::<span class="kw-2">*</span>,

@@ -408,7 +408,7 @@
 <span id="405">405</span>
 <span id="406">406</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! Support for running the VM to execute and verify transactions.</span>
@@ -420,9 +420,9 @@
     <span class="ident">keygen</span>::<span class="ident">KeyGen</span>,
 };
 <span class="kw">use</span> <span class="ident">compiled_stdlib</span>::{<span class="ident">stdlib_modules</span>, <span class="ident">transaction_scripts</span>::<span class="ident">StdlibScript</span>, <span class="ident">StdLibOptions</span>};
-<span class="kw">use</span> <span class="ident">libra_crypto</span>::<span class="ident">HashValue</span>;
-<span class="kw">use</span> <span class="ident">libra_state_view</span>::<span class="ident">StateView</span>;
-<span class="kw">use</span> <span class="ident">libra_types</span>::{
+<span class="kw">use</span> <span class="ident">diem_crypto</span>::<span class="ident">HashValue</span>;
+<span class="kw">use</span> <span class="ident">diem_state_view</span>::<span class="ident">StateView</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::{
     <span class="ident">access_path</span>::<span class="ident">AccessPath</span>,
     <span class="ident">account_config</span>::{<span class="ident">AccountResource</span>, <span class="ident">BalanceResource</span>, <span class="ident">CORE_CODE_ADDRESS</span>},
     <span class="ident">block_metadata</span>::{<span class="ident">new_block_event_key</span>, <span class="ident">BlockMetadata</span>, <span class="ident">NewBlockEvent</span>},
@@ -433,8 +433,8 @@
     <span class="ident">vm_status</span>::{<span class="ident">KeptVMStatus</span>, <span class="ident">VMStatus</span>},
     <span class="ident">write_set</span>::<span class="ident">WriteSet</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_vm</span>::{
-    <span class="ident">data_cache</span>::<span class="ident">RemoteStorage</span>, <span class="ident">txn_effects_to_writeset_and_events</span>, <span class="ident">LibraVM</span>, <span class="ident">LibraVMValidator</span>,
+<span class="kw">use</span> <span class="ident">diem_vm</span>::{
+    <span class="ident">data_cache</span>::<span class="ident">RemoteStorage</span>, <span class="ident">txn_effects_to_writeset_and_events</span>, <span class="ident">DiemVM</span>, <span class="ident">DiemVMValidator</span>,
     <span class="ident">VMExecutor</span>, <span class="ident">VMValidator</span>,
 };
 <span class="kw">use</span> <span class="ident">move_core_types</span>::{
@@ -454,7 +454,7 @@
 
 <span class="doccomment">/// Provides an environment to run a VM instance.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This struct is a mock in-memory implementation of the Libra executor.</span>
+<span class="doccomment">/// This struct is a mock in-memory implementation of the Diem executor.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FakeExecutor</span> {
     <span class="ident">data_store</span>: <span class="ident">FakeDataStore</span>,
@@ -633,7 +633,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">txn_block</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignedTransaction</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">VMStatus</span>, <span class="ident">TransactionOutput</span>)<span class="op">&gt;</span>, <span class="ident">VMStatus</span><span class="op">&gt;</span> {
-        <span class="ident">LibraVM</span>::<span class="ident">execute_block_and_keep_vm_status</span>(
+        <span class="ident">DiemVM</span>::<span class="ident">execute_block_and_keep_vm_status</span>(
             <span class="ident">txn_block</span>
                 .<span class="ident">into_iter</span>()
                 .<span class="ident">map</span>(<span class="ident">Transaction</span>::<span class="ident">UserTransaction</span>)
@@ -667,7 +667,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">txn_block</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TransactionOutput</span><span class="op">&gt;</span>, <span class="ident">VMStatus</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">LibraVM</span>::<span class="ident">execute_block</span>(<span class="ident">txn_block</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">data_store</span>);
+        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">DiemVM</span>::<span class="ident">execute_block</span>(<span class="ident">txn_block</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">data_store</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">logger</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">executed_output</span> {
             <span class="ident">logger</span>.<span class="ident">log</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}\n&quot;</span>, <span class="ident">output</span>).<span class="ident">as_str</span>());
         }
@@ -691,7 +691,7 @@
 
     <span class="doccomment">/// Verifies the given transaction by running it through the VM verifier.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">verify_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">txn</span>: <span class="ident">SignedTransaction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VMValidatorResult</span> {
-        <span class="kw">let</span> <span class="ident">vm</span> <span class="op">=</span> <span class="ident">LibraVMValidator</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">get_state_view</span>());
+        <span class="kw">let</span> <span class="ident">vm</span> <span class="op">=</span> <span class="ident">DiemVMValidator</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">get_state_view</span>());
         <span class="ident">vm</span>.<span class="ident">validate_transaction</span>(<span class="ident">txn</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">data_store</span>)
     }
 

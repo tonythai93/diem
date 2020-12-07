@@ -47,14 +47,14 @@
 <span id="44">44</span>
 <span id="45">45</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
-<span class="doccomment">//! Consensus for the Libra Core blockchain</span>
+<span class="doccomment">//! Consensus for the Diem Core blockchain</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The consensus protocol implemented is LibraBFT (based on</span>
+<span class="doccomment">//! The consensus protocol implemented is DiemBFT (based on</span>
 <span class="doccomment">//! [HotStuff](https://arxiv.org/pdf/1803.05069.pdf)).</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fuzzing&quot;</span>), <span class="ident">deny</span>(<span class="ident">missing_docs</span>))]</span>
@@ -84,9 +84,9 @@
 <span class="kw">mod</span> <span class="ident">txn_manager</span>;
 <span class="kw">mod</span> <span class="ident">util</span>;
 
-<span class="doccomment">/// LibraBFT implementation</span>
+<span class="doccomment">/// DiemBFT implementation</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">consensus_provider</span>;
-<span class="doccomment">/// LibraNet interface.</span>
+<span class="doccomment">/// DiemNet interface.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">network_interface</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fuzzing&quot;</span>)]</span>

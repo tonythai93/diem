@@ -233,7 +233,7 @@
 <span id="230">230</span>
 <span id="231">231</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="doccomment">//! This module implements a checker for verifies control flow. The following properties are</span>
@@ -241,7 +241,7 @@
 <span class="doccomment">//! - All forward jumps do not enter into the middle of a loop</span>
 <span class="doccomment">//! - All &quot;breaks&quot; (forward, loop-exiting jumps) go to the &quot;end&quot; of the loop</span>
 <span class="doccomment">//! - All &quot;continues&quot; (back jumps in a loop) are only to the current loop</span>
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">vm_status</span>::<span class="ident">StatusCode</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>::<span class="ident">HashSet</span>, <span class="ident">convert</span>::<span class="ident">TryInto</span>};
 <span class="kw">use</span> <span class="ident">vm</span>::{
     <span class="ident">errors</span>::{<span class="ident">PartialVMError</span>, <span class="ident">PartialVMResult</span>},

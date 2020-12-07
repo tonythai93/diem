@@ -132,20 +132,16 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diem_metrics</span>::{<span class="ident">register_histogram_vec</span>, <span class="ident">register_int_counter_vec</span>, <span class="ident">HistogramVec</span>, <span class="ident">IntCounterVec</span>};
+<span class="kw">use</span> <span class="ident">diemdb</span>::<span class="ident">backup</span>::<span class="ident">backup_handler</span>::<span class="ident">BackupHandler</span>;
 <span class="kw">use</span> <span class="ident">hyper</span>::<span class="ident">Body</span>;
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">libra_metrics</span>::{
-    <span class="ident">register_histogram_vec</span>, <span class="ident">register_int_counter_vec</span>, <span class="ident">HistogramVec</span>, <span class="ident">IntCounterVec</span>,
-};
-<span class="kw">use</span> <span class="ident">libradb</span>::<span class="ident">backup</span>::<span class="ident">backup_handler</span>::<span class="ident">BackupHandler</span>;
 <span class="kw">use</span> <span class="ident">once_cell</span>::<span class="ident">sync</span>::<span class="ident">Lazy</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">Infallible</span>, <span class="ident">future</span>::<span class="ident">Future</span>};
@@ -153,7 +149,7 @@
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">static</span> <span class="ident">LATENCY_HISTOGRAM</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">HistogramVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_histogram_vec</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_backup_service_latency_s&quot;</span>,
+        <span class="string">&quot;diem_backup_service_latency_s&quot;</span>,
         <span class="string">&quot;Backup service endpoint latency.&quot;</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;endpoint&quot;</span>, <span class="string">&quot;status&quot;</span>]
     )
@@ -162,7 +158,7 @@
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">static</span> <span class="ident">THROUGHPUT_COUNTER</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntCounterVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="macro">register_int_counter_vec</span><span class="macro">!</span>(
-        <span class="string">&quot;libra_backup_service_sent_bytes&quot;</span>,
+        <span class="string">&quot;diem_backup_service_sent_bytes&quot;</span>,
         <span class="string">&quot;Backup service throughput in bytes.&quot;</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;endpoint&quot;</span>]
     )

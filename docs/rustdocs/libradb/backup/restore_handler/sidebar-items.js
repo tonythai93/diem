@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["RestoreHandler","Provides functionalities for LibraDB data restore."]]});

@@ -513,7 +513,7 @@
 <span id="510">510</span>
 <span id="511">511</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -528,7 +528,7 @@
     <span class="ident">parser</span>::<span class="ident">ast</span>::{<span class="ident">ConstantName</span>, <span class="ident">FunctionName</span>, <span class="ident">ModuleIdent</span>, <span class="ident">StructName</span>, <span class="ident">Var</span>},
     <span class="ident">shared</span>::<span class="ident">unique_map</span>::<span class="ident">UniqueMap</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span> <span class="kw">as</span> <span class="ident">LibraAddress</span>;
+<span class="kw">use</span> <span class="ident">diem_types</span>::<span class="ident">account_address</span>::<span class="ident">AccountAddress</span> <span class="kw">as</span> <span class="ident">DiemAddress</span>;
 <span class="kw">use</span> <span class="ident">move_core_types</span>::<span class="ident">value</span>::<span class="ident">MoveValue</span>;
 <span class="kw">use</span> <span class="ident">move_ir_types</span>::<span class="ident">location</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -792,7 +792,7 @@
     <span class="kw">use</span> <span class="ident">MoveValue</span> <span class="kw">as</span> <span class="ident">MV</span>;
     <span class="kw">use</span> <span class="ident">Value_</span> <span class="kw">as</span> <span class="ident">V</span>;
     <span class="kw">match</span> <span class="ident">v_</span> {
-        <span class="ident">V</span>::<span class="ident">Address</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MV</span>::<span class="ident">Address</span>(<span class="ident">LibraAddress</span>::<span class="ident">new</span>(<span class="ident">a</span>.<span class="ident">to_u8</span>())),
+        <span class="ident">V</span>::<span class="ident">Address</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MV</span>::<span class="ident">Address</span>(<span class="ident">DiemAddress</span>::<span class="ident">new</span>(<span class="ident">a</span>.<span class="ident">to_u8</span>())),
         <span class="ident">V</span>::<span class="ident">U8</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MV</span>::<span class="ident">U8</span>(<span class="ident">u</span>),
         <span class="ident">V</span>::<span class="ident">U64</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MV</span>::<span class="ident">U64</span>(<span class="ident">u</span>),
         <span class="ident">V</span>::<span class="ident">U128</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MV</span>::<span class="ident">U128</span>(<span class="ident">u</span>),

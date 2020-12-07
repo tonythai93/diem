@@ -216,17 +216,17 @@
 <span id="213">213</span>
 <span id="214">214</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright (c) The Libra Core Contributors</span>
+<span class="comment">// Copyright (c) The Diem Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">storage</span>::<span class="ident">command_adapter</span>::<span class="ident">config</span>::<span class="ident">EnvVar</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="ident">ensure</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">diem_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::{
     <span class="ident">future</span>::<span class="ident">BoxFuture</span>,
     <span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
     <span class="ident">Future</span>, <span class="ident">FutureExt</span>,
 };
-<span class="kw">use</span> <span class="ident">libra_logger</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Formatter</span>},
     <span class="ident">process</span>::<span class="ident">Stdio</span>,
