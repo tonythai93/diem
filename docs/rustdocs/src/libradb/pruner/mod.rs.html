@@ -369,6 +369,24 @@
 <span id="366">366</span>
 <span id="367">367</span>
 <span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -419,6 +437,9 @@
     <span class="ident">worker_thread</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The sender side of the channel talking to the worker thread.</span>
     <span class="ident">command_sender</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// On start up, we query and store where the stale node index starts, before a pruning</span>
+    <span class="doccomment">/// request hits beyond that, we don&#39;t need to wake the worker thread.</span>
+    <span class="ident">initial_least_readable_version</span>: <span class="ident">Version</span>,
     <span class="doccomment">/// (For tests) A way for the worker thread to inform the `Pruner` the pruning progress. If it</span>
     <span class="doccomment">/// sets this atomic value to `V`, all versions before `V` can no longer be accessed.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
@@ -429,7 +450,19 @@
     <span class="doccomment">/// Creates a worker thread that waits on a channel for pruning commands.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>, <span class="ident">historical_versions_to_keep</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">command_sender</span>, <span class="ident">command_receiver</span>) <span class="op">=</span> <span class="ident">channel</span>();
-        <span class="kw">let</span> <span class="ident">worker_progress</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">AtomicU64</span>::<span class="ident">new</span>(<span class="number">0</span>));
+
+        <span class="kw">let</span> <span class="ident">initial_least_readable_version</span> <span class="op">=</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">db</span>
+                .<span class="ident">iter</span>::<span class="op">&lt;</span><span class="ident">StaleNodeIndexSchema</span><span class="op">&gt;</span>(<span class="ident">ReadOptions</span>::<span class="ident">default</span>())
+                .<span class="ident">expect</span>(<span class="string">&quot;Create DB iter should succeed.&quot;</span>);
+            <span class="ident">iter</span>.<span class="ident">seek_to_first</span>();
+            <span class="ident">iter</span>.<span class="ident">next</span>()
+                .<span class="ident">transpose</span>()
+                .<span class="ident">expect</span>(<span class="string">&quot;Seeking stale node index should succeed.&quot;</span>)
+                .<span class="ident">map_or</span>(<span class="number">0</span>, <span class="op">|</span>(<span class="ident">index</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">index</span>.<span class="ident">stale_since_version</span>)
+        };
+
+        <span class="kw">let</span> <span class="ident">worker_progress</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">AtomicU64</span>::<span class="ident">new</span>(<span class="ident">initial_least_readable_version</span>));
         <span class="kw">let</span> <span class="ident">worker_progress_clone</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="ident">worker_progress</span>);
 
         <span class="ident">LIBRA_STORAGE_PRUNE_WINDOW</span>.<span class="ident">set</span>(<span class="ident">historical_versions_to_keep</span> <span class="kw">as</span> <span class="ident">i64</span>);
@@ -442,6 +475,7 @@
             <span class="ident">historical_versions_to_keep</span>,
             <span class="ident">worker_thread</span>: <span class="prelude-val">Some</span>(<span class="ident">worker_thread</span>),
             <span class="ident">command_sender</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">command_sender</span>),
+            <span class="ident">initial_least_readable_version</span>,
             <span class="ident">worker_progress</span>,
         }
     }
@@ -450,12 +484,14 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wake</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">latest_version</span>: <span class="ident">Version</span>) {
         <span class="kw">if</span> <span class="ident">latest_version</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">historical_versions_to_keep</span> {
             <span class="kw">let</span> <span class="ident">least_readable_version</span> <span class="op">=</span> <span class="ident">latest_version</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">historical_versions_to_keep</span>;
-            <span class="self">self</span>.<span class="ident">command_sender</span>
-                .<span class="ident">lock</span>()
-                .<span class="ident">send</span>(<span class="ident">Command</span>::<span class="ident">Prune</span> {
-                    <span class="ident">least_readable_version</span>,
-                })
-                .<span class="ident">expect</span>(<span class="string">&quot;Receiver should not destruct prematurely.&quot;</span>);
+            <span class="kw">if</span> <span class="ident">least_readable_version</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">initial_least_readable_version</span> {
+                <span class="self">self</span>.<span class="ident">command_sender</span>
+                    .<span class="ident">lock</span>()
+                    .<span class="ident">send</span>(<span class="ident">Command</span>::<span class="ident">Prune</span> {
+                        <span class="ident">least_readable_version</span>,
+                    })
+                    .<span class="ident">expect</span>(<span class="string">&quot;Receiver should not destruct prematurely.&quot;</span>);
+            }
         }
     }
 
