@@ -309,6 +309,39 @@
 <span id="306">306</span>
 <span id="307">307</span>
 <span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright (c) The Libra Core Contributors</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -330,7 +363,31 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHUNK_REQUEST_MSG_LABEL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;chunk_request&quot;</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHUNK_RESPONSE_MSG_LABEL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;chunk_response&quot;</span>;
 
-<span class="comment">// version type labels</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_timestamp</span>(<span class="ident">timestamp_type</span>: <span class="ident">TimestampType</span>, <span class="ident">time_as_usecs</span>: <span class="ident">u64</span>) {
+    <span class="ident">TIMESTAMP</span>
+        .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">timestamp_type</span>.<span class="ident">as_str</span>()])
+        .<span class="ident">set</span>((<span class="ident">time_as_usecs</span> <span class="op">/</span> <span class="number">1000</span>) <span class="kw">as</span> <span class="ident">i64</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TimestampType</span> {
+    <span class="doccomment">/// Current ledger committed timestamp</span>
+    <span class="ident">Committed</span>,
+    <span class="doccomment">/// Current computers clock</span>
+    <span class="ident">Real</span>,
+    <span class="doccomment">/// Current ledger synced timestamp</span>
+    <span class="ident">Synced</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">TimestampType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">TimestampType</span>::<span class="ident">Committed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;committed&quot;</span>,
+            <span class="ident">TimestampType</span>::<span class="ident">Real</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;real&quot;</span>,
+            <span class="ident">TimestampType</span>::<span class="ident">Synced</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;synced&quot;</span>,
+        }
+    }
+}
+
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_version</span>(<span class="ident">version_type</span>: <span class="ident">VersionType</span>, <span class="ident">version</span>: <span class="ident">u64</span>) {
     <span class="ident">VERSION</span>
         .<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">version_type</span>.<span class="ident">as_str</span>()])
@@ -466,6 +523,15 @@
     <span class="macro">register_int_gauge</span><span class="macro">!</span>(
         <span class="string">&quot;libra_state_sync_multicast_level&quot;</span>,
         <span class="string">&quot;Max network preference of the networks state sync is sending chunk requests to&quot;</span>
+    )
+    .<span class="ident">unwrap</span>()
+});
+
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TIMESTAMP</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">IntGaugeVec</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy</span>::<span class="ident">new</span>(<span class="op">|</span><span class="op">|</span> {
+    <span class="macro">register_int_gauge_vec</span><span class="macro">!</span>(
+        <span class="string">&quot;libra_state_sync_timestamp&quot;</span>,
+        <span class="string">&quot;Timestamp involved in state sync progress&quot;</span>,
+        <span class="kw-2">&amp;</span>[<span class="string">&quot;type&quot;</span>] <span class="comment">// see TimestampType above</span>
     )
     .<span class="ident">unwrap</span>()
 });
